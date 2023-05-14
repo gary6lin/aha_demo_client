@@ -1,0 +1,20 @@
+{
+	"app_title": "Aha Demo",
+
+	"display_name": "Display name",
+	"email_address": "Email address",
+	"password": "Password",
+	"current_password": "Current password",
+	"new_password": "New password",
+	"confirm_password": "Confirm the new password",
+	"invalid_email_address": "Invalid email address format",
+	"invalid_password": "Invalid password format",
+
+	"login": "Sign in",
+	"register": "Register with Email",
+	"continue_with_facebook": "Continue with Facebook",
+	"continue_with_google": "Continue with Google",
+
+	"create_new_account": "Create a new account",
+	"register_submission": "Submit"
+}

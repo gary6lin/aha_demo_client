@@ -1,0 +1,20 @@
+{
+	"app_title": "Aha Demo",
+
+	"display_name": "顯示名稱",
+	"email_address": "電子郵件地址",
+	"password": "密碼",
+	"current_password": "當前密碼",
+	"new_password": "新密碼",
+	"confirm_password": "確認新密碼",
+	"invalid_email_address": "無效的電子郵件地址格式",
+	"invalid_password": "無效的密碼格式",
+
+	"login": "登入",
+	"register": "使用Email註冊",
+	"continue_with_facebook": "以Facebook繼續使用",
+	"continue_with_google": "以Google繼續使用",
+
+	"create_new_account": "建立新帳號",
+	"register_submission": "註冊"
+}
