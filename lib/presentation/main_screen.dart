@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:responsive_framework/responsive_breakpoints.dart';
 
-import '../dashboard/dashboard_screen.dart';
+import 'dashboard/dashboard_screen.dart';
 import 'widgets/side_menu.dart';
 
 class MainScreen extends StatefulWidget {

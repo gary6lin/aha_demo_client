@@ -4,9 +4,10 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../app_locale.dart';
 import '../../values/constants.dart';
+import '../widgets/app_filled_button.dart';
 import '../widgets/language_switcher.dart';
+import 'login_view_model.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -16,8 +17,18 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  final emailController = TextEditingController();
-  final passwordController = TextEditingController();
+  final _vm = LoginViewModel();
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+
+    _vm.onSignedIn = () {
+      context.go(AppRoute.main.path);
+    };
+  }
 
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -25,11 +36,9 @@ class _LoginScreenState extends State<LoginScreen> {
           child: Container(
             width: 400,
             padding: const EdgeInsets.all(24),
-            decoration: ShapeDecoration(
+            decoration: BoxDecoration(
               color: AppColors.secondary,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(16),
-              ),
+              borderRadius: BorderRadius.circular(16),
             ),
             child: buildLoginForm(),
           ),
@@ -47,14 +56,12 @@ class _LoginScreenState extends State<LoginScreen> {
           const Divider(),
           _buildFacebookLoginButton(),
           _buildGoogleLoginButton(),
-          const LanguageSwitcher(
-            languages: SupportedLocale.values,
-          ),
+          const LanguageSwitcher(),
         ],
       );
 
   Widget _buildEmailInput() => TextFormField(
-        controller: emailController,
+        controller: _emailController,
         decoration: InputDecoration(
           labelText: tr('email_address'),
         ),
@@ -65,25 +72,18 @@ class _LoginScreenState extends State<LoginScreen> {
       );
 
   Widget _buildPasswordInput() => TextFormField(
-        controller: passwordController,
+        controller: _passwordController,
         decoration: InputDecoration(
           labelText: tr('password'),
         ),
       );
 
-  Widget _buildEmailLoginButton() => FilledButton(
-        child: Container(
-          width: double.infinity,
-          height: 50,
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-          alignment: Alignment.center,
-          child: Text(
-            tr('login'),
-          ),
+  Widget _buildEmailLoginButton() => AppFilledButton(
+        child: Text(
+          tr('login'),
         ),
-        onPressed: () {
-          // TODO
-          context.go(AppRoute.main.path);
+        onPressed: () async {
+          await _vm.onSignIn(_emailController.text, _passwordController.text);
         },
       );
 
@@ -95,7 +95,7 @@ class _LoginScreenState extends State<LoginScreen> {
           tr('register'),
         ),
         onPressed: () {
-          context.go(AppRoute.login.register.path);
+          context.go(AppRoute.register.path);
         },
       );
 

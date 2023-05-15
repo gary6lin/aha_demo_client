@@ -19,7 +19,7 @@ class _AppRemoteDataSource implements AppRemoteDataSource {
   String? baseUrl;
 
   @override
-  Future<void> register(RegisterDto dto) async {
+  Future<void> createUser(RegisterDto dto) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};

@@ -1,8 +1,8 @@
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 
-import '../presentation/main/main_screen.dart';
-import '../presentation/profile_screen.dart';
+import '../presentation/main_screen.dart';
+import '../presentation/profile/profile_screen.dart';
 import 'app_routes.dart';
 
 class MainRoute {
@@ -16,15 +16,7 @@ class MainRoute {
     routes: <RouteBase>[
       profile.goRoute,
     ],
-    // redirect: (BuildContext context, GoRouterState state) async {
-    //   final repo = GetIt.I<AppRepository>();
-    //   final accessToken = await repo.getAccessToken();
-    //   if (accessToken == null) {
-    //     return AppRoute.login.path;
-    //   } else {
-    //     return null;
-    //   }
-    // },
+    redirect: AppRoute.guard,
   );
 
   MainRoute(this.path);

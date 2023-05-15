@@ -42,9 +42,9 @@ class UsersWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Container(
         padding: const EdgeInsets.all(defaultPadding),
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           color: AppColors.secondary,
-          borderRadius: BorderRadius.all(Radius.circular(10)),
+          borderRadius: BorderRadius.circular(10),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

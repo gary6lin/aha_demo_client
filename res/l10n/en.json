@@ -16,5 +16,12 @@
 	"continue_with_google": "Continue with Google",
 
 	"create_new_account": "Create a new account",
-	"register_submission": "Submit"
+	"register_submission": "Submit",
+
+	"email_verification_sent": "An email verification has been sent.",
+	"verifying_email": "Verifying your email...",
+	"verifying_email_error_expired": "The verification link is expired.",
+	"verifying_email_error_invalid": "The verification link is invalid or has already been used.",
+	"verifying_email_error_user_disabled": "The user corresponding to the email has been disabled.",
+	"verifying_email_error_no_user": "The user corresponding to the email does not found."
 }

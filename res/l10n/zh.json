@@ -16,5 +16,12 @@
 	"continue_with_google": "以Google繼續使用",
 
 	"create_new_account": "建立新帳號",
-	"register_submission": "註冊"
+	"register_submission": "註冊",
+
+	"email_verification_sent": "驗證郵件已發送",
+	"verifying_email": "驗證中請稍候...",
+	"verifying_email_error_expired": "連結已失效",
+	"verifying_email_error_invalid": "無效的連結，或是Email已驗證",
+	"verifying_email_error_user_disabled": "帳戶已被停用",
+	"verifying_email_error_no_user": "找不到帳戶"
 }

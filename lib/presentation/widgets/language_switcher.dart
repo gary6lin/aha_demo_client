@@ -7,9 +7,9 @@ import '../../app_locale.dart';
 import '../../values/app_colors.dart';
 
 class LanguageSwitcher extends StatelessWidget {
-  final List<SupportedLocale> languages;
+  final languages = SupportedLocale.values;
 
-  const LanguageSwitcher({Key? key, required this.languages}) : super(key: key);
+  const LanguageSwitcher({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) => RichText(
