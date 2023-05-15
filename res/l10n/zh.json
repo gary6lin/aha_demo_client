@@ -7,7 +7,7 @@
 	"current_password": "當前密碼",
 	"new_password": "新密碼",
 	"confirm_password": "確認新密碼",
-	"invalid_email_address": "無效的電子郵件地址格式",
+	"invalid_email_address": "無效的電子郵件格式",
 	"invalid_password": "無效的密碼格式",
 
 	"login": "登入",
@@ -20,8 +20,17 @@
 
 	"email_verification_sent": "驗證郵件已發送",
 	"verifying_email": "驗證中請稍候...",
-	"verifying_email_error_expired": "連結已失效",
-	"verifying_email_error_invalid": "無效的連結，或是Email已驗證",
-	"verifying_email_error_user_disabled": "帳戶已被停用",
-	"verifying_email_error_no_user": "找不到帳戶"
+
+	"error_email_already_exists": "Email已被註冊",
+	"error_expired_action_code": "連結已失效",
+	"error_invalid_action_code": "無效的連結，或是Email已驗證",
+	"error_user_disabled": "帳戶已被停用",
+	"error_user_not_found": "找不到帳戶",
+
+    "error_password_no_lower": "密碼須包含至少一個小寫英文字母，如：a、b、c",
+    "error_password_no_upper": "密碼須包含至少一個大寫英文字母，如：A、B、C",
+    "error_password_no_number": "密碼須包含至少一個數字，如：1、2、3",
+    "error_password_no_special": "密碼須包含至少一個特殊字符，如：!、@、#",
+    "error_password_length": "密碼長度須至少需要8個字元",
+    "error_password_whitespace": "密碼不能包含任何空白字元"
 }

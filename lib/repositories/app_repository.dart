@@ -1,16 +1,20 @@
+import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import 'dto/register_dto.dart';
-import 'errors/email_verification_error.dart';
+import 'firebase_auth_exception_handler.dart';
+import 'invalid_password_format_handler.dart';
 import 'local/app_local_data_source.dart';
 import 'remote/app_remote_data_source.dart';
 
 abstract class AppRepository {
   factory AppRepository(AppLocalDataSource local, AppRemoteDataSource remote) => _AppRepositoryImp(local, remote);
 
+  Future<bool?> accessAllowed();
   Future<String?> getAccessToken();
 
   Future<void> signIn(String email, String password);
+  Future<void> signOut();
   Future<void> register(String email, String password, String displayName);
   Future<void> emailVerification(String oobCode);
 }
@@ -20,11 +24,29 @@ class _AppRepositoryImp implements AppRepository {
   final AppRemoteDataSource _remote;
   final _firebaseAuth = FirebaseAuth.instance;
 
+  String? _token;
+
   _AppRepositoryImp(this._local, this._remote);
 
   @override
+  Future<bool?> accessAllowed() async {
+    final accessToken = await getAccessToken();
+    final emailVerified = _firebaseAuth.currentUser?.emailVerified;
+    print('accessToken: $accessToken');
+    print('emailVerified: $emailVerified');
+    return accessToken != null && emailVerified == true;
+  }
+
+  @override
   Future<String?> getAccessToken() async {
-    return await _local.readAccessToken();
+    if (_token == null) {
+      final token = await _firebaseAuth.currentUser?.getIdToken();
+      _token = token;
+    }
+    return _token;
+
+    // Deprecated
+    // return await _local.readAccessToken();
   }
 
   @override
@@ -40,11 +62,17 @@ class _AppRepositoryImp implements AppRepository {
     final idToken = await userCred.user?.getIdToken();
     print('idToken: $idToken');
 
-    if (accessToken != null) {
-      await _local.writeAccessToken(accessToken);
-    }
+    // Deprecated
+    // if (accessToken != null) {
+    //   await _local.writeAccessToken(accessToken);
+    // }
 
     return accessToken;
+  }
+
+  @override
+  Future<void> signOut() async {
+    await _firebaseAuth.signOut();
   }
 
   @override
@@ -59,10 +87,11 @@ class _AppRepositoryImp implements AppRepository {
           displayName: displayName,
         ),
       );
-    } on FirebaseAuthException catch (e) {
-      final error = EmailVerificationErrorHandler.handle(e.message);
-      throw error.message;
+    } on DioError catch (e) {
+      FirebaseAuthExceptionHandler.handle(e.message);
+      InvalidPasswordFormatHandler.handle(e.message);
     }
+
     // 2. User sign in to send email verification
     final userCred = await _firebaseAuth.signInWithEmailAndPassword(email: email, password: password);
     await userCred.user?.sendEmailVerification();
@@ -73,9 +102,9 @@ class _AppRepositoryImp implements AppRepository {
     // 3. Verify the email via the generated verification link
     try {
       await _firebaseAuth.applyActionCode(oobCode);
+      _firebaseAuth.checkActionCode('code');
     } on FirebaseAuthException catch (e) {
-      final error = EmailVerificationErrorHandler.handle(e.message);
-      throw error.message;
+      FirebaseAuthExceptionHandler.handle(e.message);
     }
   }
 }

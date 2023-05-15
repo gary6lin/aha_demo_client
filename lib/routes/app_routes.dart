@@ -18,8 +18,8 @@ class AppRoute {
   static final register = RegisterRoute(main.path);
   static final verification = VerificationRoute(main.path);
 
-  static final _signInNotifier = ValueNotifier<bool?>(null);
-  static bool get _signedIn => _signInNotifier.value ?? false;
+  static final _accessAllowedNotifier = ValueNotifier<bool?>(null);
+  static bool get _accessAllowed => _accessAllowedNotifier.value ?? false;
 
   static final goRouter = GoRouter(
     initialLocation: main.path,
@@ -29,20 +29,20 @@ class AppRoute {
       AppRoute.register.goRoute,
       AppRoute.verification.goRoute,
     ],
-    refreshListenable: _signInNotifier,
+    refreshListenable: _accessAllowedNotifier,
   );
 
-  static Future<void> checkSignInAndUpdateRoute() async {
+  static Future<void> checkAccessAndUpdateRoute() async {
     final repo = GetIt.I<AppRepository>();
-    final accessToken = await repo.getAccessToken();
-    _signInNotifier.value = accessToken != null;
+    final accessAllowed = await repo.accessAllowed();
+    _accessAllowedNotifier.value = accessAllowed;
   }
 
   static Future<String?> guard(BuildContext context, GoRouterState state) async {
-    if (_signInNotifier.value == null) {
-      await checkSignInAndUpdateRoute();
+    if (_accessAllowedNotifier.value == null) {
+      await checkAccessAndUpdateRoute();
     }
-    if (!_signedIn) {
+    if (!_accessAllowed) {
       // Show the login screen if not signed in
       return AppRoute.login.path;
     } else {

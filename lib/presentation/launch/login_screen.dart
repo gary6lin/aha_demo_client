@@ -83,7 +83,13 @@ class _LoginScreenState extends State<LoginScreen> {
           tr('login'),
         ),
         onPressed: () async {
-          await _vm.onSignIn(_emailController.text, _passwordController.text);
+          // TODO
+          await _vm.onSignIn(
+            'gary6lin@gmail.com',
+            '12qw!@QW',
+          );
+
+          // await _vm.onSignIn(_emailController.text, _passwordController.text);
         },
       );
 

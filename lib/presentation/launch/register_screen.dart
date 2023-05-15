@@ -72,6 +72,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             decoration: InputDecoration(
               labelText: tr('password'),
             ),
+            validator: (value) => _vm.validatePassword(value ?? ''),
           ),
           _buildSubmitButton(),
           const LanguageSwitcher(),
@@ -89,6 +90,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
             '12qw!@QW',
             'GGG',
           );
+
+          // await _vm.onRegister(
+          //   _emailController.text,
+          //   _passwordController.text,
+          //   _nameController.text,
+          // );
         },
       );
 }

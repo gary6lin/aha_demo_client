@@ -20,8 +20,17 @@
 
 	"email_verification_sent": "An email verification has been sent.",
 	"verifying_email": "Verifying your email...",
-	"verifying_email_error_expired": "The verification link is expired.",
-	"verifying_email_error_invalid": "The verification link is invalid or has already been used.",
-	"verifying_email_error_user_disabled": "The user corresponding to the email has been disabled.",
-	"verifying_email_error_no_user": "The user corresponding to the email does not found."
+
+	"error_email_already_exists": "The email has already been registered.",
+	"error_expired_action_code": "The verification link is expired.",
+	"error_invalid_action_code": "The verification link is invalid or has already been used.",
+	"error_user_disabled": "The user corresponding to the email has been disabled.",
+	"error_user_not_found": "The user corresponding to the email does not found.",
+
+	"error_password_no_lower": "Password must contains at least one lowercase character.",
+	"error_password_no_upper": "Password must contains at least one uppercase character.",
+	"error_password_no_number": "Password must contains at least one number.",
+	"error_password_no_special": "Password must contains at least one special character.",
+	"error_password_length": "Password must contains at least one 8 characters.",
+	"error_password_whitespace": "Password must not contains any whitespaces."
 }
