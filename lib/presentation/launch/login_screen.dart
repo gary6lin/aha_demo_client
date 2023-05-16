@@ -4,7 +4,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../values/constants.dart';
+import '../../utils/app_validator.dart';
 import '../widgets/app_filled_button.dart';
 import '../widgets/language_switcher.dart';
 import 'login_view_model.dart';
@@ -65,10 +65,7 @@ class _LoginScreenState extends State<LoginScreen> {
         decoration: InputDecoration(
           labelText: tr('email_address'),
         ),
-        validator: (value) {
-          final validated = AppRegex.emailValidation.hasMatch(value ?? '');
-          return validated ? null : tr('invalid_email_address');
-        },
+        validator: AppValidator.email,
       );
 
   Widget _buildPasswordInput() => TextFormField(
@@ -76,6 +73,7 @@ class _LoginScreenState extends State<LoginScreen> {
         decoration: InputDecoration(
           labelText: tr('password'),
         ),
+        validator: AppValidator.password,
       );
 
   Widget _buildEmailLoginButton() => AppFilledButton(

@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -22,14 +23,14 @@ class SideMenu extends StatelessWidget {
                     ),
                   ),
                   _buildListTile(
-                    titleText: 'Dashboard',
+                    titleText: tr('menu_dashboard'),
                     iconData: Icons.dashboard_outlined,
                     onPressed: () {
                       // TODO
                     },
                   ),
                   _buildListTile(
-                    titleText: 'Profile',
+                    titleText: tr('menu_profile'),
                     iconData: Icons.person_outline_rounded,
                     onPressed: () {
                       // TODO
@@ -45,7 +46,10 @@ class SideMenu extends StatelessWidget {
                 ],
               ),
             ),
-            const LanguageSwitcher(),
+            const Padding(
+              padding: EdgeInsets.all(8),
+              child: LanguageSwitcher(),
+            ),
           ],
         ),
       );

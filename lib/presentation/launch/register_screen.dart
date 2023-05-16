@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../routes/app_routes.dart';
+import '../../utils/app_validator.dart';
 import '../../values/app_colors.dart';
 import '../widgets/app_filled_button.dart';
 import '../widgets/language_switcher.dart';
@@ -66,13 +67,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
             decoration: InputDecoration(
               labelText: tr('email_address'),
             ),
+            validator: AppValidator.email,
           ),
           TextFormField(
             controller: _passwordController,
             decoration: InputDecoration(
               labelText: tr('password'),
             ),
-            validator: (value) => _vm.validatePassword(value ?? ''),
+            validator: AppValidator.password,
           ),
           _buildSubmitButton(),
           const LanguageSwitcher(),
