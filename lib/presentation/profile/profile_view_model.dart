@@ -8,12 +8,23 @@ class ProfileViewModel {
 
   final onUser = ValueNotifier<User?>(null);
 
+  void Function()? onSignedOut;
   void Function(User?)? onLoaded;
   void Function(Object)? onError;
 
   Future<void> onLoad() async {
     try {
       onUser.value = await _repo.getCurrentUser();
+    } catch (e) {
+      if (kDebugMode) print(e);
+      onError?.call(e);
+    }
+  }
+
+  Future<void> onSignOut() async {
+    try {
+      await _repo.signOut();
+      onSignedOut?.call();
     } catch (e) {
       if (kDebugMode) print(e);
       onError?.call(e);

@@ -105,7 +105,6 @@ class _AppRepositoryImp implements AppRepository {
 
   @override
   Future<User?> getCurrentUser() async {
-    print('currentUser: ${_firebaseAuth.currentUser}');
     return _firebaseAuth.currentUser;
   }
 }

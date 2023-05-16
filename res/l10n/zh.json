@@ -13,6 +13,7 @@
 	"invalid_password": "無效的密碼格式",
 
 	"login": "登入",
+	"log_out": "登出",
 	"register": "使用Email註冊",
 	"continue_with_facebook": "以Facebook繼續使用",
 	"continue_with_google": "以Google繼續使用",

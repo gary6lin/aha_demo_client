@@ -13,6 +13,7 @@
 	"invalid_password": "Invalid password format",
 
 	"login": "Sign in",
+	"log_out": "Sign Out",
 	"register": "Register with Email",
 	"continue_with_facebook": "Continue with Facebook",
 	"continue_with_google": "Continue with Google",

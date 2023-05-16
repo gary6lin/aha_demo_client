@@ -1,7 +1,9 @@
 import 'package:aha_demo/presentation/widgets/app_card.dart';
+import 'package:aha_demo/routes/app_routes.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../utils/app_validator.dart';
 import '../../values/app_text_style.dart';
@@ -30,6 +32,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
   void initState() {
     super.initState();
 
+    _vm.onSignedOut = () {
+      context.go(AppRoute.login.path);
+    };
+
     _vm.onLoad();
   }
 
@@ -43,6 +49,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
             _buildNameChange(),
             const SizedBox(height: defaultPadding),
             _buildPasswordChange(),
+            const SizedBox(height: defaultPadding),
+            _buildSignOutButton(),
           ],
         ),
       );
@@ -158,5 +166,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
           ],
         ),
+      );
+
+  Widget _buildSignOutButton() => AppFilledButton(
+        child: Text(
+          tr('log_out'),
+        ),
+        onPressed: () async {
+          await _vm.onSignOut();
+        },
       );
 }
