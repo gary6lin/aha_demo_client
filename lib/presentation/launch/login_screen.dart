@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../utils/app_validator.dart';
+import '../widgets/app_card.dart';
 import '../widgets/app_filled_button.dart';
 import '../widgets/language_switcher.dart';
 import 'login_view_model.dart';
@@ -33,13 +34,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) => Scaffold(
         body: Center(
-          child: Container(
-            width: 400,
-            padding: const EdgeInsets.all(24),
-            decoration: BoxDecoration(
-              color: AppColors.secondary,
-              borderRadius: BorderRadius.circular(16),
-            ),
+          child: AppCard(
             child: buildLoginForm(),
           ),
         ),

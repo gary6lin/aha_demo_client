@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../routes/app_routes.dart';
-import '../../values/app_colors.dart';
+import '../widgets/app_card.dart';
 import 'verification_view_model.dart';
 
 class VerificationScreen extends StatefulWidget {
@@ -46,23 +46,18 @@ class _VerificationScreenState extends State<VerificationScreen> {
   @override
   Widget build(BuildContext context) => Scaffold(
         body: Center(
-          child: Container(
-            width: 400,
-            height: 300,
-            padding: const EdgeInsets.all(24),
-            decoration: BoxDecoration(
-              color: AppColors.secondary,
-              borderRadius: BorderRadius.circular(16),
-            ),
-            alignment: Alignment.center,
-            child: ValueListenableBuilder(
-              valueListenable: _onErrorMessage,
-              builder: (BuildContext context, String? errorMessage, Widget? child) {
-                if (widget.message != null) {
-                  return _buildMessage(widget.message!);
-                }
-                return errorMessage == null ? _buildEmailVerifying() : _buildMessage(errorMessage);
-              },
+          child: AppCard(
+            height: 280,
+            child: Center(
+              child: ValueListenableBuilder(
+                valueListenable: _onErrorMessage,
+                builder: (BuildContext context, String? errorMessage, Widget? child) {
+                  if (widget.message != null) {
+                    return _buildMessage(widget.message!);
+                  }
+                  return errorMessage == null ? _buildEmailVerifying() : _buildMessage(errorMessage);
+                },
+              ),
             ),
           ),
         ),

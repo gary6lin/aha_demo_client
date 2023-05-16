@@ -1,33 +1,25 @@
+import 'package:aha_demo/presentation/widgets/app_card.dart';
 import 'package:aha_demo/values/app_text_style.dart';
 import 'package:flutter/material.dart';
 
-import '../../../values/app_colors.dart';
+import '../../../repositories/dto/user_dto.dart';
 import '../../../values/constants.dart';
-
-class User {
-  final String email;
-  final String created;
-  final String count;
-  final String lastLoggedIn;
-
-  const User(this.email, this.created, this.count, this.lastLoggedIn);
-}
 
 class UsersWidget extends StatelessWidget {
   static const list = [
-    User(
+    UserDto(
       'a@gmail.com',
       '12 May 2024',
       '234',
       '23 June 2024',
     ),
-    User(
+    UserDto(
       'a@gmail.com',
       '12 May 2024',
       '234',
       '23 June 2024',
     ),
-    User(
+    UserDto(
       'a@gmail.com',
       '12 May 2024',
       '234',
@@ -40,12 +32,10 @@ class UsersWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) => Container(
-        padding: const EdgeInsets.all(defaultPadding),
-        decoration: BoxDecoration(
-          color: AppColors.secondary,
-          borderRadius: BorderRadius.circular(10),
-        ),
+  Widget build(BuildContext context) => AppCard(
+        width: null,
+        padding: defaultPadding,
+        radius: 10,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

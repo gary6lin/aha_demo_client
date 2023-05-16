@@ -1,6 +1,8 @@
+import 'package:aha_demo/routes/app_routes.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:go_router/go_router.dart';
 
 import 'language_switcher.dart';
 
@@ -26,21 +28,14 @@ class SideMenu extends StatelessWidget {
                     titleText: tr('menu_dashboard'),
                     iconData: Icons.dashboard_outlined,
                     onPressed: () {
-                      // TODO
+                      context.go(AppRoute.main.dashboard.path);
                     },
                   ),
                   _buildListTile(
                     titleText: tr('menu_profile'),
                     iconData: Icons.person_outline_rounded,
                     onPressed: () {
-                      // TODO
-                    },
-                  ),
-                  _buildListTile(
-                    titleText: 'Settings',
-                    iconData: Icons.settings,
-                    onPressed: () {
-                      // TODO
+                      context.go(AppRoute.main.profile.path);
                     },
                   ),
                 ],

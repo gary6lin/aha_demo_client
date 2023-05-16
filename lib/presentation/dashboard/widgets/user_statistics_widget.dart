@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:responsive_framework/responsive_breakpoints.dart';
 import 'package:responsive_framework/responsive_value.dart';
 
-import '../../../values/app_colors.dart';
 import '../../../values/constants.dart';
+import '../../widgets/app_card.dart';
 
 class UserStatisticsWidget extends StatelessWidget {
   const UserStatisticsWidget({
@@ -69,12 +69,9 @@ class UserStatisticsWidget extends StatelessWidget {
     required String title,
     required int value,
   }) =>
-      Container(
-        padding: const EdgeInsets.all(defaultPadding),
-        decoration: BoxDecoration(
-          color: AppColors.secondary,
-          borderRadius: BorderRadius.circular(10),
-        ),
+      AppCard(
+        padding: defaultPadding,
+        radius: 10,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [

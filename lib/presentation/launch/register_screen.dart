@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../routes/app_routes.dart';
 import '../../utils/app_validator.dart';
-import '../../values/app_colors.dart';
+import '../widgets/app_card.dart';
 import '../widgets/app_filled_button.dart';
 import '../widgets/language_switcher.dart';
 import 'register_view_model.dart';
@@ -37,13 +37,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   @override
   Widget build(BuildContext context) => Scaffold(
         body: Center(
-          child: Container(
-            width: 400,
-            padding: const EdgeInsets.all(24),
-            decoration: BoxDecoration(
-              color: AppColors.secondary,
-              borderRadius: BorderRadius.circular(16),
-            ),
+          child: AppCard(
             child: buildLoginForm(),
           ),
         ),

@@ -13,10 +13,6 @@ class MainRoute {
   late final profile = ProfileRoute(path);
 
   late final goRoute = ShellRoute(
-    // path: path,
-    // pageBuilder: (BuildContext context, GoRouterState state) => FadeTransitionPage(
-    //   child: const MainScreen(),
-    // ),
     pageBuilder: (BuildContext context, GoRouterState state, Widget child) => FadeTransitionPage(
       child: MainScreen(child: child),
     ),
@@ -24,7 +20,6 @@ class MainRoute {
       dashboard.goRoute,
       profile.goRoute,
     ],
-    // redirect: AppRoute.guard,
   );
 
   MainRoute(this.path);
@@ -39,6 +34,7 @@ class DashboardRoute {
     pageBuilder: (BuildContext context, GoRouterState state) => const DefaultTransitionPage(
       child: DashboardScreen(),
     ),
+    redirect: AppRoute.guard,
   );
 
   DashboardRoute(String parentPath) : path = makePath(parentPath, name);

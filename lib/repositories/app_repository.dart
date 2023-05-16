@@ -18,6 +18,8 @@ abstract class AppRepository {
   Future<void> signOut();
   Future<void> register(String email, String password, String displayName);
   Future<void> emailVerification(String oobCode);
+
+  Future<User?> getCurrentUser();
 }
 
 class _AppRepositoryImp implements AppRepository {
@@ -48,8 +50,7 @@ class _AppRepositoryImp implements AppRepository {
   @override
   Future<void> signIn(String email, String password) async {
     try {
-      final userCred = await _firebaseAuth.signInWithEmailAndPassword(email: email, password: password);
-      final idToken = await userCred.user?.getIdToken();
+      await _firebaseAuth.signInWithEmailAndPassword(email: email, password: password);
     } on FirebaseAuthException catch (e) {
       // Handle errors from Firebase
       if (kDebugMode) print(e.message);
@@ -100,5 +101,10 @@ class _AppRepositoryImp implements AppRepository {
       if (kDebugMode) print(e.message);
       FirebaseAuthExceptionHandler.handle(e.message);
     }
+  }
+
+  @override
+  Future<User?> getCurrentUser() async {
+    return _firebaseAuth.currentUser;
   }
 }
