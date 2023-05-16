@@ -14,7 +14,7 @@ class AppCard extends StatelessWidget {
     this.width = 400,
     this.height,
     this.padding = 24,
-    this.radius = 16,
+    this.radius = 10,
     required this.child,
   }) : super(key: key);
 

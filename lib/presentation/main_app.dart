@@ -42,6 +42,7 @@ class _MainAppState extends State<MainApp> {
         ),
         inputDecorationTheme: InputDecorationTheme(
           labelStyle: AppTextStyle.bodyRegular,
+          errorStyle: const TextStyle(height: 1.4),
           floatingLabelStyle: AppTextStyle.bodyLargeRegular,
           floatingLabelBehavior: FloatingLabelBehavior.always,
           filled: true,
@@ -51,8 +52,16 @@ class _MainAppState extends State<MainApp> {
             borderSide: const BorderSide(width: 1.5, color: Colors.white24),
             borderRadius: BorderRadius.circular(8),
           ),
+          errorBorder: OutlineInputBorder(
+            borderSide: const BorderSide(width: 1.5, color: AppColors.error),
+            borderRadius: BorderRadius.circular(8),
+          ),
           focusedBorder: OutlineInputBorder(
             borderSide: const BorderSide(width: 2, color: AppColors.primary),
+            borderRadius: BorderRadius.circular(8),
+          ),
+          focusedErrorBorder: OutlineInputBorder(
+            borderSide: const BorderSide(width: 2, color: AppColors.error),
             borderRadius: BorderRadius.circular(8),
           ),
         ),

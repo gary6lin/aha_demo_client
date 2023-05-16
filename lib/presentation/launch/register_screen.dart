@@ -18,6 +18,7 @@ class RegisterScreen extends StatefulWidget {
 
 class _RegisterScreenState extends State<RegisterScreen> {
   final _vm = RegisterViewModel();
+
   final _nameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
@@ -38,6 +39,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   Widget build(BuildContext context) => Scaffold(
         body: Center(
           child: AppCard(
+            radius: 16,
             child: buildLoginForm(),
           ),
         ),
@@ -55,6 +57,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
             decoration: InputDecoration(
               labelText: tr('display_name'),
             ),
+            validator: AppValidator.name,
+            autovalidateMode: AutovalidateMode.onUserInteraction,
           ),
           TextFormField(
             controller: _emailController,
@@ -62,6 +66,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               labelText: tr('email_address'),
             ),
             validator: AppValidator.email,
+            autovalidateMode: AutovalidateMode.onUserInteraction,
           ),
           TextFormField(
             controller: _passwordController,
@@ -69,6 +74,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               labelText: tr('password'),
             ),
             validator: AppValidator.password,
+            autovalidateMode: AutovalidateMode.onUserInteraction,
           ),
           _buildSubmitButton(),
           const LanguageSwitcher(),

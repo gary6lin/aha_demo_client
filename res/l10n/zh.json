@@ -29,6 +29,7 @@
 	"error_user_disabled": "帳戶已被停用",
 	"error_user_not_found": "找不到帳戶",
 
+	"error_name_invalid_characters": "不允許使用任何數字或是特殊字符",
     "error_password_no_lower": "密碼須包含至少一個小寫英文字母，如：a、b、c",
     "error_password_no_upper": "密碼須包含至少一個大寫英文字母，如：A、B、C",
     "error_password_no_number": "密碼須包含至少一個數字，如：1、2、3",
@@ -37,5 +38,12 @@
     "error_password_whitespace": "密碼不能包含任何空白字元",
 
 	"menu_dashboard": "資訊面板",
-	"menu_profile": "個人檔案"
+	"menu_profile": "個人檔案",
+
+	"update_name": "更新名稱",
+	"update_name_submission": "確認更新",
+
+	"change_password": "修改密碼",
+	"confirm_password_match": "與先前輸入的密碼不符",
+	"change_password_submission": "確認修改"
 }

@@ -48,6 +48,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
         body: Center(
           child: AppCard(
             height: 280,
+            radius: 16,
             child: Center(
               child: ValueListenableBuilder(
                 valueListenable: _onErrorMessage,

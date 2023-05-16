@@ -12,4 +12,6 @@ class AppColors {
   static const facebookBlue = Color(0xFF1877F2);
   static const googleBlue = Color(0xFF4285F4);
   static const googleWhite = Color(0xFFFFFFFF);
+
+  static const error = Color(0xFFF21E32);
 }

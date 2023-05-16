@@ -71,7 +71,6 @@ class UserStatisticsWidget extends StatelessWidget {
   }) =>
       AppCard(
         padding: defaultPadding,
-        radius: 10,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [

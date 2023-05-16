@@ -19,6 +19,7 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   final _vm = LoginViewModel();
+
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
@@ -35,6 +36,7 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) => Scaffold(
         body: Center(
           child: AppCard(
+            radius: 16,
             child: buildLoginForm(),
           ),
         ),
@@ -61,6 +63,7 @@ class _LoginScreenState extends State<LoginScreen> {
           labelText: tr('email_address'),
         ),
         validator: AppValidator.email,
+        autovalidateMode: AutovalidateMode.onUserInteraction,
       );
 
   Widget _buildPasswordInput() => TextFormField(
@@ -69,6 +72,7 @@ class _LoginScreenState extends State<LoginScreen> {
           labelText: tr('password'),
         ),
         validator: AppValidator.password,
+        autovalidateMode: AutovalidateMode.onUserInteraction,
       );
 
   Widget _buildEmailLoginButton() => AppFilledButton(

@@ -34,7 +34,6 @@ class DashboardRoute {
     pageBuilder: (BuildContext context, GoRouterState state) => const DefaultTransitionPage(
       child: DashboardScreen(),
     ),
-    redirect: AppRoute.guard,
   );
 
   DashboardRoute(String parentPath) : path = makePath(parentPath, name);

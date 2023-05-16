@@ -30,7 +30,7 @@ class AppRoute {
     errorPageBuilder: (BuildContext context, GoRouterState state) => FadeTransitionPage(
       child: const PageNotFoundScreen(),
     ),
-    // redirect: AppRoute.guard,
+    redirect: AppRoute.guard,
   );
 
   static Future<String?> guard(BuildContext context, GoRouterState state) async {
@@ -38,6 +38,9 @@ class AppRoute {
     if (!accessAllowed) {
       // Show the login screen if not signed in
       return AppRoute.login.path;
+    } else if (state.location == main.path) {
+      // Redirect the root path to the dashboard
+      return main.dashboard.path;
     } else {
       // No redirection
       return null;

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:responsive_framework/responsive_breakpoints.dart';
 
+import '../../values/constants.dart';
+
 class MainContentFrame extends StatelessWidget {
   final Widget child;
 
@@ -9,10 +11,11 @@ class MainContentFrame extends StatelessWidget {
   @override
   Widget build(BuildContext context) => SafeArea(
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             if (ResponsiveBreakpoints.of(context).smallerThan(TABLET))
               Padding(
-                padding: const EdgeInsets.only(bottom: 10),
+                padding: const EdgeInsets.only(left: 16, top: 16, right: 16),
                 child: IconButton(
                   icon: const Icon(Icons.menu),
                   onPressed: () {
@@ -20,7 +23,13 @@ class MainContentFrame extends StatelessWidget {
                   },
                 ),
               ),
-            child,
+            Expanded(
+              child: SingleChildScrollView(
+                primary: false,
+                padding: const EdgeInsets.all(defaultPadding),
+                child: child,
+              ),
+            ),
           ],
         ),
       );

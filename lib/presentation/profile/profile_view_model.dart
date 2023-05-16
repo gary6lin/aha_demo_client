@@ -11,7 +11,7 @@ class ProfileViewModel {
   void Function(User?)? onLoaded;
   void Function(Object)? onError;
 
-  Future<void> onLoad(String email, String password) async {
+  Future<void> onLoad() async {
     try {
       onUser.value = await _repo.getCurrentUser();
     } catch (e) {

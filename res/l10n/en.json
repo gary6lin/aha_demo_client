@@ -29,6 +29,7 @@
 	"error_user_disabled": "The user corresponding to the email has been disabled.",
 	"error_user_not_found": "The user corresponding to the email does not found.",
 
+	"error_name_invalid_characters": "Numbers and special characters are not allowed.",
 	"error_password_no_lower": "Password must contains at least one lowercase character.",
 	"error_password_no_upper": "Password must contains at least one uppercase character.",
 	"error_password_no_number": "Password must contains at least one number.",
@@ -37,5 +38,12 @@
 	"error_password_whitespace": "Password must not contains any whitespaces.",
 
 	"menu_dashboard": "Dashboard",
-	"menu_profile": "Profile"
+	"menu_profile": "Profile",
+
+	"update_name": "Update name",
+	"update_name_submission": "Update my name",
+
+	"change_password": "Change password",
+	"confirm_password_match": "The passwords do not match.",
+	"change_password_submission": "Change my password"
 }

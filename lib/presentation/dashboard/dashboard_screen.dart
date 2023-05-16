@@ -9,18 +9,14 @@ class DashboardScreen extends StatelessWidget {
   const DashboardScreen({super.key});
 
   @override
-  Widget build(BuildContext context) => const MainContentFrame(
-        child: SingleChildScrollView(
-          primary: false,
-          padding: EdgeInsets.all(defaultPadding),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              UserStatisticsWidget(),
-              SizedBox(height: defaultPadding),
-              UsersWidget(),
-            ],
-          ),
+  Widget build(BuildContext context) => MainContentFrame(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: const [
+            UserStatisticsWidget(),
+            SizedBox(height: defaultPadding),
+            UsersWidget(),
+          ],
         ),
       );
 }

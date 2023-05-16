@@ -35,7 +35,6 @@ class UsersWidget extends StatelessWidget {
   Widget build(BuildContext context) => AppCard(
         width: null,
         padding: defaultPadding,
-        radius: 10,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
