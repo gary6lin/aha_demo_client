@@ -1,6 +1,5 @@
-import 'dart:developer';
-
 import 'package:aha_demo/repositories/app_repository.dart';
+import 'package:flutter/foundation.dart';
 import 'package:get_it/get_it.dart';
 
 class LoginViewModel {
@@ -14,7 +13,7 @@ class LoginViewModel {
       await _repo.signIn(email, password);
       onSignedIn?.call();
     } catch (e) {
-      log('$e');
+      if (kDebugMode) print(e);
       onError?.call(e);
     }
   }

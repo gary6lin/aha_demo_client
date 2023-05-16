@@ -1,7 +1,6 @@
-import 'dart:developer';
-
 import 'package:aha_demo/repositories/app_repository.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/foundation.dart';
 import 'package:get_it/get_it.dart';
 
 import '../../values/constants.dart';
@@ -17,7 +16,7 @@ class RegisterViewModel {
       await _repo.register(email, password, displayName);
       onRegistered?.call();
     } catch (e) {
-      log('$e');
+      if (kDebugMode) print(e);
       onError?.call(e);
     }
   }

@@ -1,6 +1,8 @@
 {
 	"app_title": "Aha Demo",
 
+	"page_not_found_title": "你迷路了嗎?",
+
 	"display_name": "顯示名稱",
 	"email_address": "電子郵件地址",
 	"password": "密碼",

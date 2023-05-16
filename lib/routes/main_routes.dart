@@ -12,7 +12,9 @@ class MainRoute {
 
   late final goRoute = GoRoute(
     path: path,
-    builder: (BuildContext context, GoRouterState state) => const MainScreen(),
+    pageBuilder: (BuildContext context, GoRouterState state) => FadeTransitionPage(
+      child: const MainScreen(),
+    ),
     routes: <RouteBase>[
       profile.goRoute,
     ],
@@ -28,7 +30,9 @@ class ProfileRoute {
 
   late final goRoute = GoRoute(
     path: name,
-    builder: (BuildContext context, GoRouterState state) => const ProfileScreen(),
+    pageBuilder: (BuildContext context, GoRouterState state) => const DefaultTransitionPage(
+      child: ProfileScreen(),
+    ),
   );
 
   ProfileRoute(String parentPath) : path = makePath(parentPath, name);

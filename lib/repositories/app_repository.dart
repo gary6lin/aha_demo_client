@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 
 import 'dto/register_dto.dart';
 import 'firebase_auth_exception_handler.dart';
@@ -88,6 +89,7 @@ class _AppRepositoryImp implements AppRepository {
         ),
       );
     } on DioError catch (e) {
+      if (kDebugMode) print(e.message);
       FirebaseAuthExceptionHandler.handle(e.message);
       InvalidPasswordFormatHandler.handle(e.message);
     }
@@ -102,8 +104,8 @@ class _AppRepositoryImp implements AppRepository {
     // 3. Verify the email via the generated verification link
     try {
       await _firebaseAuth.applyActionCode(oobCode);
-      _firebaseAuth.checkActionCode('code');
     } on FirebaseAuthException catch (e) {
+      if (kDebugMode) print(e.message);
       FirebaseAuthExceptionHandler.handle(e.message);
     }
   }

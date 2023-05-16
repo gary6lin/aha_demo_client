@@ -12,8 +12,8 @@ class LoginRoute {
 
   late final goRoute = GoRoute(
     path: path,
-    pageBuilder: (BuildContext context, GoRouterState state) => const NoTransitionPage(
-      child: LoginScreen(),
+    pageBuilder: (BuildContext context, GoRouterState state) => FadeTransitionPage(
+      child: const LoginScreen(),
     ),
   );
 
@@ -26,7 +26,7 @@ class RegisterRoute {
 
   late final goRoute = GoRoute(
     path: path,
-    pageBuilder: (BuildContext context, GoRouterState state) => const NoTransitionPage(
+    pageBuilder: (BuildContext context, GoRouterState state) => const DefaultTransitionPage(
       child: RegisterScreen(),
     ),
   );
@@ -40,10 +40,18 @@ class VerificationRoute {
 
   late final goRoute = GoRoute(
     path: path,
-    builder: (BuildContext context, GoRouterState state) => VerificationScreen(
-      message: state.extra as String?,
-      oobCode: state.queryParameters['oobCode'],
+    pageBuilder: (BuildContext context, GoRouterState state) => DefaultTransitionPage(
+      child: VerificationScreen(
+        message: state.extra as String?,
+        oobCode: state.queryParameters['oobCode'],
+      ),
     ),
+    redirect: (BuildContext context, GoRouterState state) {
+      if (state.extra == null && state.queryParameters['oobCode'] == null) {
+        return '/nothing';
+      }
+      return null;
+    },
   );
 
   VerificationRoute(String parentPath) : path = makePath(parentPath, name);

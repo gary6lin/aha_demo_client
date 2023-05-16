@@ -1,7 +1,8 @@
-import 'dart:developer';
-
-import 'package:aha_demo/repositories/app_repository.dart';
+import 'package:flutter/foundation.dart';
 import 'package:get_it/get_it.dart';
+
+import '../../repositories/app_repository.dart';
+import '../../repositories/errors/app_error.dart';
 
 class VerificationViewModel {
   final _repo = GetIt.I<AppRepository>();
@@ -13,9 +14,9 @@ class VerificationViewModel {
     try {
       await _repo.emailVerification(oobCode);
       onEmailVerified?.call();
-    } catch (e) {
-      log('$e');
-      onError?.call(e);
+    } on AppError catch (e) {
+      if (kDebugMode) print(e);
+      onError?.call(e.errorMessage);
     }
   }
 }

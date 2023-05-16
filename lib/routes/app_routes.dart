@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 
+import '../presentation/page_not_found_screen.dart';
 import '../repositories/app_repository.dart';
 import 'launch_routes.dart';
 import 'main_routes.dart';
@@ -30,6 +31,9 @@ class AppRoute {
       AppRoute.verification.goRoute,
     ],
     refreshListenable: _accessAllowedNotifier,
+    errorPageBuilder: (BuildContext context, GoRouterState state) => FadeTransitionPage(
+      child: const PageNotFoundScreen(),
+    ),
   );
 
   static Future<void> checkAccessAndUpdateRoute() async {
@@ -50,6 +54,27 @@ class AppRoute {
       return null;
     }
   }
+}
+
+class DefaultTransitionPage extends NoTransitionPage {
+  const DefaultTransitionPage({required super.child});
+}
+
+class FadeTransitionPage extends CustomTransitionPage {
+  FadeTransitionPage({required Widget child})
+      : super(
+          transitionsBuilder: (
+            BuildContext context,
+            Animation<double> animation,
+            Animation<double> secondaryAnimation,
+            Widget child,
+          ) =>
+              FadeTransition(
+            opacity: animation,
+            child: child,
+          ),
+          child: child,
+        );
 }
 
 class AppNavigator {
