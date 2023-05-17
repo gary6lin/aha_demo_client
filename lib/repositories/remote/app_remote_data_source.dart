@@ -4,7 +4,8 @@ import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 import 'package:retrofit/http.dart';
 
 import '../auth_interceptor.dart';
-import '../dto/register_dto.dart';
+import '../dto/create_user_dto.dart';
+import '../dto/update_user_dto.dart';
 
 part 'app_remote_data_source.g.dart';
 
@@ -35,5 +36,8 @@ abstract class AppRemoteDataSource {
   }
 
   @POST('/user')
-  Future<void> createUser(@Body() RegisterDto dto);
+  Future<void> createUser(@Body() CreateUserDto dto);
+
+  @PATCH('/user/{uid}')
+  Future<void> updateUser(@Path('uid') String id, @Body() UpdateUserDto dto);
 }

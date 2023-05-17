@@ -5,11 +5,13 @@ import '../../values/app_text_style.dart';
 import 'app_card.dart';
 
 class ExpandingDropdownTile extends StatelessWidget {
+  final ExpandableController? controller;
   final String titleText;
   final Widget body;
 
   const ExpandingDropdownTile({
     Key? key,
+    this.controller,
     required this.titleText,
     required this.body,
   }) : super(key: key);
@@ -17,6 +19,7 @@ class ExpandingDropdownTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) => ExpandableNotifier(
         child: Expandable(
+          controller: controller,
           collapsed: ExpandableButton(
             theme: ExpandableThemeData(
               inkWellBorderRadius: BorderRadius.circular(10),

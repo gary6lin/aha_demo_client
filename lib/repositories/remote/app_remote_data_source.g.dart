@@ -19,7 +19,7 @@ class _AppRemoteDataSource implements AppRemoteDataSource {
   String? baseUrl;
 
   @override
-  Future<void> createUser(RegisterDto dto) async {
+  Future<void> createUser(CreateUserDto dto) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
@@ -33,6 +33,30 @@ class _AppRemoteDataSource implements AppRemoteDataSource {
         .compose(
           _dio.options,
           '/user',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+  }
+
+  @override
+  Future<void> updateUser(
+    String id,
+    UpdateUserDto dto,
+  ) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(dto.toJson());
+    await _dio.fetch<void>(_setStreamType<void>(Options(
+      method: 'PATCH',
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          '/user/${id}',
           queryParameters: queryParameters,
           data: _data,
         )

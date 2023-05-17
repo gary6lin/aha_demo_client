@@ -1,13 +1,14 @@
-import 'package:aha_demo/presentation/widgets/app_card.dart';
-import 'package:aha_demo/routes/app_routes.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../model/user_model.dart';
+import '../../routes/app_routes.dart';
 import '../../utils/app_validator.dart';
 import '../../values/app_text_style.dart';
 import '../../values/constants.dart';
+import '../widgets/app_card.dart';
 import '../widgets/app_filled_button.dart';
 import '../widgets/expanding_dropdown_tile.dart';
 import '../widgets/main_content_frame.dart';
@@ -28,9 +29,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
   final _newPwdController = TextEditingController();
   final _confirmPwdController = TextEditingController();
 
+  final _updateNameExpandableController = ExpandableController();
+  final _changePasswordExpandableController = ExpandableController();
+
   @override
   void initState() {
     super.initState();
+
+    _vm.onUpdatedDisplayName = () {
+      _updateNameExpandableController.expanded = false;
+    };
+
+    _vm.onChangedPassword = () {
+      _changePasswordExpandableController.expanded = false;
+    };
 
     _vm.onSignedOut = () {
       context.go(AppRoute.login.path);
@@ -46,7 +58,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           children: [
             _buildUserInfo(),
             const SizedBox(height: defaultPadding),
-            _buildNameChange(),
+            _buildDisplayNameChange(),
             const SizedBox(height: defaultPadding),
             _buildPasswordChange(),
             const SizedBox(height: defaultPadding),
@@ -59,7 +71,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         width: null,
         child: ValueListenableBuilder(
           valueListenable: _vm.onUser,
-          builder: (BuildContext context, User? user, Widget? child) => Row(
+          builder: (BuildContext context, UserModel? user, Widget? child) => Row(
             children: [
               _buildAvatar(user),
               const SizedBox(width: 20),
@@ -82,7 +94,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ),
       );
 
-  Widget _buildAvatar(User? user) => SizedBox(
+  Widget _buildAvatar(UserModel? user) => SizedBox(
         width: 96,
         height: 96,
         child: CircleAvatar(
@@ -100,7 +112,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ),
       );
 
-  Widget _buildNameChange() => ExpandingDropdownTile(
+  Widget _buildDisplayNameChange() => ExpandingDropdownTile(
+        controller: _updateNameExpandableController,
         titleText: tr('update_name'),
         body: Column(
           children: [
@@ -126,6 +139,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       );
 
   Widget _buildPasswordChange() => ExpandingDropdownTile(
+        controller: _changePasswordExpandableController,
         titleText: tr('change_password'),
         body: Column(
           children: [

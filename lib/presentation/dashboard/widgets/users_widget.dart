@@ -2,7 +2,7 @@ import 'package:aha_demo/presentation/widgets/app_card.dart';
 import 'package:aha_demo/values/app_text_style.dart';
 import 'package:flutter/material.dart';
 
-import '../../../repositories/dto/user_dto.dart';
+import '../../../model/user_dto.dart';
 import '../../../values/constants.dart';
 
 class UsersWidget extends StatelessWidget {

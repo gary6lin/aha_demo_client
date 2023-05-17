@@ -2,7 +2,9 @@ import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 
-import 'dto/register_dto.dart';
+import 'dto/create_user_dto.dart';
+import 'dto/update_user_dto.dart';
+import 'errors/user_not_found_error.dart';
 import 'firebase_auth_exception_handler.dart';
 import 'invalid_password_format_handler.dart';
 import 'local/app_local_data_source.dart';
@@ -11,6 +13,7 @@ import 'remote/app_remote_data_source.dart';
 abstract class AppRepository {
   factory AppRepository(AppLocalDataSource local, AppRemoteDataSource remote) => _AppRepositoryImp(local, remote);
 
+  Future<User?> getCurrentUser();
   Future<String?> getIdToken();
   Future<bool> accessAllowed();
 
@@ -18,8 +21,11 @@ abstract class AppRepository {
   Future<void> signOut();
   Future<void> register(String email, String password, String displayName);
   Future<void> emailVerification(String oobCode);
-
-  Future<User?> getCurrentUser();
+  Future<void> updateProfile({
+    String? displayName,
+    String? currentPassword,
+    String? newPassword,
+  });
 }
 
 class _AppRepositoryImp implements AppRepository {
@@ -30,6 +36,11 @@ class _AppRepositoryImp implements AppRepository {
   String? _token;
 
   _AppRepositoryImp(this._local, this._remote);
+
+  @override
+  Future<User?> getCurrentUser() async {
+    return _firebaseAuth.currentUser;
+  }
 
   @override
   Future<String?> getIdToken() async {
@@ -66,10 +77,9 @@ class _AppRepositoryImp implements AppRepository {
   @override
   Future<void> register(String email, String password, String displayName) async {
     try {
-      // 1. Creating users on the server using the Firebase Admin SDK,
-      // to enforce additional validation or business logic.
+      // 1. Create users via the server API to enforce additional validation or business logic.
       await _remote.createUser(
-        RegisterDto(
+        CreateUserDto(
           email: email,
           password: password,
           displayName: displayName,
@@ -104,7 +114,30 @@ class _AppRepositoryImp implements AppRepository {
   }
 
   @override
-  Future<User?> getCurrentUser() async {
-    return _firebaseAuth.currentUser;
+  Future<void> updateProfile({
+    String? displayName,
+    String? currentPassword,
+    String? newPassword,
+  }) async {
+    // 1. Get the current user
+    final user = await getCurrentUser();
+    if (user == null) throw UserNotFoundError();
+
+    try {
+      // 2. Update users via the server API to enforce additional validation or business logic.
+      await _remote.updateUser(
+        user.uid,
+        UpdateUserDto(
+          displayName: displayName,
+          currentPassword: currentPassword,
+          newPassword: newPassword,
+        ),
+      );
+    } on DioError catch (e) {
+      // Handle errors from server
+      if (kDebugMode) print(e.message);
+      FirebaseAuthExceptionHandler.handle(e.message);
+      InvalidPasswordFormatHandler.handle(e.message);
+    }
   }
 }
