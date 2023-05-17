@@ -25,12 +25,11 @@ class AppRoute {
       AppRoute.register.goRoute,
       AppRoute.verification.goRoute,
     ],
-    errorBuilder: (BuildContext context, GoRouterState state) => const PageNotFoundScreen(),
     errorPageBuilder: (BuildContext context, GoRouterState state) => FadeTransitionPage(
       child: const PageNotFoundScreen(),
     ),
     redirect: (BuildContext context, GoRouterState state) async {
-      // Redirect the root path to the dashboard
+      // Redirects the root path to the dashboard
       if (state.location == main.path) {
         return main.dashboard.path;
       }

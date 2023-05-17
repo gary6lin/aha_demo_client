@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 
 class AppFilledButton extends StatelessWidget {
+  final Color? color;
   final Widget child;
+
   final Future<void> Function()? onPressed;
 
   AppFilledButton({
     Key? key,
+    this.color,
     required this.child,
     this.onPressed,
   }) : super(key: key);
@@ -28,19 +31,35 @@ class AppFilledButton extends StatelessWidget {
         builder: (BuildContext context, bool loading, Widget? child) => IgnorePointer(
           ignoring: loading,
           child: FilledButton(
+            style: FilledButton.styleFrom(
+              backgroundColor: color,
+            ),
+            onPressed: onPressed != null
+                ? () async {
+                    _onLoading.value = true;
+                    await onPressed?.call();
+                    _onLoading.value = false;
+                  }
+                : null,
             child: Container(
               width: double.infinity,
-              height: 50,
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
               alignment: Alignment.center,
-              child: loading ? _loadingIndicator : this.child,
+              child: Stack(
+                alignment: Alignment.center,
+                children: [
+                  Opacity(
+                    opacity: loading ? 1 : 0,
+                    child: _loadingIndicator,
+                  ),
+                  Opacity(
+                    opacity: loading ? 0 : 1,
+                    child: child!,
+                  ),
+                ],
+              ),
             ),
-            onPressed: () async {
-              _onLoading.value = true;
-              await onPressed?.call();
-              _onLoading.value = false;
-            },
           ),
         ),
+        child: child,
       );
 }

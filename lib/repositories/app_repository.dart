@@ -14,6 +14,8 @@ abstract class AppRepository {
   factory AppRepository(AppLocalDataSource local, AppRemoteDataSource remote) => _AppRepositoryImp(local, remote);
 
   Future<User?> getCurrentUser();
+  Future<void> reloadUser();
+
   Future<String?> getIdToken();
   Future<bool> accessAllowed();
 
@@ -40,6 +42,11 @@ class _AppRepositoryImp implements AppRepository {
   @override
   Future<User?> getCurrentUser() async {
     return _firebaseAuth.currentUser;
+  }
+
+  @override
+  Future<void> reloadUser() async {
+    await _firebaseAuth.currentUser?.reload();
   }
 
   @override

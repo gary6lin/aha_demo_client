@@ -77,7 +77,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
             autovalidateMode: AutovalidateMode.onUserInteraction,
           ),
           _buildSubmitButton(),
-          const LanguageSwitcher(),
+          ValueListenableBuilder(
+            valueListenable: _vm.onLoading,
+            builder: (BuildContext context, bool loading, Widget? child) => IgnorePointer(
+              ignoring: loading,
+              child: const LanguageSwitcher(),
+            ),
+          ),
         ],
       );
 

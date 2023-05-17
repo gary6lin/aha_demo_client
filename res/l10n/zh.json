@@ -28,7 +28,7 @@
 	"error_expired_action_code": "連結已失效",
 	"error_invalid_action_code": "無效的連結，或是Email已驗證",
 	"error_user_disabled": "帳戶已被停用",
-	"error_user_not_found": "找不到帳戶",
+	"error_user_not_found": "錯誤的電子郵件和密碼，或是帳戶不存在",
 
 	"error_name_invalid_characters": "不允許使用任何數字或是特殊字符",
     "error_password_no_lower": "密碼須包含至少一個小寫英文字母，如：a、b、c",
@@ -46,5 +46,7 @@
 
 	"change_password": "修改密碼",
 	"confirm_password_match": "與先前輸入的密碼不符",
-	"change_password_submission": "確認修改"
+	"change_password_submission": "確認修改",
+
+	"confirmation": "確認"
 }

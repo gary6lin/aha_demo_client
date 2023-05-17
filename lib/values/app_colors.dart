@@ -13,5 +13,6 @@ class AppColors {
   static const googleBlue = Color(0xFF4285F4);
   static const googleWhite = Color(0xFFFFFFFF);
 
+  static const dialog = Color(0xFF252238);
   static const error = Color(0xFFF21E32);
 }

@@ -51,19 +51,25 @@ class VerificationRoute {
       ),
     ),
     redirect: (BuildContext context, GoRouterState state) async {
-      // Redirect to an unidentified page if no required parameters specified
-      if (state.extra == null && state.queryParameters['oobCode'] == null) {
-        return '/nothing';
+      final user = await GetIt.I<AppRepository>().getCurrentUser();
+
+      // No redirection if required parameters are specified
+      if (state.extra != null || state.queryParameters['oobCode'] != null) {
+        return null;
       }
 
-      // Redirect to the login if not signed in
-      final accessAllowed = await GetIt.I<AppRepository>().accessAllowed();
-      if (!accessAllowed) {
+      // Redirects to the login if not signed in
+      if (user == null) {
         return AppRoute.login.path;
       }
 
-      // No redirection
-      return null;
+      // Redirects to the dashboard if the email is verified
+      if (user.emailVerified) {
+        return AppRoute.main.dashboard.path;
+      }
+
+      // Redirects to an unidentified page
+      return '/nothing';
     },
   );
 
@@ -71,8 +77,9 @@ class VerificationRoute {
 }
 
 Future<String?> _guard(BuildContext context, GoRouterState state) async {
-  // Redirect to the dashboard if already signed in
   final accessAllowed = await GetIt.I<AppRepository>().accessAllowed();
+
+  // Redirects to the dashboard if already signed in
   if (accessAllowed) {
     return AppRoute.main.dashboard.path;
   }

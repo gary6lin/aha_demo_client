@@ -7,19 +7,19 @@ import 'app_card.dart';
 class ExpandingDropdownTile extends StatelessWidget {
   final ExpandableController? controller;
   final String titleText;
-  final Widget body;
+  final Widget content;
 
   const ExpandingDropdownTile({
     Key? key,
     this.controller,
     required this.titleText,
-    required this.body,
+    required this.content,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) => ExpandableNotifier(
+        controller: controller,
         child: Expandable(
-          controller: controller,
           collapsed: ExpandableButton(
             theme: ExpandableThemeData(
               inkWellBorderRadius: BorderRadius.circular(10),
@@ -47,14 +47,14 @@ class ExpandingDropdownTile extends StatelessWidget {
                   Icons.close_rounded,
                   size: 28,
                 ),
-                body: body,
+                content: content,
               ),
             ),
           ),
         ),
       );
 
-  Widget _buildExpandableItem({required String title, required Widget icon, Widget? body}) => SizedBox(
+  Widget _buildExpandableItem({required String title, required Widget icon, Widget? content}) => SizedBox(
         width: double.infinity,
         child: Column(
           children: [
@@ -68,10 +68,10 @@ class ExpandingDropdownTile extends StatelessWidget {
                 icon,
               ],
             ),
-            if (body != null)
+            if (content != null)
               Padding(
                 padding: const EdgeInsets.only(top: 28),
-                child: body,
+                child: content,
               ),
           ],
         ),

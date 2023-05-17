@@ -13,6 +13,7 @@ class VerificationViewModel {
   Future<void> onEmailVerify(String oobCode) async {
     try {
       await _repo.emailVerification(oobCode);
+      await _repo.reloadUser();
       onEmailVerified?.call();
     } on AppError catch (e) {
       if (kDebugMode) print(e);

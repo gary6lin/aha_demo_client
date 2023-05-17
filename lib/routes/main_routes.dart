@@ -58,7 +58,7 @@ class ProfileRoute {
 }
 
 Future<String?> _guard(BuildContext context, GoRouterState state) async {
-  // Redirect to the login if not signed in
+  // Redirects to the login if not signed in
   final accessAllowed = await GetIt.I<AppRepository>().accessAllowed();
   if (!accessAllowed) {
     return AppRoute.login.path;

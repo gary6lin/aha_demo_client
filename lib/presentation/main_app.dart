@@ -36,6 +36,15 @@ class _MainAppState extends State<MainApp> {
           style: FilledButton.styleFrom(
             textStyle: AppTextStyle.bodyBold,
             backgroundColor: AppColors.primary,
+            padding: const EdgeInsets.all(24),
+          ),
+        ),
+        textButtonTheme: TextButtonThemeData(
+          style: TextButton.styleFrom(
+            textStyle: AppTextStyle.bodyBold,
+            foregroundColor: AppColors.primary,
+            padding: const EdgeInsets.all(16),
+            shape: const StadiumBorder(),
           ),
         ),
         inputDecorationTheme: InputDecorationTheme(

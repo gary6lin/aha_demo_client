@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../utils/app_validator.dart';
+import '../../utils/show_alert.dart';
+import '../../values/app_text_style.dart';
 import '../widgets/app_card.dart';
 import '../widgets/app_filled_button.dart';
 import '../widgets/language_switcher.dart';
@@ -23,12 +25,21 @@ class _LoginScreenState extends State<LoginScreen> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
+  final _formKey = GlobalKey<FormState>();
+
   @override
   void initState() {
     super.initState();
 
     _vm.onSignedIn = () {
       context.go(AppRoute.main.path);
+    };
+
+    _vm.onError = (e) {
+      showAlert(
+        context: context,
+        title: e.toString(),
+      );
     };
   }
 
@@ -37,7 +48,10 @@ class _LoginScreenState extends State<LoginScreen> {
         body: Center(
           child: AppCard(
             radius: 16,
-            child: buildLoginForm(),
+            child: Form(
+              key: _formKey,
+              child: buildLoginForm(),
+            ),
           ),
         ),
       );
@@ -53,7 +67,13 @@ class _LoginScreenState extends State<LoginScreen> {
           const Divider(),
           _buildFacebookLoginButton(),
           _buildGoogleLoginButton(),
-          const LanguageSwitcher(),
+          ValueListenableBuilder(
+            valueListenable: _vm.onLoading,
+            builder: (BuildContext context, bool loading, Widget? child) => IgnorePointer(
+              ignoring: loading,
+              child: const LanguageSwitcher(),
+            ),
+          ),
         ],
       );
 
@@ -81,17 +101,24 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
         onPressed: () async {
           // TODO
-          await _vm.onSignIn(
-            'gary6lin@gmail.com',
-            '12qw!@QW',
-          );
+          // await _vm.onSignIn(
+          //   'gary6lin@gmail.com',
+          //   '12qw!@QW',
+          // );
 
-          // await _vm.onSignIn(_emailController.text, _passwordController.text);
+          final emailError = AppValidator.email(_emailController.text);
+          final passwordError = AppValidator.password(_passwordController.text);
+          if (emailError == null && passwordError == null) {
+            await _vm.onSignIn(_emailController.text, _passwordController.text);
+          }
+
+          _formKey.currentState?.validate();
         },
       );
 
   Widget _buildRegisterButton() => TextButton(
         style: TextButton.styleFrom(
+          textStyle: AppTextStyle.bodyRegular,
           foregroundColor: AppColors.textLight.withOpacity(0.6),
         ),
         child: Text(
@@ -102,39 +129,23 @@ class _LoginScreenState extends State<LoginScreen> {
         },
       );
 
-  Widget _buildFacebookLoginButton() => FilledButton(
-        style: FilledButton.styleFrom(
-          backgroundColor: AppColors.facebookBlue,
+  Widget _buildFacebookLoginButton() => AppFilledButton(
+        color: AppColors.facebookBlue,
+        child: Text(
+          tr('continue_with_facebook'),
         ),
-        child: Container(
-          width: double.infinity,
-          height: 50,
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-          alignment: Alignment.center,
-          child: Text(
-            tr('continue_with_facebook'),
-          ),
-        ),
-        onPressed: () {
+        onPressed: () async {
           // TODO
         },
       );
 
-  Widget _buildGoogleLoginButton() => FilledButton(
-        style: FilledButton.styleFrom(
-          backgroundColor: AppColors.googleWhite,
+  Widget _buildGoogleLoginButton() => AppFilledButton(
+        color: AppColors.googleWhite,
+        child: Text(
+          tr('continue_with_google'),
+          style: const TextStyle(color: AppColors.textDark),
         ),
-        child: Container(
-          width: double.infinity,
-          height: 50,
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-          alignment: Alignment.center,
-          child: Text(
-            tr('continue_with_google'),
-            style: const TextStyle(color: AppColors.textDark),
-          ),
-        ),
-        onPressed: () {
+        onPressed: () async {
           // TODO
         },
       );
