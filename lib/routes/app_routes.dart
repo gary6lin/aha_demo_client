@@ -1,11 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 
 import '../presentation/page_not_found_screen.dart';
-import '../repositories/app_repository.dart';
 import 'launch_routes.dart';
 import 'main_routes.dart';
 
@@ -20,32 +18,27 @@ class AppRoute {
   static final verification = VerificationRoute(main.path);
 
   static final goRouter = GoRouter(
-    initialLocation: main.dashboard.path,
+    initialLocation: main.path,
     routes: <RouteBase>[
       AppRoute.main.goRoute,
       AppRoute.login.goRoute,
       AppRoute.register.goRoute,
       AppRoute.verification.goRoute,
     ],
+    errorBuilder: (BuildContext context, GoRouterState state) => const PageNotFoundScreen(),
     errorPageBuilder: (BuildContext context, GoRouterState state) => FadeTransitionPage(
       child: const PageNotFoundScreen(),
     ),
-    redirect: AppRoute.guard,
-  );
-
-  static Future<String?> guard(BuildContext context, GoRouterState state) async {
-    final accessAllowed = await GetIt.I<AppRepository>().accessAllowed();
-    if (!accessAllowed) {
-      // Show the login screen if not signed in
-      return AppRoute.login.path;
-    } else if (state.location == main.path) {
+    redirect: (BuildContext context, GoRouterState state) async {
       // Redirect the root path to the dashboard
-      return main.dashboard.path;
-    } else {
+      if (state.location == main.path) {
+        return main.dashboard.path;
+      }
+
       // No redirection
       return null;
-    }
-  }
+    },
+  );
 }
 
 class DefaultTransitionPage extends NoTransitionPage {

@@ -27,13 +27,11 @@ class _MainAppState extends State<MainApp> {
 
     return MaterialApp.router(
       title: 'Aha Demo',
+      onGenerateTitle: (BuildContext context) => tr('app_title'),
       theme: ThemeData(
         brightness: Brightness.dark,
-        scaffoldBackgroundColor: AppColors.background,
-        // textTheme: const TextTheme(
-        //   titleLarge: TextStyle(color: Colors.deepPurpleAccent),
-        // ),
         canvasColor: AppColors.secondary,
+        scaffoldBackgroundColor: AppColors.background,
         filledButtonTheme: FilledButtonThemeData(
           style: FilledButton.styleFrom(
             textStyle: AppTextStyle.bodyBold,
