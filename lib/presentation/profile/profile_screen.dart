@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import '../../model/user_model.dart';
 import '../../routes/app_routes.dart';
 import '../../utils/app_validator.dart';
+import '../../values/app_colors.dart';
 import '../../values/app_text_style.dart';
 import '../../values/constants.dart';
 import '../widgets/app_card.dart';
@@ -57,9 +58,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) => MainContentFrame(
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _buildUserInfo(),
+            _buildUserProfile(),
             const SizedBox(height: defaultPadding),
             Form(
               key: _nameFormKey,
@@ -76,7 +76,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ),
       );
 
-  Widget _buildUserInfo() => AppCard(
+  Widget _buildUserProfile() => AppCard(
         width: null,
         child: ValueListenableBuilder(
           valueListenable: _vm.onUser,
@@ -84,20 +84,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             children: [
               _buildAvatar(user),
               const SizedBox(width: 20),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    user?.displayName ?? '#',
-                    style: AppTextStyle.bodyRegular,
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    user?.email ?? '#',
-                    style: AppTextStyle.bodyRegular,
-                  ),
-                ],
-              ),
+              _buildUserInfo(user),
             ],
           ),
         ),
@@ -111,7 +98,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             builder: (BuildContext context) => user?.photoURL != null
                 ? Image.network(user!.photoURL!)
                 : Text(
-                    user?.displayName?.characters.first ?? '#',
+                    user?.displayName?.characters.first.toUpperCase() ?? '#',
                     style: const TextStyle(
                       fontSize: 64,
                       fontWeight: FontWeight.w900,
@@ -119,6 +106,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
           ),
         ),
+      );
+
+  Widget _buildUserInfo(UserModel? user) => Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            user?.displayName ?? '#',
+            style: AppTextStyle.bodyRegular,
+          ),
+          const SizedBox(height: 8),
+          Text(
+            user?.email ?? '#',
+            style: AppTextStyle.bodyRegular,
+          ),
+        ],
       );
 
   Widget _buildDisplayNameChange() => ExpandingDropdownTile(
@@ -218,7 +220,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ),
       );
 
-  Widget _buildSignOutButton() => AppFilledButton(
+  Widget _buildSignOutButton() => TextButton(
+        style: TextButton.styleFrom(
+          foregroundColor: AppColors.error,
+        ),
         child: Text(
           tr('log_out'),
         ),
