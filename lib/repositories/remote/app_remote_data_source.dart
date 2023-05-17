@@ -43,5 +43,5 @@ abstract class AppRemoteDataSource {
   Future<void> updateUser(@Path() String uid, @Body() UpdateUserDto dto);
 
   @GET('/users')
-  Future<UsersResultDto> findUsers(@Query('maxResults') String maxResults, @Query('pageToken') String pageToken);
+  Future<UsersResultDto> findUsers(@Query('maxResults') int maxResults, @Query('pageToken') String? pageToken);
 }

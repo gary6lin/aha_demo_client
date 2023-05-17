@@ -29,7 +29,7 @@ abstract class AppRepository {
     String? currentPassword,
     String? newPassword,
   });
-  Future<UsersResultDto> findUsers(String maxResults, String pageToken);
+  Future<UsersResultDto> findUsers(int maxResults, String? pageToken);
 }
 
 class _AppRepositoryImp implements AppRepository {
@@ -151,14 +151,13 @@ class _AppRepositoryImp implements AppRepository {
   }
 
   @override
-  Future<UsersResultDto> findUsers(String maxResults, String pageToken) async {
+  Future<UsersResultDto> findUsers(int maxResults, String? pageToken) async {
     try {
       return await _remote.findUsers(maxResults, pageToken);
     } on DioError catch (e) {
       // Handle errors from server
       if (kDebugMode) print(e.message);
       FirebaseAuthExceptionHandler.handle(e.message);
-      InvalidPasswordFormatHandler.handle(e.message);
       rethrow;
     }
   }

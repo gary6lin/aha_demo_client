@@ -65,14 +65,15 @@ class _AppRemoteDataSource implements AppRemoteDataSource {
 
   @override
   Future<UsersResultDto> findUsers(
-    String maxResults,
-    String pageToken,
+    int maxResults,
+    String? pageToken,
   ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
       r'maxResults': maxResults,
       r'pageToken': pageToken,
     };
+    queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
     final Map<String, dynamic>? _data = null;
     final _result = await _dio

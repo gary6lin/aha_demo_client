@@ -3,6 +3,7 @@ import 'package:get_it/get_it.dart';
 
 import '../../models/current_user.dart';
 import '../../repositories/app_repository.dart';
+import '../../repositories/errors/app_error.dart';
 
 class ProfileViewModel {
   final _repo = GetIt.I<AppRepository>();
@@ -22,9 +23,9 @@ class ProfileViewModel {
         displayName: user?.displayName,
         photoURL: user?.photoURL,
       );
-    } catch (e) {
+    } on AppError catch (e) {
       if (kDebugMode) print(e);
-      onError?.call(e);
+      onError?.call(e.errorMessage);
     }
   }
 
@@ -40,9 +41,9 @@ class ProfileViewModel {
       );
       // Triggers the updated display name event
       onUpdatedDisplayName?.call();
-    } catch (e) {
+    } on AppError catch (e) {
       if (kDebugMode) print(e);
-      onError?.call(e);
+      onError?.call(e.errorMessage);
     }
   }
 
@@ -54,9 +55,9 @@ class ProfileViewModel {
       );
       // Triggers the changed password event
       onChangedPassword?.call();
-    } catch (e) {
+    } on AppError catch (e) {
       if (kDebugMode) print(e);
-      onError?.call(e);
+      onError?.call(e.errorMessage);
     }
   }
 

@@ -1,6 +1,6 @@
 class UsersResultDto {
-  final UserRecord users;
-  final String pageToken;
+  final List<UserRecord> users;
+  final String? pageToken;
 
   UsersResultDto({
     required this.users,
@@ -8,7 +8,11 @@ class UsersResultDto {
   });
 
   UsersResultDto.fromJson(Map<String, dynamic> json)
-      : users = json['users'],
+      : users = List.from(json['users'])
+            .map(
+              (e) => UserRecord.fromJson(e),
+            )
+            .toList(),
         pageToken = json['pageToken'];
 
   Map<String, dynamic> toJson() => {
@@ -19,8 +23,8 @@ class UsersResultDto {
 
 class UserRecord {
   final String email;
-  final String photoURL;
-  final String displayName;
+  final String? photoURL;
+  final String? displayName;
   final UserMetadata metadata;
 
   UserRecord({
@@ -34,7 +38,7 @@ class UserRecord {
       : email = json['email'],
         photoURL = json['photoURL'],
         displayName = json['displayName'],
-        metadata = json['metadata'];
+        metadata = UserMetadata.fromJson(json['metadata']);
 
   Map<String, dynamic> toJson() => {
         'email': email,

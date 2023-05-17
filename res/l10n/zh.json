@@ -2,6 +2,7 @@
 	"app_title": "Aha Demo",
 
 	"page_not_found_title": "你迷路了嗎?",
+	"confirmation": "確認",
 
 	"display_name": "顯示名稱",
 	"email_address": "電子郵件地址",
@@ -24,11 +25,12 @@
 	"email_verification_sent": "驗證郵件已發送",
 	"verifying_email": "驗證中請稍候...",
 
-	"error_email_already_exists": "Email已被註冊",
 	"error_expired_action_code": "連結已失效",
 	"error_invalid_action_code": "無效的連結，或是Email已驗證",
 	"error_user_disabled": "帳戶已被停用",
 	"error_user_not_found": "錯誤的電子郵件和密碼，或是帳戶不存在",
+	"error_email_already_exists": "Email已被註冊",
+	"error_invalid_page_token": "無效的PageToken",
 
 	"error_name_invalid_characters": "不允許使用任何數字或是特殊字符",
     "error_password_no_lower": "密碼須包含至少一個小寫英文字母，如：a、b、c",
@@ -42,12 +44,15 @@
 	"menu_dashboard": "資訊面板",
 	"menu_profile": "個人檔案",
 
+	"registered_users": "已註冊用戶",
+	"dashboard_table_column_email": "電子郵件",
+	"dashboard_table_column_created": "註冊日期",
+	"dashboard_table_column_count": "登入次數",
+	"dashboard_table_column_session": "上次登入",
+
 	"update_name": "更新名稱",
 	"update_name_submission": "確認更新",
-
 	"change_password": "修改密碼",
 	"confirm_password_match": "與先前輸入的密碼不符",
-	"change_password_submission": "確認修改",
-
-	"confirmation": "確認"
+	"change_password_submission": "確認修改"
 }
