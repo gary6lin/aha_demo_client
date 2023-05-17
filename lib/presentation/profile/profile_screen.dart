@@ -3,7 +3,7 @@ import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../model/user_model.dart';
+import '../../models/current_user.dart';
 import '../../routes/app_routes.dart';
 import '../../utils/app_validator.dart';
 import '../../values/app_colors.dart';
@@ -79,8 +79,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget _buildUserProfile() => AppCard(
         width: null,
         child: ValueListenableBuilder(
-          valueListenable: _vm.onUser,
-          builder: (BuildContext context, UserModel? user, Widget? child) => Row(
+          valueListenable: _vm.onUserModel,
+          builder: (BuildContext context, CurrentUser? user, Widget? child) => Row(
             children: [
               _buildAvatar(user),
               const SizedBox(width: 20),
@@ -90,7 +90,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ),
       );
 
-  Widget _buildAvatar(UserModel? user) => SizedBox(
+  Widget _buildAvatar(CurrentUser? user) => SizedBox(
         width: 96,
         height: 96,
         child: CircleAvatar(
@@ -108,7 +108,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ),
       );
 
-  Widget _buildUserInfo(UserModel? user) => Column(
+  Widget _buildUserInfo(CurrentUser? user) => Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(

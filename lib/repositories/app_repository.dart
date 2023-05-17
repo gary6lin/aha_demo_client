@@ -2,8 +2,9 @@ import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 
-import 'dto/create_user_dto.dart';
-import 'dto/update_user_dto.dart';
+import 'dto/request/create_user_dto.dart';
+import 'dto/request/update_user_dto.dart';
+import 'dto/response/users_result_dto.dart';
 import 'errors/user_not_found_error.dart';
 import 'firebase_auth_exception_handler.dart';
 import 'invalid_password_format_handler.dart';
@@ -28,6 +29,7 @@ abstract class AppRepository {
     String? currentPassword,
     String? newPassword,
   });
+  Future<UsersResultDto> findUsers(String maxResults, String pageToken);
 }
 
 class _AppRepositoryImp implements AppRepository {
@@ -145,6 +147,19 @@ class _AppRepositoryImp implements AppRepository {
       if (kDebugMode) print(e.message);
       FirebaseAuthExceptionHandler.handle(e.message);
       InvalidPasswordFormatHandler.handle(e.message);
+    }
+  }
+
+  @override
+  Future<UsersResultDto> findUsers(String maxResults, String pageToken) async {
+    try {
+      return await _remote.findUsers(maxResults, pageToken);
+    } on DioError catch (e) {
+      // Handle errors from server
+      if (kDebugMode) print(e.message);
+      FirebaseAuthExceptionHandler.handle(e.message);
+      InvalidPasswordFormatHandler.handle(e.message);
+      rethrow;
     }
   }
 }

@@ -4,10 +4,10 @@ import 'package:get_it/get_it.dart';
 import '../../models/current_user.dart';
 import '../../repositories/app_repository.dart';
 
-class ProfileViewModel {
+class DashboardViewModel {
   final _repo = GetIt.I<AppRepository>();
 
-  final onUserModel = ValueNotifier<CurrentUser?>(null);
+  final onUser = ValueNotifier<CurrentUser?>(null);
 
   void Function()? onUpdatedDisplayName;
   void Function()? onChangedPassword;
@@ -17,7 +17,7 @@ class ProfileViewModel {
   Future<void> loadProfile() async {
     try {
       final user = await _repo.getCurrentUser();
-      onUserModel.value = CurrentUser(
+      onUser.value = CurrentUser(
         email: user?.email,
         displayName: user?.displayName,
         photoURL: user?.photoURL,
@@ -34,8 +34,8 @@ class ProfileViewModel {
         displayName: displayName,
       );
       // Update the user model for display
-      onUserModel.value = CurrentUser(
-        email: onUserModel.value?.email,
+      onUser.value = CurrentUser(
+        email: onUser.value?.email,
         displayName: displayName,
       );
       // Triggers the updated display name event

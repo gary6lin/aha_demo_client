@@ -2,24 +2,24 @@ import 'package:aha_demo/presentation/widgets/app_card.dart';
 import 'package:aha_demo/values/app_text_style.dart';
 import 'package:flutter/material.dart';
 
-import '../../../model/user_dto.dart';
+import '../../../models/user_info.dart';
 import '../../../values/constants.dart';
 
 class UsersWidget extends StatelessWidget {
   static const list = [
-    UserDto(
+    UserInfo(
       'a@gmail.com',
       '12 May 2024',
       '234',
       '23 June 2024',
     ),
-    UserDto(
+    UserInfo(
       'a@gmail.com',
       '12 May 2024',
       '234',
       '23 June 2024',
     ),
-    UserDto(
+    UserInfo(
       'a@gmail.com',
       '12 May 2024',
       '234',

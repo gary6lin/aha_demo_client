@@ -1,9 +1,9 @@
-class UserModel {
+class CurrentUser {
   String? email;
   String? displayName;
   String? photoURL;
 
-  UserModel({
+  CurrentUser({
     this.email,
     this.displayName,
     this.photoURL,

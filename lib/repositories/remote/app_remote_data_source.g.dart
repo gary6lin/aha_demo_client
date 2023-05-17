@@ -41,7 +41,7 @@ class _AppRemoteDataSource implements AppRemoteDataSource {
 
   @override
   Future<void> updateUser(
-    String id,
+    String uid,
     UpdateUserDto dto,
   ) async {
     const _extra = <String, dynamic>{};
@@ -56,11 +56,40 @@ class _AppRemoteDataSource implements AppRemoteDataSource {
     )
         .compose(
           _dio.options,
-          '/user/${id}',
+          '/user/${uid}',
           queryParameters: queryParameters,
           data: _data,
         )
         .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+  }
+
+  @override
+  Future<UsersResultDto> findUsers(
+    String maxResults,
+    String pageToken,
+  ) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'maxResults': maxResults,
+      r'pageToken': pageToken,
+    };
+    final _headers = <String, dynamic>{};
+    final Map<String, dynamic>? _data = null;
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<UsersResultDto>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/users',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = UsersResultDto.fromJson(_result.data!);
+    return value;
   }
 
   RequestOptions _setStreamType<T>(RequestOptions requestOptions) {
