@@ -12,7 +12,7 @@ class LoginViewModel {
   void Function()? onSignedIn;
   void Function(Object)? onError;
 
-  Future<void> onSignIn(String email, String password) async {
+  Future<void> signIn(String email, String password) async {
     try {
       onLoading.value = true;
       await _repo.signIn(email, password);

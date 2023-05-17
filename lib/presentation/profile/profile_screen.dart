@@ -25,12 +25,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
   final _vm = ProfileViewModel();
 
   final _nameController = TextEditingController();
-  final _currentPwdController = TextEditingController();
-  final _newPwdController = TextEditingController();
-  final _confirmPwdController = TextEditingController();
+  final _currentPasswordController = TextEditingController();
+  final _newPasswordController = TextEditingController();
+  final _confirmPasswordController = TextEditingController();
 
   final _updateNameExpandableController = ExpandableController();
   final _changePasswordExpandableController = ExpandableController();
+
+  final _nameFormKey = GlobalKey<FormState>();
+  final _passwordFormKey = GlobalKey<FormState>();
 
   @override
   void initState() {
@@ -48,7 +51,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       context.go(AppRoute.login.path);
     };
 
-    _vm.onLoad();
+    _vm.loadProfile();
   }
 
   @override
@@ -58,9 +61,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
           children: [
             _buildUserInfo(),
             const SizedBox(height: defaultPadding),
-            _buildDisplayNameChange(),
+            Form(
+              key: _nameFormKey,
+              child: _buildDisplayNameChange(),
+            ),
             const SizedBox(height: defaultPadding),
-            _buildPasswordChange(),
+            Form(
+              key: _passwordFormKey,
+              child: _buildPasswordChange(),
+            ),
             const SizedBox(height: defaultPadding),
             _buildSignOutButton(),
           ],
@@ -115,7 +124,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget _buildDisplayNameChange() => ExpandingDropdownTile(
         controller: _updateNameExpandableController,
         titleText: tr('update_name'),
-        body: Column(
+        content: Column(
           children: [
             TextFormField(
               controller: _nameController,
@@ -130,9 +139,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
               child: Text(
                 tr('update_name_submission'),
               ),
-              // onPressed: () {
-              //   // TODO
-              // },
+              onPressed: () async {
+                final nameError = AppValidator.name(_nameController.text);
+
+                // Submit only if there is no error
+                if (nameError == null) {
+                  await _vm.updateDisplayName(
+                    _nameController.text,
+                  );
+                }
+
+                // Validates to show errors if any
+                _nameFormKey.currentState?.validate();
+              },
             ),
           ],
         ),
@@ -141,10 +160,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget _buildPasswordChange() => ExpandingDropdownTile(
         controller: _changePasswordExpandableController,
         titleText: tr('change_password'),
-        body: Column(
+        content: Column(
           children: [
             TextFormField(
-              controller: _currentPwdController,
+              controller: _currentPasswordController,
               decoration: InputDecoration(
                 labelText: tr('current_password'),
               ),
@@ -153,7 +172,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
             const SizedBox(height: 28),
             TextFormField(
-              controller: _newPwdController,
+              controller: _newPasswordController,
               decoration: InputDecoration(
                 labelText: tr('new_password'),
               ),
@@ -162,11 +181,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
             const SizedBox(height: 28),
             TextFormField(
-              controller: _confirmPwdController,
+              controller: _confirmPasswordController,
               decoration: InputDecoration(
                 labelText: tr('confirm_password'),
               ),
-              validator: (value) => value != _newPwdController.text ? tr('confirm_password_error') : null,
+              validator: (value) => AppValidator.passwordConfirm(value, _newPasswordController.text),
               autovalidateMode: AutovalidateMode.onUserInteraction,
             ),
             const SizedBox(height: 28),
@@ -174,9 +193,26 @@ class _ProfileScreenState extends State<ProfileScreen> {
               child: Text(
                 tr('change_password_submission'),
               ),
-              // onPressed: () {
-              //   // TODO
-              // },
+              onPressed: () async {
+                final currentPassword = _currentPasswordController.text;
+                final newPassword = _newPasswordController.text;
+                final confirmPassword = _confirmPasswordController.text;
+
+                final currentPasswordError = AppValidator.password(currentPassword);
+                final newPasswordError = AppValidator.password(newPassword);
+                final confirmPasswordError = AppValidator.passwordConfirm(newPassword, confirmPassword);
+
+                // Submit only if there is no error
+                if (currentPasswordError == null && newPasswordError == null && confirmPasswordError == null) {
+                  await _vm.changePassword(
+                    currentPassword,
+                    newPassword,
+                  );
+                }
+
+                // Validates to show errors if any
+                _passwordFormKey.currentState?.validate();
+              },
             ),
           ],
         ),

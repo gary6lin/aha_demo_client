@@ -37,6 +37,7 @@
 	"error_password_no_special": "Password must contains at least one special character.",
 	"error_password_length": "Password must contains at least one 8 characters.",
 	"error_password_whitespace": "Password must not contains any whitespaces.",
+	"error_empty": "Must not be empty.",
 
 	"menu_dashboard": "Dashboard",
 	"menu_profile": "Profile",

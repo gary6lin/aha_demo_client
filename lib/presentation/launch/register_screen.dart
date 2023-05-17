@@ -23,6 +23,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
+  final _formKey = GlobalKey<FormState>();
+
   @override
   void initState() {
     super.initState();
@@ -40,7 +42,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
         body: Center(
           child: AppCard(
             radius: 16,
-            child: buildLoginForm(),
+            child: Form(
+              key: _formKey,
+              child: buildLoginForm(),
+            ),
           ),
         ),
       );
@@ -93,17 +98,27 @@ class _RegisterScreenState extends State<RegisterScreen> {
         ),
         onPressed: () async {
           // TODO
-          await _vm.onRegister(
+          await _vm.register(
             'gary6lin@gmail.com',
             '12qw!@QW',
             'GGG',
           );
 
-          // await _vm.onRegister(
-          //   _emailController.text,
-          //   _passwordController.text,
-          //   _nameController.text,
-          // );
+          final emailError = AppValidator.email(_emailController.text);
+          final passwordError = AppValidator.password(_passwordController.text);
+          final nameError = AppValidator.name(_nameController.text);
+
+          // Submit only if there is no error
+          if (emailError == null && passwordError == null && nameError == null) {
+            await _vm.register(
+              _emailController.text,
+              _passwordController.text,
+              _nameController.text,
+            );
+          }
+
+          // Validates to show errors if any
+          _formKey.currentState?.validate();
         },
       );
 }

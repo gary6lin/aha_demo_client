@@ -10,7 +10,7 @@ class RegisterViewModel {
   void Function()? onRegistered;
   void Function(Object)? onError;
 
-  Future<void> onRegister(String email, String password, String displayName) async {
+  Future<void> register(String email, String password, String displayName) async {
     try {
       onLoading.value = true;
       await _repo.register(email, password, displayName);

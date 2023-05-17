@@ -108,10 +108,13 @@ class _LoginScreenState extends State<LoginScreen> {
 
           final emailError = AppValidator.email(_emailController.text);
           final passwordError = AppValidator.password(_passwordController.text);
+
+          // Submit only if there is no error
           if (emailError == null && passwordError == null) {
-            await _vm.onSignIn(_emailController.text, _passwordController.text);
+            await _vm.signIn(_emailController.text, _passwordController.text);
           }
 
+          // Validates to show errors if any
           _formKey.currentState?.validate();
         },
       );

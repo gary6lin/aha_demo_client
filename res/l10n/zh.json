@@ -37,6 +37,7 @@
     "error_password_no_special": "密碼須包含至少一個特殊字符，如：!、@、#",
     "error_password_length": "密碼長度須至少需要8個字元",
     "error_password_whitespace": "密碼不能包含任何空白字元",
+	"error_empty": "不可為空白",
 
 	"menu_dashboard": "資訊面板",
 	"menu_profile": "個人檔案",

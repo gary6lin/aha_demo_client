@@ -7,6 +7,7 @@ class AuthInterceptor extends Interceptor {
 
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) async {
+    print('idToken: ${await _repo.getIdToken()}');
     options.headers['Authorization'] = await _repo.getIdToken();
     return super.onRequest(options, handler);
   }

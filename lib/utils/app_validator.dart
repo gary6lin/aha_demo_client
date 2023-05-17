@@ -18,10 +18,17 @@ class AppValidator {
   }
 
   static String? name(String? value) {
-    if (_hasNumber.hasMatch(value ?? '') || _hasSpecialChar.hasMatch(value ?? '')) {
+    if (_hasNumber.hasMatch(value ?? '') || _hasSpecialChar.hasMatch(value ?? '') || value?.isNotEmpty != true) {
       return tr('error_name_invalid_characters');
     }
     return null;
+  }
+
+  static String? passwordConfirm(String? value1, String? value2) {
+    if (value1?.isNotEmpty != true || value2?.isNotEmpty != true) {
+      return tr('error_empty');
+    }
+    return value1 != value2 ? tr('confirm_password_error') : null;
   }
 
   static String? password(String? value) {

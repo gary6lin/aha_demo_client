@@ -14,7 +14,7 @@ class ProfileViewModel {
   void Function()? onSignedOut;
   void Function(Object)? onError;
 
-  Future<void> onLoad() async {
+  Future<void> loadProfile() async {
     try {
       final user = await _repo.getCurrentUser();
       onUser.value = UserModel(
@@ -28,16 +28,17 @@ class ProfileViewModel {
     }
   }
 
-  Future<void> onUpdateDisplayName(String displayName) async {
+  Future<void> updateDisplayName(String displayName) async {
     try {
       await _repo.updateProfile(
         displayName: displayName,
       );
-      final user = onUser.value;
+      // Update the user model for display
       onUser.value = UserModel(
-        email: user?.email,
-        displayName: user?.displayName,
+        email: onUser.value?.email,
+        displayName: displayName,
       );
+      // Triggers the updated display name event
       onUpdatedDisplayName?.call();
     } catch (e) {
       if (kDebugMode) print(e);
@@ -45,12 +46,14 @@ class ProfileViewModel {
     }
   }
 
-  Future<void> onChangePassword(String currentPassword, String newPassword) async {
+  Future<void> changePassword(String currentPassword, String newPassword) async {
     try {
       await _repo.updateProfile(
         currentPassword: currentPassword,
         newPassword: newPassword,
       );
+      // Triggers the changed password event
+      onChangedPassword?.call();
     } catch (e) {
       if (kDebugMode) print(e);
       onError?.call(e);
