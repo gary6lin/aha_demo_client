@@ -1,6 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 import '../models/auth_state.dart';
 import 'dto/request/create_user_dto.dart';
@@ -23,6 +25,8 @@ abstract class AppRepository {
   Future<AuthState> getAuthState();
 
   Future<void> signIn(String email, String password);
+  Future<void> signInWithFacebook();
+  Future<void> signInWithGoogle();
   Future<void> signOut();
   Future<void> register(String email, String password, String displayName);
   Future<void> sendEmailVerification();
@@ -84,6 +88,57 @@ class _AppRepositoryImp implements AppRepository {
       // Handle errors from Firebase
       if (kDebugMode) print(e.message);
       FirebaseAuthExceptionHandler.handle(e.message);
+      rethrow;
+    }
+  }
+
+  @override
+  Future<void> signInWithFacebook() async {
+    try {
+      // Trigger the sign-in flow
+      final loginResult = await FacebookAuth.instance.login();
+
+      // Create a credential from the access token
+      final facebookAuthCredential = FacebookAuthProvider.credential(loginResult.accessToken!.token);
+
+      // Once signed in, return the UserCredential
+      await _firebaseAuth.signInWithCredential(facebookAuthCredential);
+    } on FirebaseAuthException catch (e) {
+      // Handle errors from Firebase
+      if (kDebugMode) print(e.message);
+      FirebaseAuthExceptionHandler.handle(e.message);
+      rethrow;
+    }
+  }
+
+  @override
+  Future<void> signInWithGoogle() async {
+    try {
+      // Trigger the authentication flow
+      final googleSignIn = GoogleSignIn(
+        scopes: [
+          'email',
+          'profile',
+        ],
+      );
+      final googleUser = await googleSignIn.signIn();
+
+      // Obtain the auth details from the request
+      final googleAuth = await googleUser?.authentication;
+
+      // Create a new credential
+      final credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth?.accessToken,
+        idToken: googleAuth?.idToken,
+      );
+
+      // Once signed in, return the UserCredential
+      await _firebaseAuth.signInWithCredential(credential);
+    } on FirebaseAuthException catch (e) {
+      // Handle errors from Firebase
+      if (kDebugMode) print(e.message);
+      FirebaseAuthExceptionHandler.handle(e.message);
+      rethrow;
     }
   }
 
@@ -112,10 +167,12 @@ class _AppRepositoryImp implements AppRepository {
       if (kDebugMode) print(e.message);
       FirebaseAuthExceptionHandler.handle(e.message);
       InvalidPasswordFormatHandler.handle(e.message);
+      rethrow;
     } on FirebaseAuthException catch (e) {
       // Handle errors from Firebase
       if (kDebugMode) print(e.message);
       FirebaseAuthExceptionHandler.handle(e.message);
+      rethrow;
     }
   }
 
@@ -137,6 +194,7 @@ class _AppRepositoryImp implements AppRepository {
       // Handle errors from Firebase
       if (kDebugMode) print(e.message);
       FirebaseAuthExceptionHandler.handle(e.message);
+      rethrow;
     }
   }
 
@@ -165,6 +223,7 @@ class _AppRepositoryImp implements AppRepository {
       if (kDebugMode) print(e.message);
       FirebaseAuthExceptionHandler.handle(e.message);
       InvalidPasswordFormatHandler.handle(e.message);
+      rethrow;
     }
   }
 

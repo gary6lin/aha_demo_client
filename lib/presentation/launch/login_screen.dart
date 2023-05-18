@@ -2,7 +2,10 @@ import 'package:aha_demo/routes/app_routes.dart';
 import 'package:aha_demo/values/app_colors.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
+import 'package:google_sign_in_platform_interface/google_sign_in_platform_interface.dart';
+import 'package:google_sign_in_web/google_sign_in_web.dart';
 
 import '../../utils/app_validator.dart';
 import '../../utils/show_alert.dart';
@@ -67,6 +70,7 @@ class _LoginScreenState extends State<LoginScreen> {
           const Divider(),
           _buildFacebookLoginButton(),
           _buildGoogleLoginButton(),
+          // _buildGoogleSignInButton(),
           ValueListenableBuilder(
             valueListenable: _vm.onLoading,
             builder: (BuildContext context, bool loading, Widget? child) => IgnorePointer(
@@ -133,23 +137,67 @@ class _LoginScreenState extends State<LoginScreen> {
       );
 
   Widget _buildFacebookLoginButton() => AppFilledButton(
-        color: AppColors.facebookBlue,
-        child: Text(
-          tr('continue_with_facebook'),
+        backgroundColor: AppColors.facebookBlue,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const SizedBox(width: 8),
+            SvgPicture.asset(
+              'res/images/facebook_logo.svg',
+              colorFilter: const ColorFilter.mode(
+                Colors.white,
+                BlendMode.srcIn,
+              ),
+              width: 24,
+              height: 24,
+            ),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.only(bottom: 2),
+                child: Text(
+                  tr('continue_with_facebook'),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ),
+            const SizedBox(width: 16),
+          ],
         ),
         onPressed: () async {
-          // TODO
+          await _vm.signInWithFacebook();
         },
       );
 
+  Widget _buildGoogleSignInButton() {
+    return (GoogleSignInPlatform.instance as GoogleSignInPlugin).renderButton();
+  }
+
   Widget _buildGoogleLoginButton() => AppFilledButton(
-        color: AppColors.googleWhite,
-        child: Text(
-          tr('continue_with_google'),
-          style: const TextStyle(color: AppColors.textDark),
+        foregroundColor: AppColors.textDark,
+        backgroundColor: AppColors.googleWhite,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const SizedBox(width: 8),
+            SvgPicture.asset(
+              'res/images/google_logo.svg',
+              width: 24,
+              height: 24,
+            ),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.only(bottom: 2),
+                child: Text(
+                  tr('continue_with_google'),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ),
+            const SizedBox(width: 16),
+          ],
         ),
         onPressed: () async {
-          // TODO
+          await _vm.signInWithGoogle();
         },
       );
 }

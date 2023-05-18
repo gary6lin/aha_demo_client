@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
 import 'package:get_it/get_it.dart';
 
@@ -22,6 +23,14 @@ void main() async {
   // Init Firebase
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
+  );
+
+  // Init Facebook SDK for web
+  await FacebookAuth.i.webAndDesktopInitialize(
+    appId: '3235942473364003',
+    cookie: true,
+    xfbml: true,
+    version: 'v16.0',
   );
 
   // Dependency injection

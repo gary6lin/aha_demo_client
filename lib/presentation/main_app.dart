@@ -32,13 +32,6 @@ class _MainAppState extends State<MainApp> {
         brightness: Brightness.dark,
         canvasColor: AppColors.secondary,
         scaffoldBackgroundColor: AppColors.background,
-        filledButtonTheme: FilledButtonThemeData(
-          style: FilledButton.styleFrom(
-            textStyle: AppTextStyle.titleRegular,
-            backgroundColor: AppColors.primary,
-            padding: const EdgeInsets.all(24),
-          ),
-        ),
         textButtonTheme: TextButtonThemeData(
           style: TextButton.styleFrom(
             textStyle: AppTextStyle.bodyBold,

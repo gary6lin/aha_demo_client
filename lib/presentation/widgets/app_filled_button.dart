@@ -1,14 +1,19 @@
 import 'package:flutter/material.dart';
 
+import '../../values/app_colors.dart';
+import '../../values/app_text_style.dart';
+
 class AppFilledButton extends StatelessWidget {
-  final Color? color;
+  final Color foregroundColor;
+  final Color? backgroundColor;
   final Widget child;
 
   final Future<void> Function()? onPressed;
 
   AppFilledButton({
     Key? key,
-    this.color,
+    this.foregroundColor = AppColors.textLight,
+    this.backgroundColor = AppColors.primary,
     required this.child,
     this.onPressed,
   }) : super(key: key);
@@ -30,9 +35,12 @@ class AppFilledButton extends StatelessWidget {
         valueListenable: _onLoading,
         builder: (BuildContext context, bool loading, Widget? child) => IgnorePointer(
           ignoring: loading,
-          child: FilledButton(
-            style: FilledButton.styleFrom(
-              backgroundColor: color,
+          child: TextButton(
+            style: TextButton.styleFrom(
+              textStyle: AppTextStyle.titleRegular,
+              foregroundColor: foregroundColor,
+              backgroundColor: backgroundColor,
+              padding: const EdgeInsets.all(24),
             ),
             onPressed: onPressed != null
                 ? () async {
