@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../presentation/page_not_found_screen.dart';
+import '../presentation/privacy_screen.dart';
 import 'launch_routes.dart';
 import 'main_routes.dart';
 
@@ -16,6 +17,7 @@ class AppRoute {
   static final login = LoginRoute(main.path);
   static final register = RegisterRoute(main.path);
   static final verification = VerificationRoute(main.path);
+  static final privacy = PrivacyRoute(main.path);
 
   static final goRouter = GoRouter(
     initialLocation: main.path,
@@ -24,6 +26,7 @@ class AppRoute {
       AppRoute.login.goRoute,
       AppRoute.register.goRoute,
       AppRoute.verification.goRoute,
+      AppRoute.privacy.goRoute,
     ],
     errorPageBuilder: (BuildContext context, GoRouterState state) => FadeTransitionPage(
       child: const PageNotFoundScreen(),
@@ -38,6 +41,20 @@ class AppRoute {
       return null;
     },
   );
+}
+
+class PrivacyRoute {
+  static const String name = 'privacy';
+  final String path;
+
+  late final goRoute = GoRoute(
+    path: path,
+    pageBuilder: (BuildContext context, GoRouterState state) => const DefaultTransitionPage(
+      child: PrivacyScreen(),
+    ),
+  );
+
+  PrivacyRoute(String parentPath) : path = makePath(parentPath, name);
 }
 
 class DefaultTransitionPage extends NoTransitionPage {
