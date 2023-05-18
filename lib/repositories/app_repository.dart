@@ -2,10 +2,12 @@ import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 
+import '../models/auth_state.dart';
 import 'dto/request/create_user_dto.dart';
 import 'dto/request/update_user_dto.dart';
 import 'dto/response/users_result_dto.dart';
 import 'errors/user_not_found_error.dart';
+import 'errors/user_not_signed_in_error.dart';
 import 'firebase_auth_exception_handler.dart';
 import 'invalid_password_format_handler.dart';
 import 'local/app_local_data_source.dart';
@@ -18,12 +20,13 @@ abstract class AppRepository {
   Future<void> reloadUser();
 
   Future<String?> getIdToken();
-  Future<bool> accessAllowed();
+  Future<AuthState> getAuthState();
 
   Future<void> signIn(String email, String password);
   Future<void> signOut();
   Future<void> register(String email, String password, String displayName);
-  Future<void> emailVerification(String oobCode);
+  Future<void> sendEmailVerification();
+  Future<void> verifyEmail(String oobCode);
   Future<void> updateProfile({
     String? displayName,
     String? currentPassword,
@@ -61,10 +64,16 @@ class _AppRepositoryImp implements AppRepository {
   }
 
   @override
-  Future<bool> accessAllowed() async {
-    final idToken = await getIdToken();
-    final emailVerified = _firebaseAuth.currentUser?.emailVerified;
-    return idToken != null && emailVerified == true;
+  Future<AuthState> getAuthState() async {
+    final currentUser = _firebaseAuth.currentUser;
+    if (currentUser == null) {
+      return AuthState.noAuth;
+    }
+    final emailVerified = currentUser.emailVerified;
+    if (emailVerified) {
+      return AuthState.emailVerified;
+    }
+    return AuthState.emailNotVerified;
   }
 
   @override
@@ -111,7 +120,16 @@ class _AppRepositoryImp implements AppRepository {
   }
 
   @override
-  Future<void> emailVerification(String oobCode) async {
+  Future<void> sendEmailVerification() async {
+    final user = await getCurrentUser();
+    if (user == null) {
+      throw UserNotSignedInError();
+    }
+    await user.sendEmailVerification();
+  }
+
+  @override
+  Future<void> verifyEmail(String oobCode) async {
     // 3. Verify the email via the generated verification link
     try {
       await _firebaseAuth.applyActionCode(oobCode);

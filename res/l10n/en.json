@@ -22,7 +22,9 @@
 	"create_new_account": "Create a new account",
 	"register_submission": "Submit",
 
-	"email_verification_sent": "An email verification has been sent.",
+	"email_verification_sent": "Please check your email for the verification link.",
+	"email_verification_resent": "We have resent you an email verification.",
+	"email_resend": "Resend email",
 	"verifying_email": "Verifying your email...",
 
 	"error_expired_action_code": "The verification link is expired.",
@@ -31,6 +33,7 @@
 	"error_user_not_found": "Incorrect email and password, or the user does not found.",
 	"error_email_already_exists": "The email has already been registered.",
 	"error_invalid_page_token": "The page token is invalid.",
+	"error_user_not_signed_in": "User not signed in.",
 
 	"error_name_invalid_characters": "Numbers and special characters are not allowed.",
 	"error_password_no_lower": "Password must contains at least one lowercase character.",

@@ -3,6 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 
+import '../models/auth_state.dart';
 import '../presentation/main_screen.dart';
 import '../presentation/profile/profile_screen.dart';
 import '../repositories/app_repository.dart';
@@ -58,12 +59,16 @@ class ProfileRoute {
 }
 
 Future<String?> _guard(BuildContext context, GoRouterState state) async {
-  // Redirects to the login if not signed in
-  final accessAllowed = await GetIt.I<AppRepository>().accessAllowed();
-  if (!accessAllowed) {
-    return AppRoute.login.path;
+  final authState = await GetIt.I<AppRepository>().getAuthState();
+  switch (authState) {
+    case AuthState.emailVerified:
+      // No redirection
+      return null;
+    case AuthState.emailNotVerified:
+      // Redirects to the verification if signed in but have not verified email
+      return AppRoute.verification.path;
+    case AuthState.noAuth:
+      // Redirects to the login if user already signed out
+      return AppRoute.login.path;
   }
-
-  // No redirection
-  return null;
 }

@@ -2,6 +2,7 @@ import 'package:flutter/widgets.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 
+import '../models/auth_state.dart';
 import '../presentation/launch/login_screen.dart';
 import '../presentation/launch/register_screen.dart';
 import '../presentation/launch/verification_screen.dart';
@@ -46,30 +47,22 @@ class VerificationRoute {
     path: path,
     pageBuilder: (BuildContext context, GoRouterState state) => DefaultTransitionPage(
       child: VerificationScreen(
-        message: state.extra as String?,
         oobCode: state.queryParameters['oobCode'],
       ),
     ),
     redirect: (BuildContext context, GoRouterState state) async {
-      final user = await GetIt.I<AppRepository>().getCurrentUser();
-
-      // No redirection if required parameters are specified
-      if (state.extra != null || state.queryParameters['oobCode'] != null) {
-        return null;
+      final authState = await GetIt.I<AppRepository>().getAuthState();
+      switch (authState) {
+        case AuthState.emailVerified:
+          // Redirects to the dashboard if signed in and email verified
+          return AppRoute.main.dashboard.path;
+        case AuthState.emailNotVerified:
+          // No redirection
+          return null;
+        case AuthState.noAuth:
+          // Redirects to the login
+          return AppRoute.login.path;
       }
-
-      // Redirects to the login if not signed in
-      if (user == null) {
-        return AppRoute.login.path;
-      }
-
-      // Redirects to the dashboard if the email is verified
-      if (user.emailVerified) {
-        return AppRoute.main.dashboard.path;
-      }
-
-      // Redirects to an unidentified page
-      return '/nothing';
     },
   );
 
@@ -77,13 +70,16 @@ class VerificationRoute {
 }
 
 Future<String?> _guard(BuildContext context, GoRouterState state) async {
-  final accessAllowed = await GetIt.I<AppRepository>().accessAllowed();
-
-  // Redirects to the dashboard if already signed in
-  if (accessAllowed) {
-    return AppRoute.main.dashboard.path;
+  final authState = await GetIt.I<AppRepository>().getAuthState();
+  switch (authState) {
+    case AuthState.emailVerified:
+      // Redirects to the dashboard if signed in and email verified
+      return AppRoute.main.dashboard.path;
+    case AuthState.emailNotVerified:
+      // Redirects to the verification if signed in but have not verified email
+      return AppRoute.verification.path;
+    case AuthState.noAuth:
+      // No redirection
+      return null;
   }
-
-  // No redirection
-  return null;
 }

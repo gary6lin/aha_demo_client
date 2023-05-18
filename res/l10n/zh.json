@@ -15,22 +15,25 @@
 
 	"login": "登入",
 	"log_out": "登出",
-	"register": "使用Email註冊",
+	"register": "使用電子郵件註冊",
 	"continue_with_facebook": "以Facebook繼續使用",
 	"continue_with_google": "以Google繼續使用",
 
 	"create_new_account": "建立新帳號",
 	"register_submission": "註冊",
 
-	"email_verification_sent": "驗證郵件已發送",
+	"email_verification_sent": "請確認您電子郵件信箱中的驗證郵件",
+	"email_verification_resent": "已向您重新發送驗證郵件",
+	"email_resend": "重新發送",
 	"verifying_email": "驗證中請稍候...",
 
 	"error_expired_action_code": "連結已失效",
-	"error_invalid_action_code": "無效的連結，或是Email已驗證",
+	"error_invalid_action_code": "無效的連結，或是電子郵件已驗證",
 	"error_user_disabled": "帳戶已被停用",
 	"error_user_not_found": "錯誤的電子郵件和密碼，或是帳戶不存在",
-	"error_email_already_exists": "Email已被註冊",
+	"error_email_already_exists": "電子郵件已被註冊",
 	"error_invalid_page_token": "無效的PageToken",
+	"error_user_not_signed_in": "使用者尚未登入",
 
 	"error_name_invalid_characters": "不允許使用任何數字或是特殊字符",
     "error_password_no_lower": "密碼須包含至少一個小寫英文字母，如：a、b、c",

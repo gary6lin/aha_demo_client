@@ -30,10 +30,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     super.initState();
 
     _vm.onRegistered = () {
-      context.go(
-        AppRoute.verification.path,
-        extra: tr('email_verification_sent'),
-      );
+      context.go(AppRoute.verification.path);
     };
   }
 

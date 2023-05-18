@@ -1,19 +1,19 @@
+import 'package:aha_demo/presentation/widgets/app_filled_button.dart';
 import 'package:aha_demo/values/app_text_style.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../routes/app_routes.dart';
+import '../../utils/show_alert.dart';
 import '../widgets/app_card.dart';
 import 'verification_view_model.dart';
 
 class VerificationScreen extends StatefulWidget {
-  final String? message;
   final String? oobCode;
 
   const VerificationScreen({
     Key? key,
-    this.message,
     this.oobCode,
   }) : super(key: key);
 
@@ -24,6 +24,7 @@ class VerificationScreen extends StatefulWidget {
 class _VerificationScreenState extends State<VerificationScreen> {
   final _vm = VerificationViewModel();
   final _onErrorMessage = ValueNotifier<String?>(null);
+  final _onMessage = ValueNotifier<String>(tr('email_verification_sent'));
 
   @override
   void initState() {
@@ -33,8 +34,19 @@ class _VerificationScreenState extends State<VerificationScreen> {
       context.go(AppRoute.main.path);
     };
 
+    _vm.onEmailVerificationResent = () {
+      _onMessage.value = tr('email_verification_resent');
+    };
+
     _vm.onError = (e) {
-      _onErrorMessage.value = e.toString();
+      if (widget.oobCode == null) {
+        showAlert(
+          context: context,
+          title: e.toString(),
+        );
+      } else {
+        _onErrorMessage.value = e.toString();
+      }
     };
 
     final oobCode = widget.oobCode;
@@ -53,10 +65,10 @@ class _VerificationScreenState extends State<VerificationScreen> {
               child: ValueListenableBuilder(
                 valueListenable: _onErrorMessage,
                 builder: (BuildContext context, String? errorMessage, Widget? child) {
-                  if (widget.message != null) {
-                    return _buildMessage(widget.message!);
+                  if (widget.oobCode == null) {
+                    return _buildMessageWithResend();
                   }
-                  return errorMessage == null ? _buildEmailVerifying() : _buildMessage(errorMessage);
+                  return errorMessage == null ? _buildEmailVerifying() : _buildErrorMessage(errorMessage);
                 },
               ),
             ),
@@ -64,7 +76,30 @@ class _VerificationScreenState extends State<VerificationScreen> {
         ),
       );
 
-  Widget _buildMessage(String errorMessage) => Center(
+  Widget _buildMessageWithResend() => Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          ValueListenableBuilder(
+            valueListenable: _onMessage,
+            builder: (BuildContext context, String message, Widget? child) => Text(
+              message,
+              style: AppTextStyle.titleRegular,
+              textAlign: TextAlign.center,
+            ),
+          ),
+          const SizedBox(height: 64),
+          AppFilledButton(
+            child: Text(
+              tr('email_resend'),
+            ),
+            onPressed: () async {
+              await _vm.onResendEmailVerification();
+            },
+          ),
+        ],
+      );
+
+  Widget _buildErrorMessage(String errorMessage) => Center(
         child: Text(
           errorMessage,
           style: AppTextStyle.titleRegular,

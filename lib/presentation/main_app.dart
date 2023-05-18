@@ -34,7 +34,7 @@ class _MainAppState extends State<MainApp> {
         scaffoldBackgroundColor: AppColors.background,
         filledButtonTheme: FilledButtonThemeData(
           style: FilledButton.styleFrom(
-            textStyle: AppTextStyle.bodyBold,
+            textStyle: AppTextStyle.titleRegular,
             backgroundColor: AppColors.primary,
             padding: const EdgeInsets.all(24),
           ),
