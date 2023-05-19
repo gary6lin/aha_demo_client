@@ -4,8 +4,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
-import 'package:google_sign_in_platform_interface/google_sign_in_platform_interface.dart';
-import 'package:google_sign_in_web/google_sign_in_web.dart';
 
 import '../../utils/app_validator.dart';
 import '../../utils/show_alert.dart';
@@ -70,14 +68,7 @@ class _LoginScreenState extends State<LoginScreen> {
           const Divider(),
           _buildFacebookLoginButton(),
           _buildGoogleLoginButton(),
-          // _buildGoogleSignInButton(),
-          ValueListenableBuilder(
-            valueListenable: _vm.onLoading,
-            builder: (BuildContext context, bool loading, Widget? child) => IgnorePointer(
-              ignoring: loading,
-              child: const LanguageSwitcher(),
-            ),
-          ),
+          const LanguageSwitcher(),
         ],
       );
 
@@ -104,12 +95,6 @@ class _LoginScreenState extends State<LoginScreen> {
           tr('login'),
         ),
         onPressed: () async {
-          // TODO
-          // await _vm.onSignIn(
-          //   'gary6lin@gmail.com',
-          //   '12qw!@QW',
-          // );
-
           final emailError = AppValidator.email(_emailController.text);
           final passwordError = AppValidator.password(_passwordController.text);
 
@@ -164,13 +149,9 @@ class _LoginScreenState extends State<LoginScreen> {
           ],
         ),
         onPressed: () async {
-          await _vm.signInWithFacebook();
+          _vm.signInWithFacebook();
         },
       );
-
-  Widget _buildGoogleSignInButton() {
-    return (GoogleSignInPlatform.instance as GoogleSignInPlugin).renderButton();
-  }
 
   Widget _buildGoogleLoginButton() => AppFilledButton(
         foregroundColor: AppColors.textDark,

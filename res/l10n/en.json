@@ -36,12 +36,12 @@
 	"error_user_not_signed_in": "User not signed in.",
 
 	"error_name_invalid_characters": "Numbers and special characters are not allowed.",
-	"error_password_no_lower": "Password must contains at least one lowercase character.",
-	"error_password_no_upper": "Password must contains at least one uppercase character.",
-	"error_password_no_number": "Password must contains at least one number.",
-	"error_password_no_special": "Password must contains at least one special character.",
-	"error_password_length": "Password must contains at least one 8 characters.",
-	"error_password_whitespace": "Password must not contains any whitespaces.",
+	"error_password_no_lower": "Must contains at least one lowercase character.",
+	"error_password_no_upper": "Must contains at least one uppercase character.",
+	"error_password_no_number": "Must contains at least one number.",
+	"error_password_no_special": "Must contains at least one special character.",
+	"error_password_length": "Must contains at least one 8 characters.",
+	"error_password_whitespace": "Must not contain any whitespaces.",
 	"error_empty": "Must not be empty.",
 
 	"menu_dashboard": "Dashboard",

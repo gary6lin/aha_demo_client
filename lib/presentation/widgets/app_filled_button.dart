@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
 import '../../values/app_colors.dart';
@@ -5,10 +7,13 @@ import '../../values/app_text_style.dart';
 
 class AppFilledButton extends StatelessWidget {
   final Color foregroundColor;
-  final Color? backgroundColor;
+  final Color backgroundColor;
   final Widget child;
-
   final Future<void> Function()? onPressed;
+
+  final Color indicatorColor;
+
+  final _onLoading = ValueNotifier(false);
 
   AppFilledButton({
     Key? key,
@@ -16,19 +21,8 @@ class AppFilledButton extends StatelessWidget {
     this.backgroundColor = AppColors.primary,
     required this.child,
     this.onPressed,
-  }) : super(key: key);
-
-  final _onLoading = ValueNotifier(false);
-
-  static const _loadingIndicator = SizedBox(
-    width: 24,
-    height: 24,
-    child: CircularProgressIndicator(
-      color: Colors.white,
-      backgroundColor: Colors.white24,
-      strokeWidth: 3.0,
-    ),
-  );
+  })  : indicatorColor = backgroundColor.computeLuminance() > 0.6 ? Colors.black : Colors.white,
+        super(key: key);
 
   @override
   Widget build(BuildContext context) => ValueListenableBuilder(
@@ -44,9 +38,12 @@ class AppFilledButton extends StatelessWidget {
             ),
             onPressed: onPressed != null
                 ? () async {
-                    _onLoading.value = true;
-                    await onPressed?.call();
-                    _onLoading.value = false;
+                    try {
+                      _onLoading.value = true;
+                      await onPressed?.call();
+                    } finally {
+                      _onLoading.value = false;
+                    }
                   }
                 : null,
             child: Container(
@@ -57,7 +54,7 @@ class AppFilledButton extends StatelessWidget {
                 children: [
                   Opacity(
                     opacity: loading ? 1 : 0,
-                    child: _loadingIndicator,
+                    child: _buildLoadingIndicator(),
                   ),
                   Opacity(
                     opacity: loading ? 0 : 1,
@@ -69,5 +66,15 @@ class AppFilledButton extends StatelessWidget {
           ),
         ),
         child: child,
+      );
+
+  Widget _buildLoadingIndicator() => SizedBox(
+        width: 24,
+        height: 24,
+        child: CircularProgressIndicator(
+          color: indicatorColor,
+          backgroundColor: indicatorColor.withOpacity(0.24),
+          strokeWidth: 3.0,
+        ),
       );
 }

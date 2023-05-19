@@ -32,6 +32,8 @@ class InvalidPasswordFormatHandler {
     if (message?.contains(_pwdWhitespace) == true) {
       errors.add(tr('error_password_whitespace'));
     }
-    throw InvalidPasswordFormatError(errors.join('\n'));
+    if (errors.isNotEmpty) {
+      throw InvalidPasswordFormatError(errors.join('\n'));
+    }
   }
 }

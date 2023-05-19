@@ -1,3 +1,5 @@
+import 'package:aha_demo/utils/show_alert.dart';
+import 'package:aha_demo/values/app_text_style.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -32,6 +34,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
     _vm.onRegistered = () {
       context.go(AppRoute.verification.path);
     };
+
+    _vm.onError = (e) {
+      showAlert(
+        context: context,
+        title: e.errorMessage,
+      );
+    };
   }
 
   @override
@@ -53,6 +62,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         children: [
           Text(
             tr('create_new_account'),
+            style: AppTextStyle.titleRegular,
           ),
           TextFormField(
             controller: _nameController,
@@ -79,13 +89,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             autovalidateMode: AutovalidateMode.onUserInteraction,
           ),
           _buildSubmitButton(),
-          ValueListenableBuilder(
-            valueListenable: _vm.onLoading,
-            builder: (BuildContext context, bool loading, Widget? child) => IgnorePointer(
-              ignoring: loading,
-              child: const LanguageSwitcher(),
-            ),
-          ),
+          const LanguageSwitcher(),
         ],
       );
 
@@ -94,13 +98,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
           tr('register_submission'),
         ),
         onPressed: () async {
-          // TODO
-          await _vm.register(
-            'gary6lin@gmail.com',
-            '12qw!@QW',
-            'GGG',
-          );
-
           final emailError = AppValidator.email(_emailController.text);
           final passwordError = AppValidator.password(_passwordController.text);
           final nameError = AppValidator.name(_nameController.text);

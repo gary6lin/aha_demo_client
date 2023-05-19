@@ -36,12 +36,12 @@
 	"error_user_not_signed_in": "使用者尚未登入",
 
 	"error_name_invalid_characters": "不允許使用任何數字或是特殊字符",
-    "error_password_no_lower": "密碼須包含至少一個小寫英文字母，如：a、b、c",
-    "error_password_no_upper": "密碼須包含至少一個大寫英文字母，如：A、B、C",
-    "error_password_no_number": "密碼須包含至少一個數字，如：1、2、3",
-    "error_password_no_special": "密碼須包含至少一個特殊字符，如：!、@、#",
-    "error_password_length": "密碼長度須至少需要8個字元",
-    "error_password_whitespace": "密碼不能包含任何空白字元",
+    "error_password_no_lower": "須包含至少一個小寫英文字母，如：a、b、c",
+    "error_password_no_upper": "須包含至少一個大寫英文字母，如：A、B、C",
+    "error_password_no_number": "須包含至少一個數字，如：1、2、3",
+    "error_password_no_special": "須包含至少一個特殊字符，如：!、@、#",
+    "error_password_length": "長度須至少需要8個字元",
+    "error_password_whitespace": "不能包含任何空白字元",
 	"error_empty": "不可為空白",
 
 	"menu_dashboard": "資訊面板",

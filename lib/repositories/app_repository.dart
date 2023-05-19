@@ -164,9 +164,9 @@ class _AppRepositoryImp implements AppRepository {
       await userCred.user?.sendEmailVerification();
     } on DioError catch (e) {
       // Handle errors from server
-      if (kDebugMode) print(e.message);
-      FirebaseAuthExceptionHandler.handle(e.message);
-      InvalidPasswordFormatHandler.handle(e.message);
+      if (kDebugMode) print(e.toString());
+      FirebaseAuthExceptionHandler.handle(e.response?.data.toString());
+      InvalidPasswordFormatHandler.handle(e.response?.data.toString());
       rethrow;
     } on FirebaseAuthException catch (e) {
       // Handle errors from Firebase
@@ -220,9 +220,9 @@ class _AppRepositoryImp implements AppRepository {
       );
     } on DioError catch (e) {
       // Handle errors from server
-      if (kDebugMode) print(e.message);
-      FirebaseAuthExceptionHandler.handle(e.message);
-      InvalidPasswordFormatHandler.handle(e.message);
+      if (kDebugMode) print(e.toString());
+      FirebaseAuthExceptionHandler.handle(e.response?.data.toString());
+      InvalidPasswordFormatHandler.handle(e.response?.data.toString());
       rethrow;
     }
   }
@@ -233,8 +233,8 @@ class _AppRepositoryImp implements AppRepository {
       return await _remote.findUsers(maxResults, pageToken);
     } on DioError catch (e) {
       // Handle errors from server
-      if (kDebugMode) print(e.message);
-      FirebaseAuthExceptionHandler.handle(e.message);
+      if (kDebugMode) print(e.toString());
+      FirebaseAuthExceptionHandler.handle(e.response?.data.toString());
       rethrow;
     }
   }

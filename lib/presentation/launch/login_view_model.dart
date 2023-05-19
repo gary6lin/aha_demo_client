@@ -7,22 +7,12 @@ import '../../repositories/errors/app_error.dart';
 class LoginViewModel {
   final _repo = GetIt.I<AppRepository>();
 
-  final onLoading = ValueNotifier<bool>(false);
-
   void Function()? onSignedIn;
   void Function(Object)? onError;
 
-  /// The scopes required by this application.
-  static const List<String> scopes = <String>[
-    'email',
-    'https://www.googleapis.com/auth/contacts.readonly',
-  ];
-
   Future<void> signIn(String email, String password) async {
     try {
-      onLoading.value = true;
       await _repo.signIn(email, password);
-      onLoading.value = false;
       onSignedIn?.call();
     } on AppError catch (e) {
       if (kDebugMode) print(e);
