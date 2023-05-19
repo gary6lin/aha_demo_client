@@ -41,3 +41,4 @@ jobs:
           REPO: git@github.com:gary6lin/aha_demo_web.git
           BRANCH: main
           FOLDER: build/web
+          SSH_PRIVATE_KEY: ${{ secrets.PAT }}
