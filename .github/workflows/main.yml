@@ -1,0 +1,38 @@
+name: Release web app
+
+on:
+  workflow_dispatch:
+  release:
+    types: [ released ]
+
+jobs:
+  deployment:
+    runs-on: self-hosted
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ github.ref_name }}
+
+      - name: Fetch version from tag
+        uses: heeyuki/version-by-tag@main
+        id: version_by_tag
+        with:
+          tagName: ${{ github.ref_name }}
+          isUseGithubRunNumber: true
+
+      - name: Build flutter web app
+        run: |-
+          # https://docs.flutter.dev/development/tools/web-renderers
+          flutter build web \
+          --build-name=${{ steps.version_by_tag.outputs.semver }} \
+          --build-number=${{ steps.version_by_tag.outputs.versionCode }} \
+          --release
+
+      - name: Push to another repo (to trigger the autodeploy on DigitalOcean)
+        uses: s0/git-publish-subdir-action@v2.6.0
+        env:
+          REPO: git@github.com:gary6lin/aha_demo_web.git
+          BRANCH: main
+          FOLDER: build/web
