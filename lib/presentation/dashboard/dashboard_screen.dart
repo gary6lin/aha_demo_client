@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 import '../../repositories/dto/response/users_result_dto.dart';
+import '../../utils/app_date_time.dart';
 import '../../values/app_text_style.dart';
 import '../../values/constants.dart';
 import '../widgets/app_card.dart';
@@ -139,13 +140,28 @@ class _DashboardScreenState extends State<DashboardScreen> {
             Text(userRecord.email),
           ),
           DataCell(
-            Text(userRecord.metadata.creationTime),
+            Text(
+              AppDateTime.convert(
+                userRecord.metadata.creationTime,
+                context.locale.toString(),
+              ),
+            ),
           ),
           DataCell(
-            Text(userRecord.metadata.lastRefreshTime),
+            Text(
+              AppDateTime.convert(
+                userRecord.metadata.lastRefreshTime,
+                context.locale.toString(),
+              ),
+            ),
           ),
           DataCell(
-            Text(userRecord.metadata.lastSignInTime),
+            Text(
+              AppDateTime.convert(
+                userRecord.metadata.lastSignInTime,
+                context.locale.toString(),
+              ),
+            ),
           ),
         ],
       );
