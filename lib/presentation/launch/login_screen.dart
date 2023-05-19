@@ -137,19 +137,16 @@ class _LoginScreenState extends State<LoginScreen> {
               height: 24,
             ),
             Expanded(
-              child: Padding(
-                padding: const EdgeInsets.only(bottom: 2),
-                child: Text(
-                  tr('continue_with_facebook'),
-                  textAlign: TextAlign.center,
-                ),
+              child: Text(
+                tr('continue_with_facebook'),
+                textAlign: TextAlign.center,
               ),
             ),
             const SizedBox(width: 16),
           ],
         ),
         onPressed: () async {
-          _vm.signInWithFacebook();
+          await _vm.signInWithFacebook();
         },
       );
 
@@ -166,12 +163,9 @@ class _LoginScreenState extends State<LoginScreen> {
               height: 24,
             ),
             Expanded(
-              child: Padding(
-                padding: const EdgeInsets.only(bottom: 2),
-                child: Text(
-                  tr('continue_with_google'),
-                  textAlign: TextAlign.center,
-                ),
+              child: Text(
+                tr('continue_with_google'),
+                textAlign: TextAlign.center,
               ),
             ),
             const SizedBox(width: 16),

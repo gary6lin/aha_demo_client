@@ -8,7 +8,7 @@ import '../../repositories/errors/app_error.dart';
 class DashboardViewModel {
   final _repo = GetIt.I<AppRepository>();
 
-  final onUserRecords = ValueNotifier<List<List<UserRecord>>>([]);
+  final onUserRecordPages = ValueNotifier<List<List<UserRecord>>>([]);
 
   void Function()? onUpdatedDisplayName;
   void Function()? onChangedPassword;
@@ -20,9 +20,8 @@ class DashboardViewModel {
   Future<void> loadDashboard() async {
     try {
       final usersResult = await _repo.findUsers(20, pageToken);
-      print(usersResult);
-      onUserRecords.value = List.of(
-        onUserRecords.value..add(usersResult.users),
+      onUserRecordPages.value = List.of(
+        onUserRecordPages.value..add(usersResult.users),
       );
       pageToken = usersResult.pageToken;
     } on AppError catch (e) {

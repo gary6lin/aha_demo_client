@@ -52,6 +52,8 @@
 	"dashboard_table_column_created": "註冊日期",
 	"dashboard_table_column_count": "登入次數",
 	"dashboard_table_column_session": "上次登入",
+	"dashboard_table_control_previous": "上一頁",
+	"dashboard_table_control_next": "下一頁",
 
 	"update_name": "更新名稱",
 	"update_name_submission": "確認更新",

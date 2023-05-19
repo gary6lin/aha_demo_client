@@ -51,7 +51,9 @@
 	"dashboard_table_column_email": "Email",
 	"dashboard_table_column_created": "Created On",
 	"dashboard_table_column_count": "Login Count",
-	"dashboard_table_column_session": "Last Sign In",
+	"dashboard_table_column_session": "Last Active",
+	"dashboard_table_control_previous": "Previous",
+	"dashboard_table_control_next": "Next",
 
 	"update_name": "Update name",
 	"update_name_submission": "Update my name",

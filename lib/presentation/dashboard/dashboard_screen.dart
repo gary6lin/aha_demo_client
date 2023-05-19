@@ -1,12 +1,13 @@
-import 'package:aha_demo/presentation/dashboard/dashboard_view_model.dart';
-import 'package:aha_demo/repositories/dto/response/users_result_dto.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
+import '../../repositories/dto/response/users_result_dto.dart';
 import '../../values/app_text_style.dart';
 import '../../values/constants.dart';
 import '../widgets/app_card.dart';
+import '../widgets/app_filled_button.dart';
 import '../widgets/main_content_frame.dart';
+import 'dashboard_view_model.dart';
 import 'widgets/user_statistics_widget.dart';
 
 class DashboardScreen extends StatefulWidget {
@@ -19,7 +20,8 @@ class DashboardScreen extends StatefulWidget {
 class _DashboardScreenState extends State<DashboardScreen> {
   final _vm = DashboardViewModel();
 
-  int page = 0;
+  int currentPage = 0;
+  bool get isFirstPage => currentPage == 0;
 
   @override
   void initState() {
@@ -35,33 +37,77 @@ class _DashboardScreenState extends State<DashboardScreen> {
           children: [
             const UserStatisticsWidget(),
             const SizedBox(height: defaultPadding),
-            Text(
-              tr('registered_users'),
-              style: AppTextStyle.titleRegular,
+            ValueListenableBuilder(
+              valueListenable: _vm.onUserRecordPages,
+              builder: (BuildContext context, List<List<UserRecord>> pageList, Widget? child) =>
+                  _buildUserRecordPages(pageList),
             ),
-            const SizedBox(height: defaultPadding),
-            _buildUserRecords(),
           ],
         ),
       );
 
-  Widget _buildUserRecords() => AppCard(
-        width: null,
-        padding: defaultPadding,
-        child: ValueListenableBuilder(
-          valueListenable: _vm.onUserRecords,
-          builder: (BuildContext context, List<List<UserRecord>> list, Widget? child) => SizedBox(
-            width: double.infinity,
-            child: DataTable(
-              columnSpacing: defaultPadding,
-              columns: _buildTableTitles(),
-              rows: List.generate(
-                list.length,
-                (index) => _buildTableRow(list[page][index]),
+  Widget _buildUserRecordPages(List<List<UserRecord>> pageList) => Container(
+        child: pageList.isNotEmpty
+            ? Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    tr('registered_users'),
+                    style: AppTextStyle.titleRegular,
+                  ),
+                  const SizedBox(height: defaultPadding),
+                  AppCard(
+                    width: null,
+                    padding: defaultPadding,
+                    child: SizedBox(
+                      width: double.infinity,
+                      child: DataTable(
+                        columnSpacing: defaultPadding,
+                        columns: _buildTableTitles(),
+                        rows: List.generate(
+                          pageList[currentPage].length,
+                          (index) => _buildTableRow(pageList[currentPage][index]),
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: defaultPadding),
+                  _buildPageControls(),
+                ],
+              )
+            : null,
+      );
+
+  Widget _buildPageControls() => Row(
+        children: [
+          SizedBox(
+            width: 128,
+            child: AppFilledButton(
+              buttonSize: AppFilledButtonSize.small,
+              onPressed: !isFirstPage
+                  ? () async {
+                      // TODO
+                    }
+                  : null,
+              child: Text(
+                tr('dashboard_table_control_previous'),
               ),
             ),
           ),
-        ),
+          const SizedBox(width: defaultPadding),
+          SizedBox(
+            width: 128,
+            child: AppFilledButton(
+              buttonSize: AppFilledButtonSize.small,
+              child: Text(
+                tr('dashboard_table_control_next'),
+              ),
+              onPressed: () async {
+                // TODO
+              },
+            ),
+          ),
+        ],
       );
 
   List<DataColumn> _buildTableTitles() => [
