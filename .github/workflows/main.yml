@@ -42,3 +42,4 @@ jobs:
           BRANCH: main
           FOLDER: build/web
           SSH_PRIVATE_KEY: ${{ secrets.DEPLOY_PRIVATE_KEY }}
+          KNOWN_HOSTS_FILE:  ./known_hosts
