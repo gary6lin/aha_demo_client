@@ -16,7 +16,7 @@ jobs:
           ref: ${{ github.ref_name }}
 
       - name: Fetch version from tag
-        uses: heeyuki/version-by-tag@main
+        uses: gary6lin/version-by-tag@main
         id: version_by_tag
         with:
           tagName: ${{ github.ref_name }}
