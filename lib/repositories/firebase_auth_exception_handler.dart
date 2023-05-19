@@ -4,6 +4,7 @@ import 'errors/invalid_action_code_error.dart';
 import 'errors/invalid_page_token_error.dart';
 import 'errors/user_disabled_error.dart';
 import 'errors/user_not_found_error.dart';
+import 'errors/wrong_password_error.dart';
 
 class FirebaseAuthExceptionHandler {
   FirebaseAuthExceptionHandler._();
@@ -13,6 +14,7 @@ class FirebaseAuthExceptionHandler {
   static const _invalidActionCode = 'invalid-action-code';
   static const _userDisabled = 'user-disabled';
   static const _userNotFound = 'user-not-found';
+  static const _wrongPassword = 'wrong-password';
   static const _invalidPageToken = 'invalid-page-token';
 
   static void handle(String? message) {
@@ -30,6 +32,9 @@ class FirebaseAuthExceptionHandler {
     }
     if (message?.contains(_userNotFound) == true) {
       throw UserNotFoundError();
+    }
+    if (message?.contains(_wrongPassword) == true) {
+      throw WrongPasswordError();
     }
     if (message?.contains(_invalidPageToken) == true) {
       throw InvalidPageTokenError();
