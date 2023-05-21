@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 import 'package:retrofit/http.dart';
 
+import '../../values/app_environments.dart';
 import '../auth_interceptor.dart';
 import '../dto/request/create_user_dto.dart';
 import '../dto/request/update_user_info_dto.dart';
@@ -34,7 +35,7 @@ abstract class AppRemoteDataSource {
     }
     return _AppRemoteDataSource(
       dio,
-      baseUrl: 'http://localhost:3000/',
+      baseUrl: AppEnvironments.host,
     );
   }
 

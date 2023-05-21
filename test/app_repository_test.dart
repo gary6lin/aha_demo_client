@@ -21,6 +21,7 @@ void main() {
     final data = UsersResultDto(
       users: [
         UserRecord(
+          uid: 'QWSXZA',
           email: 'gary@gmail.com',
           emailVerified: true,
           displayName: 'Gary',

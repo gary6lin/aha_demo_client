@@ -197,9 +197,14 @@ class _AppRepositoryImp implements AppRepository {
 
   @override
   Future<void> verifyEmail(String oobCode) async {
-    // 3. Verify the email via the generated verification link
     try {
+      // 3. Verify the email via the generated verification link
       await _firebaseAuth.applyActionCode(oobCode);
+
+      // Updates the user copy on our server
+      await _updateUserCopy(
+        await getCurrentUser(),
+      );
     } on FirebaseAuthException catch (e) {
       // Handle errors from Firebase
       if (kDebugMode) print(e.message);
