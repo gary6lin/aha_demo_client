@@ -13,7 +13,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
         with:
-          ref: ${{ github.ref_name }}
+          fetch-depth: 0 # Let's get all the branches
 
 #      - name: Fetch version from tag
 #        uses: gary6lin/version-by-tag@main
