@@ -21,7 +21,7 @@ class SideMenu extends StatelessWidget {
                   DrawerHeader(
                     padding: const EdgeInsets.all(32),
                     child: SvgPicture.asset(
-                      'res/images/logo.svg',
+                      'res/images/aha_logo.svg',
                     ),
                   ),
                   _buildListTile(
