@@ -6,8 +6,10 @@ import 'package:google_sign_in/google_sign_in.dart';
 
 import '../models/auth_state.dart';
 import 'dto/request/create_user_dto.dart';
-import 'dto/request/update_user_dto.dart';
+import 'dto/request/update_user_info_dto.dart';
+import 'dto/request/update_user_password_dto.dart';
 import 'dto/response/users_result_dto.dart';
+import 'dto/response/users_statistic_dto.dart';
 import 'errors/user_not_found_error.dart';
 import 'errors/user_not_signed_in_error.dart';
 import 'firebase_auth_exception_handler.dart';
@@ -31,12 +33,10 @@ abstract class AppRepository {
   Future<void> register(String email, String password, String displayName);
   Future<void> sendEmailVerification();
   Future<void> verifyEmail(String oobCode);
-  Future<void> updateProfile({
-    String? displayName,
-    String? currentPassword,
-    String? newPassword,
-  });
-  Future<UsersResultDto> findUsers(int maxResults, String? pageToken);
+  Future<void> updateUserInfo({String? displayName});
+  Future<void> updateUserPassword({String? currentPassword, String? newPassword});
+  Future<UsersResultDto> findUsers(int pageSize, String? pageToken);
+  Future<UsersStatisticDto> findUsersStatistic();
 }
 
 class _AppRepositoryImp implements AppRepository {
@@ -83,7 +83,11 @@ class _AppRepositoryImp implements AppRepository {
   @override
   Future<void> signIn(String email, String password) async {
     try {
-      await _firebaseAuth.signInWithEmailAndPassword(email: email, password: password);
+      // Traditional user sign in
+      final userCred = await _firebaseAuth.signInWithEmailAndPassword(email: email, password: password);
+
+      // Updates the user copy on our server
+      await _updateUserCopy(userCred.user);
     } on FirebaseAuthException catch (e) {
       // Handle errors from Firebase
       if (kDebugMode) print(e.message);
@@ -102,7 +106,10 @@ class _AppRepositoryImp implements AppRepository {
       final facebookAuthCredential = FacebookAuthProvider.credential(loginResult.accessToken!.token);
 
       // Once signed in, return the UserCredential
-      await _firebaseAuth.signInWithCredential(facebookAuthCredential);
+      final userCred = await _firebaseAuth.signInWithCredential(facebookAuthCredential);
+
+      // Updates the user copy on our server
+      await _updateUserCopy(userCred.user);
     } on FirebaseAuthException catch (e) {
       // Handle errors from Firebase
       if (kDebugMode) print(e.message);
@@ -133,7 +140,10 @@ class _AppRepositoryImp implements AppRepository {
       );
 
       // Once signed in, return the UserCredential
-      await _firebaseAuth.signInWithCredential(credential);
+      final userCred = await _firebaseAuth.signInWithCredential(credential);
+
+      // Updates the user copy on our server
+      await _updateUserCopy(userCred.user);
     } on FirebaseAuthException catch (e) {
       // Handle errors from Firebase
       if (kDebugMode) print(e.message);
@@ -199,8 +209,32 @@ class _AppRepositoryImp implements AppRepository {
   }
 
   @override
-  Future<void> updateProfile({
+  Future<void> updateUserInfo({
     String? displayName,
+  }) async {
+    // 1. Get the current user
+    final user = await getCurrentUser();
+    if (user == null) throw UserNotFoundError();
+
+    try {
+      // 2. Update users via the server API to enforce additional validation or business logic.
+      await _remote.updateUserInfo(
+        user.uid,
+        UpdateUserInfoDto(
+          displayName: displayName,
+        ),
+      );
+    } on DioError catch (e) {
+      // Handle errors from server
+      if (kDebugMode) print(e.toString());
+      FirebaseAuthExceptionHandler.handle(e.response?.data.toString());
+      InvalidPasswordFormatHandler.handle(e.response?.data.toString());
+      rethrow;
+    }
+  }
+
+  @override
+  Future<void> updateUserPassword({
     String? currentPassword,
     String? newPassword,
   }) async {
@@ -210,10 +244,9 @@ class _AppRepositoryImp implements AppRepository {
 
     try {
       // 2. Update users via the server API to enforce additional validation or business logic.
-      await _remote.updateUser(
+      await _remote.updateUserPassword(
         user.uid,
-        UpdateUserDto(
-          displayName: displayName,
+        UpdateUserPasswordDto(
           currentPassword: currentPassword,
           newPassword: newPassword,
         ),
@@ -228,14 +261,33 @@ class _AppRepositoryImp implements AppRepository {
   }
 
   @override
-  Future<UsersResultDto> findUsers(int maxResults, String? pageToken) async {
+  Future<UsersResultDto> findUsers(int pageSize, String? pageToken) async {
     try {
-      return await _remote.findUsers(maxResults, pageToken);
+      return await _remote.findUsers(pageSize, pageToken);
     } on DioError catch (e) {
       // Handle errors from server
       if (kDebugMode) print(e.toString());
       FirebaseAuthExceptionHandler.handle(e.response?.data.toString());
       rethrow;
     }
+  }
+
+  @override
+  Future<UsersStatisticDto> findUsersStatistic() async {
+    try {
+      return await _remote.findUsersStatistic();
+    } on DioError catch (e) {
+      // Handle errors from server
+      if (kDebugMode) print(e.toString());
+      FirebaseAuthExceptionHandler.handle(e.response?.data.toString());
+      rethrow;
+    }
+  }
+
+  Future<void> _updateUserCopy(User? user) async {
+    if (user == null) {
+      throw UserNotFoundError();
+    }
+    await _remote.updateUser(user.uid);
   }
 }

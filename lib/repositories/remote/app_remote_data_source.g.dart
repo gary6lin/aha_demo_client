@@ -40,15 +40,11 @@ class _AppRemoteDataSource implements AppRemoteDataSource {
   }
 
   @override
-  Future<void> updateUser(
-    String uid,
-    UpdateUserDto dto,
-  ) async {
+  Future<void> updateUser(String uid) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
-    _data.addAll(dto.toJson());
+    final Map<String, dynamic>? _data = null;
     await _dio.fetch<void>(_setStreamType<void>(Options(
       method: 'PATCH',
       headers: _headers,
@@ -64,13 +60,61 @@ class _AppRemoteDataSource implements AppRemoteDataSource {
   }
 
   @override
+  Future<void> updateUserInfo(
+    String uid,
+    UpdateUserInfoDto dto,
+  ) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(dto.toJson());
+    await _dio.fetch<void>(_setStreamType<void>(Options(
+      method: 'PATCH',
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          '/user/${uid}/info',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+  }
+
+  @override
+  Future<void> updateUserPassword(
+    String uid,
+    UpdateUserPasswordDto dto,
+  ) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(dto.toJson());
+    await _dio.fetch<void>(_setStreamType<void>(Options(
+      method: 'PATCH',
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          '/user/${uid}/password',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+  }
+
+  @override
   Future<UsersResultDto> findUsers(
-    int maxResults,
+    int pageSize,
     String? pageToken,
   ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
-      r'maxResults': maxResults,
+      r'pageSize': pageSize,
       r'pageToken': pageToken,
     };
     queryParameters.removeWhere((k, v) => v == null);
@@ -90,6 +134,29 @@ class _AppRemoteDataSource implements AppRemoteDataSource {
             )
             .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = UsersResultDto.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<UsersStatisticDto> findUsersStatistic() async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final Map<String, dynamic>? _data = null;
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<UsersStatisticDto>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/users-statistic',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = UsersStatisticDto.fromJson(_result.data!);
     return value;
   }
 

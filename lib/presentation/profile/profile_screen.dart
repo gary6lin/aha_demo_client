@@ -169,6 +169,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               decoration: InputDecoration(
                 labelText: tr('current_password'),
               ),
+              obscureText: true,
               validator: AppValidator.password,
               autovalidateMode: AutovalidateMode.onUserInteraction,
             ),
@@ -178,6 +179,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               decoration: InputDecoration(
                 labelText: tr('new_password'),
               ),
+              obscureText: true,
               validator: AppValidator.password,
               autovalidateMode: AutovalidateMode.onUserInteraction,
             ),
@@ -187,6 +189,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               decoration: InputDecoration(
                 labelText: tr('confirm_password'),
               ),
+              obscureText: true,
               validator: (value) => AppValidator.passwordConfirm(value, _newPasswordController.text),
               autovalidateMode: AutovalidateMode.onUserInteraction,
             ),

@@ -77,6 +77,7 @@ class _LoginScreenState extends State<LoginScreen> {
         decoration: InputDecoration(
           labelText: tr('email_address'),
         ),
+        keyboardType: TextInputType.emailAddress,
         validator: AppValidator.email,
         autovalidateMode: AutovalidateMode.onUserInteraction,
       );
@@ -86,6 +87,7 @@ class _LoginScreenState extends State<LoginScreen> {
         decoration: InputDecoration(
           labelText: tr('password'),
         ),
+        obscureText: true,
         validator: AppValidator.password,
         autovalidateMode: AutovalidateMode.onUserInteraction,
       );

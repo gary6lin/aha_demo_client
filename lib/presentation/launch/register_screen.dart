@@ -77,6 +77,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             decoration: InputDecoration(
               labelText: tr('email_address'),
             ),
+            keyboardType: TextInputType.emailAddress,
             validator: AppValidator.email,
             autovalidateMode: AutovalidateMode.onUserInteraction,
           ),
@@ -85,6 +86,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             decoration: InputDecoration(
               labelText: tr('password'),
             ),
+            obscureText: true,
             validator: AppValidator.password,
             autovalidateMode: AutovalidateMode.onUserInteraction,
           ),

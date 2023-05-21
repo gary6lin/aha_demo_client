@@ -31,7 +31,7 @@ class ProfileViewModel {
 
   Future<void> updateDisplayName(String displayName) async {
     try {
-      await _repo.updateProfile(
+      await _repo.updateUserInfo(
         displayName: displayName,
       );
       // Update the user model for display
@@ -49,7 +49,7 @@ class ProfileViewModel {
 
   Future<void> changePassword(String currentPassword, String newPassword) async {
     try {
-      await _repo.updateProfile(
+      await _repo.updateUserPassword(
         currentPassword: currentPassword,
         newPassword: newPassword,
       );
