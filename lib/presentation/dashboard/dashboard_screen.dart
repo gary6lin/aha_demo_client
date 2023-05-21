@@ -22,9 +22,6 @@ class DashboardScreen extends StatefulWidget {
 class _DashboardScreenState extends State<DashboardScreen> {
   final _vm = DashboardViewModel();
 
-  int currentPage = 0;
-  bool get isFirstPage => currentPage == 0;
-
   @override
   void initState() {
     super.initState();
@@ -76,8 +73,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         columnSpacing: defaultPadding,
                         columns: _buildTableTitles(),
                         rows: List.generate(
-                          pageList[currentPage].length,
-                          (index) => _buildTableRow(pageList[currentPage][index]),
+                          pageList[_vm.currentPage].length,
+                          (index) => _buildTableRow(pageList[_vm.currentPage][index]),
                         ),
                       ),
                     ),
@@ -95,9 +92,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
             width: 128,
             child: AppFilledButton(
               buttonSize: AppFilledButtonSize.small,
-              onPressed: !isFirstPage
+              onPressed: !_vm.isFirstPage
                   ? () async {
-                      // TODO
+                      await _vm.loadPreviousPage();
                     }
                   : null,
               child: Text(
@@ -114,7 +111,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 tr('dashboard_table_control_next'),
               ),
               onPressed: () async {
-                // TODO
+                await _vm.loadMoreUserList();
               },
             ),
           ),
@@ -132,11 +129,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
             tr('dashboard_table_column_created'),
           ),
         ),
-        DataColumn(
-          label: Text(
-            tr('dashboard_table_column_count'),
-          ),
-        ),
+        // DataColumn(
+        //   label: Text(
+        //     tr('dashboard_table_column_count'),
+        //   ),
+        // ),
         DataColumn(
           label: Text(
             tr('dashboard_table_column_session'),
@@ -157,14 +154,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
               ),
             ),
           ),
-          DataCell(
-            Text(
-              AppDateTime.parseDateTime(
-                userRecord.lastRefreshTime,
-                context.locale.toString(),
-              ),
-            ),
-          ),
+          // DataCell(
+          //   Text(
+          //     AppDateTime.parseDateTime(
+          //       userRecord.lastRefreshTime,
+          //       context.locale.toString(),
+          //     ),
+          //   ),
+          // ),
           DataCell(
             Text(
               AppDateTime.parseDateTime(
