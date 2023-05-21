@@ -5,6 +5,11 @@ on:
   release:
     types: [ released ]
 
+permissions:
+  # Need `contents: read` to checkout the repository
+  # Need `contents: write` to merge branches
+  contents: write
+
 jobs:
   deployment:
     runs-on: macos-latest
@@ -38,7 +43,7 @@ jobs:
       - name: Merge changes from main to release branch
         uses: devvspaces/merge-branches@v1
         with:
-          token: ${{ secrets.PAT }}
+          token: ${{ github.token }}
           from_branch: origin/main
           to_branch: release
 
