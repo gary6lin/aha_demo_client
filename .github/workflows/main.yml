@@ -34,12 +34,19 @@ jobs:
           --build-name=${{ steps.version_by_tag.outputs.semver }} \
           --build-number=${{ steps.version_by_tag.outputs.versionCode }} \
           --release
+          
+      - name: Merge changes from main to release branch
+        uses: devvspaces/merge-branches@v1
+        with:
+          token: ${{ secrets.PAT }}
+          from_branch: origin/main
+          to_branch: release
 
-      - name: Push to another repo (to trigger the autodeploy on DigitalOcean)
-        uses: s0/git-publish-subdir-action@v2.6.0
-        env:
-          REPO: git@github.com:gary6lin/aha_demo_web.git
-          BRANCH: main
-          FOLDER: build/web
-          SSH_PRIVATE_KEY: ${{ secrets.DEPLOY_PRIVATE_KEY }}
-          KNOWN_HOSTS_FILE:  ./known_hosts
+#      - name: Push to another repo (to trigger the autodeploy)
+#        uses: s0/git-publish-subdir-action@v2.6.0
+#        env:
+#          REPO: git@github.com:gary6lin/aha_demo_web.git
+#          BRANCH: main
+#          FOLDER: build/web
+#          SSH_PRIVATE_KEY: ${{ secrets.DEPLOY_PRIVATE_KEY }}
+#          KNOWN_HOSTS_FILE:  ./known_hosts
