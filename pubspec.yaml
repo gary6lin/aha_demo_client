@@ -34,12 +34,15 @@ dependencies:
   flutter_web_plugins:
     sdk: flutter
 
-  # Official
-  go_router: ^7.0.0
-
   # Firebase
   firebase_core: ^2.11.0
   firebase_auth: ^4.5.0
+
+  # System
+  package_info_plus: ^4.0.1
+
+  # Router
+  go_router: ^7.0.0
 
   # DI
   get_it: ^7.4.1
@@ -70,8 +73,6 @@ dependencies:
 
   # Testing
   mockito: ^5.3.2
-
-  shared_preferences: ^2.0.0
 
 dev_dependencies:
   flutter_test:

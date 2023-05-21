@@ -13,11 +13,8 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
-  // final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-
   @override
   Widget build(BuildContext context) => Scaffold(
-        // key: _scaffoldKey,
         drawer: const SideMenu(),
         body: SafeArea(
           child: Row(

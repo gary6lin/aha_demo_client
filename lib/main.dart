@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
 import 'package:get_it/get_it.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 import 'app_locale.dart';
 import 'firebase_options.dart';
@@ -34,6 +35,9 @@ void main() async {
   );
 
   // Dependency injection
+  GetIt.I.registerSingleton(
+    await PackageInfo.fromPlatform(),
+  );
   GetIt.I.registerSingleton(
     Dio(),
   );

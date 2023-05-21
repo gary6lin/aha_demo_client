@@ -1,5 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:responsive_framework/breakpoint.dart';
 import 'package:responsive_framework/responsive_breakpoints.dart';
 
@@ -15,6 +17,8 @@ class MainApp extends StatefulWidget {
 }
 
 class _MainAppState extends State<MainApp> {
+  final _packageInfo = GetIt.I<PackageInfo>();
+
   @override
   Widget build(BuildContext context) {
     // Rebuild all children on locale changed
@@ -73,7 +77,26 @@ class _MainAppState extends State<MainApp> {
         fontFamily: AppTextStyle.fontFamily,
       ),
       builder: (context, child) => ResponsiveBreakpoints.builder(
-        child: child!,
+        child: Stack(
+          children: [
+            Container(
+              child: child,
+            ),
+            Positioned(
+              right: 8,
+              bottom: 8,
+              child: Material(
+                color: Colors.transparent,
+                child: Text(
+                  'v${_packageInfo.version} (build ${_packageInfo.buildNumber})',
+                  style: AppTextStyle.smallRegular.copyWith(
+                    color: AppColors.textLight.withOpacity(0.3),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
         breakpoints: [
           const Breakpoint(start: 0, end: 850, name: MOBILE),
           const Breakpoint(start: 851, end: 1100, name: TABLET),
