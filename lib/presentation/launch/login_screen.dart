@@ -7,7 +7,6 @@ import 'package:go_router/go_router.dart';
 
 import '../../utils/app_validator.dart';
 import '../../utils/show_alert.dart';
-import '../../values/app_keys.dart';
 import '../../values/app_text_style.dart';
 import '../widgets/app_card.dart';
 import '../widgets/app_filled_button.dart';
@@ -74,7 +73,6 @@ class _LoginScreenState extends State<LoginScreen> {
       );
 
   Widget _buildEmailInput() => TextFormField(
-        key: AppKeys.emailField,
         controller: _emailController,
         decoration: InputDecoration(
           labelText: tr('email_address'),
@@ -85,7 +83,6 @@ class _LoginScreenState extends State<LoginScreen> {
       );
 
   Widget _buildPasswordInput() => TextFormField(
-        key: AppKeys.passwordField,
         controller: _passwordController,
         decoration: InputDecoration(
           labelText: tr('password'),
@@ -96,7 +93,6 @@ class _LoginScreenState extends State<LoginScreen> {
       );
 
   Widget _buildEmailLoginButton() => AppFilledButton(
-        key: AppKeys.loginBtn,
         child: Text(
           tr('login'),
         ),

@@ -9,6 +9,7 @@ import 'errors/wrong_password_error.dart';
 class FirebaseAuthExceptionHandler {
   FirebaseAuthExceptionHandler._();
 
+  static const _accountExistsWithDifferentCredential = 'account-exists-with-different-credential';
   static const _emailAlreadyExists = 'email-already-exists';
   static const _expiredActionCode = 'expired-action-code';
   static const _invalidActionCode = 'invalid-action-code';
@@ -18,6 +19,9 @@ class FirebaseAuthExceptionHandler {
   static const _invalidPageToken = 'invalid-page-token';
 
   static void handle(String? message) {
+    if (message?.contains(_accountExistsWithDifferentCredential) == true) {
+      throw EmailAlreadyExistsError();
+    }
     if (message?.contains(_emailAlreadyExists) == true) {
       throw EmailAlreadyExistsError();
     }
