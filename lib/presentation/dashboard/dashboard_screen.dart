@@ -47,8 +47,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
             const SizedBox(height: defaultPadding),
             ValueListenableBuilder(
               valueListenable: _vm.onUserRecordPages,
-              builder: (BuildContext context, List<List<UserRecord>> pageList, Widget? child) =>
-                  _buildUserRecordPages(pageList),
+              builder: (BuildContext context, List<List<UserRecord>> pageList, Widget? child) => AnimatedOpacity(
+                opacity: pageList.isNotEmpty ? 1 : 0,
+                duration: const Duration(milliseconds: 300),
+                child: _buildUserRecordPages(pageList),
+              ),
             ),
           ],
         ),

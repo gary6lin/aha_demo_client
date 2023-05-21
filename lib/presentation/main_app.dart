@@ -47,7 +47,7 @@ class _MainAppState extends State<MainApp> {
           floatingLabelBehavior: FloatingLabelBehavior.always,
           filled: true,
           fillColor: AppColors.background.withOpacity(0.3),
-          contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+          contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
           enabledBorder: OutlineInputBorder(
             borderSide: const BorderSide(width: 1.5, color: Colors.white24),
             borderRadius: BorderRadius.circular(8),

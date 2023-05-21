@@ -1,9 +1,9 @@
 class UpdateUserPasswordDto {
   final String? currentPassword;
-  final String? newPassword;
+  final String newPassword;
 
   UpdateUserPasswordDto({
-    required this.currentPassword,
+    this.currentPassword,
     required this.newPassword,
   });
 

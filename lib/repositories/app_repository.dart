@@ -34,7 +34,7 @@ abstract class AppRepository {
   Future<void> sendEmailVerification();
   Future<void> verifyEmail(String oobCode);
   Future<void> updateUserInfo({String? displayName});
-  Future<void> updateUserPassword({String? currentPassword, String? newPassword});
+  Future<void> updateUserPassword(String currentPassword, String newPassword);
   Future<UsersResultDto> findUsers(int pageSize, String? pageToken);
   Future<UsersStatisticDto> findUsersStatistic();
 }
@@ -234,10 +234,7 @@ class _AppRepositoryImp implements AppRepository {
   }
 
   @override
-  Future<void> updateUserPassword({
-    String? currentPassword,
-    String? newPassword,
-  }) async {
+  Future<void> updateUserPassword(String currentPassword, String newPassword) async {
     // 1. Get the current user
     final user = await getCurrentUser();
     if (user == null) throw UserNotFoundError();

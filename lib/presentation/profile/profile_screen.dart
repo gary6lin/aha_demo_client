@@ -57,22 +57,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) => MainContentFrame(
-        child: Column(
-          children: [
-            _buildUserProfile(),
-            const SizedBox(height: defaultPadding),
-            Form(
-              key: _nameFormKey,
-              child: _buildDisplayNameChange(),
-            ),
-            const SizedBox(height: defaultPadding),
-            Form(
-              key: _passwordFormKey,
-              child: _buildPasswordChange(),
-            ),
-            const SizedBox(height: defaultPadding),
-            _buildSignOutButton(),
-          ],
+        child: ValueListenableBuilder(
+          valueListenable: _vm.onIsEmailAuth,
+          builder: (BuildContext context, bool isEmailAuth, Widget? child) => Column(
+            children: [
+              _buildUserProfile(),
+              const SizedBox(height: defaultPadding),
+              _buildDisplayNameChange(),
+              const SizedBox(height: defaultPadding),
+              if (isEmailAuth) _buildPasswordChange(),
+              if (isEmailAuth) const SizedBox(height: defaultPadding),
+              _buildSignOutButton(),
+            ],
+          ),
         ),
       );
 
@@ -94,16 +91,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
         width: 96,
         height: 96,
         child: CircleAvatar(
-          child: Builder(
-            builder: (BuildContext context) => user?.photoURL != null
-                ? Image.network(user!.photoURL!)
-                : Text(
-                    user?.displayName?.characters.first.toUpperCase() ?? '#',
-                    style: const TextStyle(
-                      fontSize: 64,
-                      fontWeight: FontWeight.w900,
-                    ),
-                  ),
+          foregroundImage: user?.photoURL != null ? NetworkImage(user!.photoURL!) : null,
+          child: Text(
+            user?.displayName?.characters.first.toUpperCase() ?? '#',
+            style: const TextStyle(
+              fontSize: 64,
+              fontWeight: FontWeight.w900,
+            ),
           ),
         ),
       );
@@ -123,103 +117,109 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ],
       );
 
-  Widget _buildDisplayNameChange() => ExpandingDropdownTile(
-        controller: _updateNameExpandableController,
-        titleText: tr('update_name'),
-        content: Column(
-          children: [
-            TextFormField(
-              controller: _nameController,
-              decoration: InputDecoration(
-                labelText: tr('display_name'),
+  Widget _buildDisplayNameChange() => Form(
+        key: _nameFormKey,
+        child: ExpandingDropdownTile(
+          controller: _updateNameExpandableController,
+          titleText: tr('update_name'),
+          content: Column(
+            children: [
+              TextFormField(
+                controller: _nameController,
+                decoration: InputDecoration(
+                  labelText: tr('display_name'),
+                ),
+                validator: AppValidator.name,
+                autovalidateMode: AutovalidateMode.onUserInteraction,
               ),
-              validator: AppValidator.name,
-              autovalidateMode: AutovalidateMode.onUserInteraction,
-            ),
-            const SizedBox(height: 28),
-            AppFilledButton(
-              child: Text(
-                tr('update_name_submission'),
+              const SizedBox(height: 28),
+              AppFilledButton(
+                child: Text(
+                  tr('update_name_submission'),
+                ),
+                onPressed: () async {
+                  final nameError = AppValidator.name(_nameController.text);
+
+                  // Submit only if there is no error
+                  if (nameError == null) {
+                    await _vm.updateDisplayName(
+                      _nameController.text,
+                    );
+                  }
+
+                  // Validates to show errors if any
+                  _nameFormKey.currentState?.validate();
+                },
               ),
-              onPressed: () async {
-                final nameError = AppValidator.name(_nameController.text);
-
-                // Submit only if there is no error
-                if (nameError == null) {
-                  await _vm.updateDisplayName(
-                    _nameController.text,
-                  );
-                }
-
-                // Validates to show errors if any
-                _nameFormKey.currentState?.validate();
-              },
-            ),
-          ],
+            ],
+          ),
         ),
       );
 
-  Widget _buildPasswordChange() => ExpandingDropdownTile(
-        controller: _changePasswordExpandableController,
-        titleText: tr('change_password'),
-        content: Column(
-          children: [
-            TextFormField(
-              controller: _currentPasswordController,
-              decoration: InputDecoration(
-                labelText: tr('current_password'),
+  Widget _buildPasswordChange() => Form(
+        key: _passwordFormKey,
+        child: ExpandingDropdownTile(
+          controller: _changePasswordExpandableController,
+          titleText: tr('change_password'),
+          content: Column(
+            children: [
+              TextFormField(
+                controller: _currentPasswordController,
+                decoration: InputDecoration(
+                  labelText: tr('current_password'),
+                ),
+                obscureText: true,
+                validator: AppValidator.password,
+                autovalidateMode: AutovalidateMode.onUserInteraction,
               ),
-              obscureText: true,
-              validator: AppValidator.password,
-              autovalidateMode: AutovalidateMode.onUserInteraction,
-            ),
-            const SizedBox(height: 28),
-            TextFormField(
-              controller: _newPasswordController,
-              decoration: InputDecoration(
-                labelText: tr('new_password'),
+              const SizedBox(height: 28),
+              TextFormField(
+                controller: _newPasswordController,
+                decoration: InputDecoration(
+                  labelText: tr('new_password'),
+                ),
+                obscureText: true,
+                validator: AppValidator.password,
+                autovalidateMode: AutovalidateMode.onUserInteraction,
               ),
-              obscureText: true,
-              validator: AppValidator.password,
-              autovalidateMode: AutovalidateMode.onUserInteraction,
-            ),
-            const SizedBox(height: 28),
-            TextFormField(
-              controller: _confirmPasswordController,
-              decoration: InputDecoration(
-                labelText: tr('confirm_password'),
+              const SizedBox(height: 28),
+              TextFormField(
+                controller: _confirmPasswordController,
+                decoration: InputDecoration(
+                  labelText: tr('confirm_password'),
+                ),
+                obscureText: true,
+                validator: (value) => AppValidator.passwordConfirm(value, _newPasswordController.text),
+                autovalidateMode: AutovalidateMode.onUserInteraction,
               ),
-              obscureText: true,
-              validator: (value) => AppValidator.passwordConfirm(value, _newPasswordController.text),
-              autovalidateMode: AutovalidateMode.onUserInteraction,
-            ),
-            const SizedBox(height: 28),
-            AppFilledButton(
-              child: Text(
-                tr('change_password_submission'),
-              ),
-              onPressed: () async {
-                final currentPassword = _currentPasswordController.text;
-                final newPassword = _newPasswordController.text;
-                final confirmPassword = _confirmPasswordController.text;
+              const SizedBox(height: 28),
+              AppFilledButton(
+                child: Text(
+                  tr('change_password_submission'),
+                ),
+                onPressed: () async {
+                  final currentPassword = _currentPasswordController.text;
+                  final newPassword = _newPasswordController.text;
+                  final confirmPassword = _confirmPasswordController.text;
 
-                final currentPasswordError = AppValidator.password(currentPassword);
-                final newPasswordError = AppValidator.password(newPassword);
-                final confirmPasswordError = AppValidator.passwordConfirm(newPassword, confirmPassword);
+                  final currentPasswordError = AppValidator.password(currentPassword);
+                  final newPasswordError = AppValidator.password(newPassword);
+                  final confirmPasswordError = AppValidator.passwordConfirm(newPassword, confirmPassword);
 
-                // Submit only if there is no error
-                if (currentPasswordError == null && newPasswordError == null && confirmPasswordError == null) {
-                  await _vm.changePassword(
-                    currentPassword,
-                    newPassword,
-                  );
-                }
+                  // Submit only if there is no error
+                  if (currentPasswordError == null && newPasswordError == null && confirmPasswordError == null) {
+                    await _vm.changePassword(
+                      currentPassword,
+                      newPassword,
+                    );
+                  }
 
-                // Validates to show errors if any
-                _passwordFormKey.currentState?.validate();
-              },
-            ),
-          ],
+                  // Validates to show errors if any
+                  _passwordFormKey.currentState?.validate();
+                },
+              ),
+            ],
+          ),
         ),
       );
 
