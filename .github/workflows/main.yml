@@ -15,26 +15,26 @@ jobs:
         with:
           ref: ${{ github.ref_name }}
 
-      - name: Fetch version from tag
-        uses: gary6lin/version-by-tag@main
-        id: version_by_tag
-        with:
-          tagName: ${{ github.ref_name }}
-          isUseGithubRunNumber: true
+#      - name: Fetch version from tag
+#        uses: gary6lin/version-by-tag@main
+#        id: version_by_tag
+#        with:
+#          tagName: ${{ github.ref_name }}
+#          isUseGithubRunNumber: true
+#
+#      - name: Install Flutter tools
+#        uses: subosito/flutter-action@v2.10.0
+#        with:
+#          flutter-version: '3.10.0'
+#
+#      - name: Build flutter web app
+#        run: |-
+#          # https://docs.flutter.dev/development/tools/web-renderers
+#          flutter build web \
+#          --build-name=${{ steps.version_by_tag.outputs.semver }} \
+#          --build-number=${{ steps.version_by_tag.outputs.versionCode }} \
+#          --release
 
-      - name: Install Flutter tools
-        uses: subosito/flutter-action@v2.10.0
-        with:
-          flutter-version: '3.10.0'
-
-      - name: Build flutter web app
-        run: |-
-          # https://docs.flutter.dev/development/tools/web-renderers
-          flutter build web \
-          --build-name=${{ steps.version_by_tag.outputs.semver }} \
-          --build-number=${{ steps.version_by_tag.outputs.versionCode }} \
-          --release
-          
       - name: Merge changes from main to release branch
         uses: devvspaces/merge-branches@v1
         with:
