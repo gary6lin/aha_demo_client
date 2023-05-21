@@ -48,6 +48,9 @@
 	"menu_dashboard": "Dashboard",
 	"menu_profile": "Profile",
 
+	"dashboard_total_users": "Total Users",
+	"dashboard_active_users": "Active Users",
+	"dashboard_average_active_users": "Average DAU in last 7 days",
 	"registered_users": "Registered Users",
 	"dashboard_table_column_email": "Email",
 	"dashboard_table_column_created": "Created On",

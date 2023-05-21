@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 import '../../repositories/dto/response/users_result_dto.dart';
+import '../../repositories/dto/response/users_statistic_dto.dart';
 import '../../utils/app_date_time.dart';
 import '../../values/app_text_style.dart';
 import '../../values/constants.dart';
@@ -28,7 +29,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
   void initState() {
     super.initState();
 
-    _vm.loadDashboard();
+    _vm.loadUsersStatistic();
+    _vm.loadUserList();
   }
 
   @override
@@ -36,7 +38,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const UserStatisticsWidget(),
+            ValueListenableBuilder(
+              valueListenable: _vm.onUsersStatistics,
+              builder: (BuildContext context, UsersStatisticDto? data, Widget? child) => UserStatisticsWidget(
+                data: data,
+              ),
+            ),
             const SizedBox(height: defaultPadding),
             ValueListenableBuilder(
               valueListenable: _vm.onUserRecordPages,
@@ -137,28 +144,28 @@ class _DashboardScreenState extends State<DashboardScreen> {
   DataRow _buildTableRow(UserRecord userRecord) => DataRow(
         cells: [
           DataCell(
-            Text(userRecord.email),
+            Text(userRecord.email ?? ''),
           ),
           DataCell(
             Text(
-              AppDateTime.convert(
-                userRecord.metadata.creationTime,
+              AppDateTime.parseDateTime(
+                userRecord.creationTime,
                 context.locale.toString(),
               ),
             ),
           ),
           DataCell(
             Text(
-              AppDateTime.convert(
-                userRecord.metadata.lastRefreshTime,
+              AppDateTime.parseDateTime(
+                userRecord.lastRefreshTime,
                 context.locale.toString(),
               ),
             ),
           ),
           DataCell(
             Text(
-              AppDateTime.convert(
-                userRecord.metadata.lastSignInTime,
+              AppDateTime.parseDateTime(
+                userRecord.lastSignInTime,
                 context.locale.toString(),
               ),
             ),

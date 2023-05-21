@@ -1,3 +1,4 @@
+import 'package:aha_demo/repositories/dto/response/users_statistic_dto.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get_it/get_it.dart';
 
@@ -8,6 +9,7 @@ import '../../repositories/errors/app_error.dart';
 class DashboardViewModel {
   final _repo = GetIt.I<AppRepository>();
 
+  final onUsersStatistics = ValueNotifier<UsersStatisticDto?>(null);
   final onUserRecordPages = ValueNotifier<List<List<UserRecord>>>([]);
 
   void Function()? onUpdatedDisplayName;
@@ -17,13 +19,27 @@ class DashboardViewModel {
 
   String? pageToken;
 
-  Future<void> loadDashboard() async {
+  void loadUserList() async {
     try {
-      final usersResult = await _repo.findUsers(20, pageToken);
-      onUserRecordPages.value = List.of(
-        onUserRecordPages.value..add(usersResult.users),
+      _repo.findUsers(20, pageToken).then(
+        (usersResult) {
+          onUserRecordPages.value = List.of(
+            onUserRecordPages.value..add(usersResult.users),
+          );
+          pageToken = usersResult.pageToken;
+        },
       );
-      pageToken = usersResult.pageToken;
+    } on AppError catch (e) {
+      if (kDebugMode) print(e);
+      onError?.call(e.errorMessage);
+    }
+  }
+
+  void loadUsersStatistic() {
+    try {
+      _repo.findUsersStatistic().then(
+            (usersStatistic) => onUsersStatistics.value = usersStatistic,
+          );
     } on AppError catch (e) {
       if (kDebugMode) print(e);
       onError?.call(e.errorMessage);

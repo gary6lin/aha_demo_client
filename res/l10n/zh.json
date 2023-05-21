@@ -48,6 +48,9 @@
 	"menu_dashboard": "資訊面板",
 	"menu_profile": "個人檔案",
 
+	"dashboard_total_users": "總用戶數量",
+	"dashboard_active_users": "活躍用戶數",
+	"dashboard_average_active_users": "7天平均活躍用戶",
 	"registered_users": "已註冊用戶",
 	"dashboard_table_column_email": "電子郵件",
 	"dashboard_table_column_created": "註冊日期",

@@ -22,51 +22,53 @@ class UsersResultDto {
 }
 
 class UserRecord {
-  final String email;
-  final String? photoURL;
+  final String? email;
+  final bool emailVerified;
   final String? displayName;
-  final UserMetadata metadata;
+  final String? photoURL;
+  final String? passwordHash;
+  final String? passwordSalt;
+  final DateTime? tokensValidAfterTime;
+
+  final DateTime creationTime;
+  final DateTime lastSignInTime;
+  final DateTime? lastRefreshTime;
 
   UserRecord({
     required this.email,
-    required this.photoURL,
+    required this.emailVerified,
     required this.displayName,
-    required this.metadata,
-  });
-
-  UserRecord.fromJson(Map<String, dynamic> json)
-      : email = json['email'],
-        photoURL = json['photoURL'],
-        displayName = json['displayName'],
-        metadata = UserMetadata.fromJson(json['metadata']);
-
-  Map<String, dynamic> toJson() => {
-        'email': email,
-        'photoURL': photoURL,
-        'displayName': displayName,
-        'metadata': metadata,
-      };
-}
-
-class UserMetadata {
-  final String creationTime;
-  final String lastSignInTime;
-  final String lastRefreshTime;
-
-  UserMetadata({
+    required this.photoURL,
+    required this.passwordHash,
+    required this.passwordSalt,
+    required this.tokensValidAfterTime,
     required this.creationTime,
     required this.lastSignInTime,
     required this.lastRefreshTime,
   });
 
-  UserMetadata.fromJson(Map<String, dynamic> json)
-      : creationTime = json['creationTime'],
-        lastSignInTime = json['lastSignInTime'],
-        lastRefreshTime = json['lastRefreshTime'];
+  UserRecord.fromJson(Map<String, dynamic> json)
+      : email = json['email'],
+        emailVerified = json['emailVerified'],
+        displayName = json['displayName'],
+        photoURL = json['photoURL'],
+        passwordHash = json['passwordHash'],
+        passwordSalt = json['passwordSalt'],
+        tokensValidAfterTime = DateTime.tryParse(json['tokensValidAfterTime']),
+        creationTime = DateTime.parse(json['creationTime']),
+        lastSignInTime = DateTime.parse(json['lastSignInTime']),
+        lastRefreshTime = DateTime.tryParse(json['lastRefreshTime']);
 
   Map<String, dynamic> toJson() => {
-        'creationTime': creationTime,
-        'lastSignInTime': lastSignInTime,
-        'lastRefreshTime': lastRefreshTime,
+        'email': email,
+        'emailVerified': emailVerified,
+        'displayName': displayName,
+        'photoURL': photoURL,
+        'passwordHash': passwordHash,
+        'passwordSalt': passwordSalt,
+        'tokensValidAfterTime': tokensValidAfterTime?.toIso8601String(),
+        'creationTime': creationTime.toIso8601String(),
+        'lastSignInTime': lastSignInTime.toIso8601String(),
+        'lastRefreshTime': lastRefreshTime?.toIso8601String(),
       };
 }
