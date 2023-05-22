@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
@@ -99,8 +97,7 @@ class _AppRepositoryImp implements AppRepository {
       await _updateUserCopy(userCred.user);
     } on FirebaseAuthException catch (e) {
       // Handle errors from Firebase
-      if (kDebugMode) print(e.message);
-      FirebaseAuthExceptionHandler.handle(e.message);
+      FirebaseAuthExceptionHandler.handleException(e);
       rethrow;
     }
   }
@@ -113,8 +110,6 @@ class _AppRepositoryImp implements AppRepository {
 
       // Create a credential from the access token
       final facebookAuthCredential = FacebookAuthProvider.credential(loginResult.accessToken!.token);
-      print('signInWithFacebook: ');
-      inspect(facebookAuthCredential);
 
       // Once signed in, return the UserCredential
       final userCred = await _firebaseAuth.signInWithCredential(facebookAuthCredential);
@@ -126,8 +121,7 @@ class _AppRepositoryImp implements AppRepository {
       await FacebookAuth.instance.logOut();
 
       // Handle errors from Firebase
-      if (kDebugMode) print(e.message);
-      FirebaseAuthExceptionHandler.handle(e.message);
+      FirebaseAuthExceptionHandler.handleException(e);
       rethrow;
     }
   }
@@ -137,8 +131,6 @@ class _AppRepositoryImp implements AppRepository {
     try {
       // Trigger the authentication flow
       final googleUser = await _googleSignIn.signIn();
-      print('signInWithGoogle: ');
-      inspect(googleUser);
 
       // Obtain the auth details from the request
       final googleAuth = await googleUser?.authentication;
@@ -159,8 +151,7 @@ class _AppRepositoryImp implements AppRepository {
       await _googleSignIn.signOut();
 
       // Handle errors from Firebase
-      if (kDebugMode) print(e.message);
-      FirebaseAuthExceptionHandler.handle(e.message);
+      FirebaseAuthExceptionHandler.handleException(e);
       rethrow;
     }
   }
@@ -188,13 +179,12 @@ class _AppRepositoryImp implements AppRepository {
     } on DioError catch (e) {
       // Handle errors from server
       if (kDebugMode) print(e.toString());
-      FirebaseAuthExceptionHandler.handle(e.response?.data.toString());
+      FirebaseAuthExceptionHandler.handleString(e.response?.data.toString());
       InvalidPasswordFormatHandler.handle(e.response?.data.toString());
       rethrow;
     } on FirebaseAuthException catch (e) {
       // Handle errors from Firebase
-      if (kDebugMode) print(e.message);
-      FirebaseAuthExceptionHandler.handle(e.message);
+      FirebaseAuthExceptionHandler.handleException(e);
       rethrow;
     }
   }
@@ -220,8 +210,7 @@ class _AppRepositoryImp implements AppRepository {
       );
     } on FirebaseAuthException catch (e) {
       // Handle errors from Firebase
-      if (kDebugMode) print(e.message);
-      FirebaseAuthExceptionHandler.handle(e.message);
+      FirebaseAuthExceptionHandler.handleException(e);
       rethrow;
     }
   }
@@ -245,7 +234,7 @@ class _AppRepositoryImp implements AppRepository {
     } on DioError catch (e) {
       // Handle errors from server
       if (kDebugMode) print(e.toString());
-      FirebaseAuthExceptionHandler.handle(e.response?.data.toString());
+      FirebaseAuthExceptionHandler.handleString(e.response?.data.toString());
       InvalidPasswordFormatHandler.handle(e.response?.data.toString());
       rethrow;
     }
@@ -269,7 +258,7 @@ class _AppRepositoryImp implements AppRepository {
     } on DioError catch (e) {
       // Handle errors from server
       if (kDebugMode) print(e.toString());
-      FirebaseAuthExceptionHandler.handle(e.response?.data.toString());
+      FirebaseAuthExceptionHandler.handleString(e.response?.data.toString());
       InvalidPasswordFormatHandler.handle(e.response?.data.toString());
       rethrow;
     }
@@ -282,7 +271,7 @@ class _AppRepositoryImp implements AppRepository {
     } on DioError catch (e) {
       // Handle errors from server
       if (kDebugMode) print(e.toString());
-      FirebaseAuthExceptionHandler.handle(e.response?.data.toString());
+      FirebaseAuthExceptionHandler.handleString(e.response?.data.toString());
       rethrow;
     }
   }
@@ -294,7 +283,7 @@ class _AppRepositoryImp implements AppRepository {
     } on DioError catch (e) {
       // Handle errors from server
       if (kDebugMode) print(e.toString());
-      FirebaseAuthExceptionHandler.handle(e.response?.data.toString());
+      FirebaseAuthExceptionHandler.handleString(e.response?.data.toString());
       rethrow;
     }
   }
