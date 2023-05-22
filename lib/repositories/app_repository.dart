@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
@@ -47,6 +49,13 @@ class _AppRepositoryImp implements AppRepository {
   String? _token;
 
   _AppRepositoryImp(this._local, this._remote);
+
+  final _googleSignIn = GoogleSignIn(
+    scopes: [
+      'email',
+      'profile',
+    ],
+  );
 
   @override
   Future<User?> getCurrentUser() async {
@@ -104,6 +113,8 @@ class _AppRepositoryImp implements AppRepository {
 
       // Create a credential from the access token
       final facebookAuthCredential = FacebookAuthProvider.credential(loginResult.accessToken!.token);
+      print('signInWithFacebook: ');
+      inspect(facebookAuthCredential);
 
       // Once signed in, return the UserCredential
       final userCred = await _firebaseAuth.signInWithCredential(facebookAuthCredential);
@@ -111,6 +122,9 @@ class _AppRepositoryImp implements AppRepository {
       // Updates the user copy on our server
       await _updateUserCopy(userCred.user);
     } on FirebaseAuthException catch (e) {
+      // Sign out if we failed with Firebase Auth
+      await FacebookAuth.instance.logOut();
+
       // Handle errors from Firebase
       if (kDebugMode) print(e.message);
       FirebaseAuthExceptionHandler.handle(e.message);
@@ -122,13 +136,9 @@ class _AppRepositoryImp implements AppRepository {
   Future<void> signInWithGoogle() async {
     try {
       // Trigger the authentication flow
-      final googleSignIn = GoogleSignIn(
-        scopes: [
-          'email',
-          'profile',
-        ],
-      );
-      final googleUser = await googleSignIn.signIn();
+      final googleUser = await _googleSignIn.signIn();
+      print('signInWithGoogle: ');
+      inspect(googleUser);
 
       // Obtain the auth details from the request
       final googleAuth = await googleUser?.authentication;
@@ -145,6 +155,9 @@ class _AppRepositoryImp implements AppRepository {
       // Updates the user copy on our server
       await _updateUserCopy(userCred.user);
     } on FirebaseAuthException catch (e) {
+      // Sign out if we failed with Firebase Auth
+      await _googleSignIn.signOut();
+
       // Handle errors from Firebase
       if (kDebugMode) print(e.message);
       FirebaseAuthExceptionHandler.handle(e.message);

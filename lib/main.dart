@@ -31,7 +31,7 @@ void main() async {
     appId: '3235942473364003',
     cookie: true,
     xfbml: true,
-    version: 'v16.0',
+    version: 'v14.0',
   );
 
   // Dependency injection

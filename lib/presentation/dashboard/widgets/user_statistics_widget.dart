@@ -81,20 +81,34 @@ class UserStatisticsWidget extends StatelessWidget {
   }) =>
       AppCard(
         padding: defaultPadding,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              value == null ? '' : '$value',
-              style: AppTextStyle.titleExtraLargeBold,
-            ),
-            const SizedBox(height: 32),
-            Text(
-              title,
-              style: AppTextStyle.bodyRegular,
-              textAlign: TextAlign.center,
-            ),
-          ],
+        child: value != null
+            ? Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    '$value',
+                    style: AppTextStyle.titleExtraLargeBold,
+                  ),
+                  const SizedBox(height: 32),
+                  Text(
+                    title,
+                    style: AppTextStyle.bodyRegular,
+                    textAlign: TextAlign.center,
+                  ),
+                ],
+              )
+            : Center(
+                child: _buildLoadingIndicator(),
+              ),
+      );
+
+  Widget _buildLoadingIndicator() => SizedBox(
+        width: 24,
+        height: 24,
+        child: CircularProgressIndicator(
+          color: Colors.white,
+          backgroundColor: Colors.white.withOpacity(0.24),
+          strokeWidth: 3.0,
         ),
       );
 }

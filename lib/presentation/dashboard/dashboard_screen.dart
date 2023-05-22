@@ -44,10 +44,16 @@ class _DashboardScreenState extends State<DashboardScreen> {
             const SizedBox(height: defaultPadding),
             ValueListenableBuilder(
               valueListenable: _vm.onUserRecordPages,
-              builder: (BuildContext context, List<List<UserRecord>> pageList, Widget? child) => AnimatedOpacity(
-                opacity: pageList.isNotEmpty ? 1 : 0,
+              builder: (BuildContext context, List<List<UserRecord>> pageList, Widget? child) => AnimatedSwitcher(
                 duration: const Duration(milliseconds: 300),
-                child: _buildUserRecordPages(pageList),
+                child: pageList.isNotEmpty
+                    ? _buildUserRecordPages(pageList)
+                    : SizedBox(
+                        height: 200,
+                        child: Center(
+                          child: _buildLoadingIndicator(),
+                        ),
+                      ),
               ),
             ),
           ],
@@ -171,5 +177,15 @@ class _DashboardScreenState extends State<DashboardScreen> {
             ),
           ),
         ],
+      );
+
+  Widget _buildLoadingIndicator() => SizedBox(
+        width: 24,
+        height: 24,
+        child: CircularProgressIndicator(
+          color: Colors.white,
+          backgroundColor: Colors.white.withOpacity(0.24),
+          strokeWidth: 3.0,
+        ),
       );
 }

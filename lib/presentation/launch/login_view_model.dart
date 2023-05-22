@@ -17,6 +17,9 @@ class LoginViewModel {
     } on AppError catch (e) {
       if (kDebugMode) print(e);
       onError?.call(e.errorMessage);
+    } catch (e) {
+      if (kDebugMode) print(e);
+      onError?.call('$e');
     }
   }
 
@@ -27,6 +30,9 @@ class LoginViewModel {
     } on AppError catch (e) {
       if (kDebugMode) print(e);
       onError?.call(e.errorMessage);
+    } catch (e) {
+      if (kDebugMode) print(e);
+      onError?.call('$e');
     }
   }
 
@@ -37,6 +43,9 @@ class LoginViewModel {
     } on AppError catch (e) {
       if (kDebugMode) print(e);
       onError?.call(e.errorMessage);
+    } catch (e) {
+      if (kDebugMode) print(e);
+      onError?.call('$e');
     }
   }
 }

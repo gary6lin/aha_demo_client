@@ -25,28 +25,38 @@ class DashboardViewModel {
   String? pageToken;
 
   void loadUserList() async {
-    try {
-      _repo.findUsers(pageSize, null).then(
-        (usersResult) {
-          onUserRecordPages.value = [usersResult.users];
-          pageToken = usersResult.pageToken;
-        },
-      );
-    } on AppError catch (e) {
-      if (kDebugMode) print(e);
-      onError?.call(e.errorMessage);
-    }
+    _repo.findUsers(pageSize, null).then(
+      (usersResult) {
+        onUserRecordPages.value = [usersResult.users];
+        pageToken = usersResult.pageToken;
+      },
+    ).onError(
+      (error, stackTrace) {
+        if (kDebugMode) print(error);
+        if (error is AppError) {
+          onError?.call(error.errorMessage);
+        } else {
+          onError?.call('$error');
+        }
+      },
+    );
   }
 
   void loadUsersStatistic() {
-    try {
-      _repo.findUsersStatistic().then(
-            (usersStatistic) => onUsersStatistics.value = usersStatistic,
-          );
-    } on AppError catch (e) {
-      if (kDebugMode) print(e);
-      onError?.call(e.errorMessage);
-    }
+    _repo.findUsersStatistic().then(
+      (usersStatistic) {
+        onUsersStatistics.value = usersStatistic;
+      },
+    ).onError(
+      (error, stackTrace) {
+        if (kDebugMode) print(error);
+        if (error is AppError) {
+          onError?.call(error.errorMessage);
+        } else {
+          onError?.call('$error');
+        }
+      },
+    );
   }
 
   Future<void> loadPreviousPage() async {
