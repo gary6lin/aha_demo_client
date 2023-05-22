@@ -1,7 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 
 import '../models/auth_state.dart';
 import '../values/constants.dart';
@@ -45,16 +44,14 @@ class _AppRepositoryImp implements AppRepository {
   final AppRemoteDataSource _remote;
   final _firebaseAuth = FirebaseAuth.instance;
 
-  String? _token;
-
   _AppRepositoryImp(this._local, this._remote);
 
-  final _googleSignIn = GoogleSignIn(
-    scopes: [
-      'email',
-      'profile',
-    ],
-  );
+  // final _googleSignIn = GoogleSignIn(
+  //   scopes: [
+  //     'email',
+  //     'profile',
+  //   ],
+  // );
 
   @override
   Future<User?> getCurrentUser() async {
@@ -68,11 +65,7 @@ class _AppRepositoryImp implements AppRepository {
 
   @override
   Future<String?> getIdToken() async {
-    if (_token == null) {
-      final token = await _firebaseAuth.currentUser?.getIdToken();
-      _token = token;
-    }
-    return _token;
+    return await _firebaseAuth.currentUser?.getIdToken();
   }
 
   @override

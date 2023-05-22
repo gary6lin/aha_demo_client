@@ -17,22 +17,21 @@ part 'app_remote_data_source.g.dart';
 abstract class AppRemoteDataSource {
   factory AppRemoteDataSource(Dio dio) {
     if (kDebugMode) {
-      dio.interceptors
-        ..add(
-          PrettyDioLogger(
-            requestHeader: true,
-            requestBody: true,
-            responseBody: true,
-            responseHeader: true,
-            error: true,
-            compact: true,
-            maxWidth: 90,
-          ),
-        )
-        ..add(
-          AuthInterceptor(),
-        );
+      dio.interceptors.add(
+        PrettyDioLogger(
+          requestHeader: true,
+          requestBody: true,
+          responseBody: true,
+          responseHeader: true,
+          error: true,
+          compact: true,
+          maxWidth: 90,
+        ),
+      );
     }
+    dio.interceptors.add(
+      AuthInterceptor(),
+    );
     return _AppRemoteDataSource(
       dio,
       baseUrl: AppEnvironments.host,
