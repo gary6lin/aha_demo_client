@@ -2,8 +2,8 @@ import 'package:easy_localization/easy_localization.dart';
 
 import 'errors/invalid_password_format_error.dart';
 
-class InvalidPasswordFormatHandler {
-  InvalidPasswordFormatHandler._();
+class PasswordFormatErrorHandler {
+  PasswordFormatErrorHandler._();
 
   static const _pwdNoLower = 'pwd-no-lower';
   static const _pwdNoUpper = 'pwd-no-upper';

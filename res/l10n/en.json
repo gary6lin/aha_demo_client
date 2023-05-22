@@ -36,6 +36,7 @@
 	"error_invalid_page_token": "The page token is invalid.",
 	"error_user_not_signed_in": "User not signed in.",
 
+	"error_invalid_password": "The password provided is not correct.",
 	"error_name_invalid_characters": "Numbers and special characters are not allowed.",
 	"error_password_no_lower": "Must contains at least one lowercase character.",
 	"error_password_no_upper": "Must contains at least one uppercase character.",

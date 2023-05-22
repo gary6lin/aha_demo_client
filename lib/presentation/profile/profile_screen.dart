@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import '../../models/current_user.dart';
 import '../../routes/app_routes.dart';
 import '../../utils/app_validator.dart';
+import '../../utils/show_alert.dart';
 import '../../values/app_colors.dart';
 import '../../values/app_text_style.dart';
 import '../../values/constants.dart';
@@ -50,6 +51,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
     _vm.onSignedOut = () {
       context.go(AppRoute.login.path);
+    };
+
+    _vm.onError = (e) {
+      showAlert(
+        context: context,
+        title: e.toString(),
+      );
     };
 
     _vm.loadProfile();

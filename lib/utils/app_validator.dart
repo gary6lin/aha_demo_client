@@ -28,7 +28,7 @@ class AppValidator {
     if (value1?.isNotEmpty != true || value2?.isNotEmpty != true) {
       return tr('error_empty');
     }
-    return value1 != value2 ? tr('confirm_password_error') : null;
+    return value1 != value2 ? tr('confirm_password_match') : null;
   }
 
   static String? password(String? value) {
