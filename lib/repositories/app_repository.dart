@@ -6,6 +6,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 
 import '../models/auth_state.dart';
 import '../values/constants.dart';
+import 'dio_error_handler.dart';
 import 'dto/request/create_user_dto.dart';
 import 'dto/request/update_user_info_dto.dart';
 import 'dto/request/update_user_password_dto.dart';
@@ -14,8 +15,8 @@ import 'dto/response/users_statistic_dto.dart';
 import 'errors/user_not_found_error.dart';
 import 'errors/user_not_signed_in_error.dart';
 import 'firebase_auth_exception_handler.dart';
-import 'invalid_password_format_handler.dart';
 import 'local/app_local_data_source.dart';
+import 'password_format_error_handler.dart';
 import 'remote/app_remote_data_source.dart';
 
 abstract class AppRepository {
@@ -187,7 +188,7 @@ class _AppRepositoryImp implements AppRepository {
       // Handle errors from server
       if (kDebugMode) print(e.toString());
       FirebaseAuthExceptionHandler.handleString(e.response?.data.toString());
-      InvalidPasswordFormatHandler.handle(e.response?.data.toString());
+      PasswordFormatErrorHandler.handle(e.response?.data.toString());
       rethrow;
     } on FirebaseAuthException catch (e) {
       // Handle errors from Firebase
@@ -240,9 +241,7 @@ class _AppRepositoryImp implements AppRepository {
       );
     } on DioError catch (e) {
       // Handle errors from server
-      if (kDebugMode) print(e.toString());
-      FirebaseAuthExceptionHandler.handleString(e.response?.data.toString());
-      InvalidPasswordFormatHandler.handle(e.response?.data.toString());
+      DioErrorHandler.handle(e);
       rethrow;
     }
   }
@@ -264,9 +263,7 @@ class _AppRepositoryImp implements AppRepository {
       );
     } on DioError catch (e) {
       // Handle errors from server
-      if (kDebugMode) print(e.toString());
-      FirebaseAuthExceptionHandler.handleString(e.response?.data.toString());
-      InvalidPasswordFormatHandler.handle(e.response?.data.toString());
+      DioErrorHandler.handle(e);
       rethrow;
     }
   }
@@ -277,8 +274,7 @@ class _AppRepositoryImp implements AppRepository {
       return await _remote.findUsers(pageSize, pageToken);
     } on DioError catch (e) {
       // Handle errors from server
-      if (kDebugMode) print(e.toString());
-      FirebaseAuthExceptionHandler.handleString(e.response?.data.toString());
+      DioErrorHandler.handle(e);
       rethrow;
     }
   }
@@ -289,8 +285,7 @@ class _AppRepositoryImp implements AppRepository {
       return await _remote.findUsersStatistic();
     } on DioError catch (e) {
       // Handle errors from server
-      if (kDebugMode) print(e.toString());
-      FirebaseAuthExceptionHandler.handleString(e.response?.data.toString());
+      DioErrorHandler.handle(e);
       rethrow;
     }
   }

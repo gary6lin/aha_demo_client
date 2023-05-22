@@ -36,6 +36,7 @@
 	"error_invalid_page_token": "無效的PageToken",
 	"error_user_not_signed_in": "使用者尚未登入",
 
+	"error_invalid_password": "輸入的密碼錯誤",
 	"error_name_invalid_characters": "不允許使用任何數字或是特殊字符",
     "error_password_no_lower": "須包含至少一個小寫英文字母，如：a、b、c",
     "error_password_no_upper": "須包含至少一個大寫英文字母，如：A、B、C",

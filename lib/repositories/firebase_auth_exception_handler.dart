@@ -23,16 +23,16 @@ class FirebaseAuthExceptionHandler {
   static const _invalidPageToken = 'invalid-page-token';
 
   static void handleException(FirebaseAuthException exception) {
-    _handle(exception.toString());
+    handle(exception.toString());
     throw FirebaseAuthError(exception.message ?? exception.code);
   }
 
   static void handleString(String? error) {
-    _handle(error);
+    handle(error);
     throw FirebaseAuthError(error);
   }
 
-  static void _handle(String? error) {
+  static void handle(String? error) {
     if (kDebugMode) print(error);
     if (error?.contains(_accountExistsWithDifferentCredential) == true) {
       throw EmailAlreadyExistsError();
