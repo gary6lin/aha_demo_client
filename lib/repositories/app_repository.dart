@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
@@ -7,6 +5,7 @@ import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 import '../models/auth_state.dart';
+import '../values/constants.dart';
 import 'dto/request/create_user_dto.dart';
 import 'dto/request/update_user_info_dto.dart';
 import 'dto/request/update_user_password_dto.dart';
@@ -82,10 +81,16 @@ class _AppRepositoryImp implements AppRepository {
     if (currentUser == null) {
       return AuthState.noAuth;
     }
+
+    if (currentUser.providerData.every((userInfo) => userInfo.providerId != emailAuthProviderId)) {
+      return AuthState.social;
+    }
+
     final emailVerified = currentUser.emailVerified;
     if (emailVerified) {
       return AuthState.emailVerified;
     }
+
     return AuthState.emailNotVerified;
   }
 
@@ -99,8 +104,7 @@ class _AppRepositoryImp implements AppRepository {
       await _updateUserCopy(userCred.user);
     } on FirebaseAuthException catch (e) {
       // Handle errors from Firebase
-      if (kDebugMode) print(e.message);
-      FirebaseAuthExceptionHandler.handle(e.message);
+      FirebaseAuthExceptionHandler.handleException(e);
       rethrow;
     }
   }
@@ -113,8 +117,6 @@ class _AppRepositoryImp implements AppRepository {
 
       // Create a credential from the access token
       final facebookAuthCredential = FacebookAuthProvider.credential(loginResult.accessToken!.token);
-      print('signInWithFacebook: ');
-      inspect(facebookAuthCredential);
 
       // Once signed in, return the UserCredential
       final userCred = await _firebaseAuth.signInWithCredential(facebookAuthCredential);
@@ -126,8 +128,7 @@ class _AppRepositoryImp implements AppRepository {
       await FacebookAuth.instance.logOut();
 
       // Handle errors from Firebase
-      if (kDebugMode) print(e.message);
-      FirebaseAuthExceptionHandler.handle(e.message);
+      FirebaseAuthExceptionHandler.handleException(e);
       rethrow;
     }
   }
@@ -137,8 +138,6 @@ class _AppRepositoryImp implements AppRepository {
     try {
       // Trigger the authentication flow
       final googleUser = await _googleSignIn.signIn();
-      print('signInWithGoogle: ');
-      inspect(googleUser);
 
       // Obtain the auth details from the request
       final googleAuth = await googleUser?.authentication;
@@ -159,8 +158,7 @@ class _AppRepositoryImp implements AppRepository {
       await _googleSignIn.signOut();
 
       // Handle errors from Firebase
-      if (kDebugMode) print(e.message);
-      FirebaseAuthExceptionHandler.handle(e.message);
+      FirebaseAuthExceptionHandler.handleException(e);
       rethrow;
     }
   }
@@ -188,13 +186,12 @@ class _AppRepositoryImp implements AppRepository {
     } on DioError catch (e) {
       // Handle errors from server
       if (kDebugMode) print(e.toString());
-      FirebaseAuthExceptionHandler.handle(e.response?.data.toString());
+      FirebaseAuthExceptionHandler.handleString(e.response?.data.toString());
       InvalidPasswordFormatHandler.handle(e.response?.data.toString());
       rethrow;
     } on FirebaseAuthException catch (e) {
       // Handle errors from Firebase
-      if (kDebugMode) print(e.message);
-      FirebaseAuthExceptionHandler.handle(e.message);
+      FirebaseAuthExceptionHandler.handleException(e);
       rethrow;
     }
   }
@@ -220,8 +217,7 @@ class _AppRepositoryImp implements AppRepository {
       );
     } on FirebaseAuthException catch (e) {
       // Handle errors from Firebase
-      if (kDebugMode) print(e.message);
-      FirebaseAuthExceptionHandler.handle(e.message);
+      FirebaseAuthExceptionHandler.handleException(e);
       rethrow;
     }
   }
@@ -245,7 +241,7 @@ class _AppRepositoryImp implements AppRepository {
     } on DioError catch (e) {
       // Handle errors from server
       if (kDebugMode) print(e.toString());
-      FirebaseAuthExceptionHandler.handle(e.response?.data.toString());
+      FirebaseAuthExceptionHandler.handleString(e.response?.data.toString());
       InvalidPasswordFormatHandler.handle(e.response?.data.toString());
       rethrow;
     }
@@ -269,7 +265,7 @@ class _AppRepositoryImp implements AppRepository {
     } on DioError catch (e) {
       // Handle errors from server
       if (kDebugMode) print(e.toString());
-      FirebaseAuthExceptionHandler.handle(e.response?.data.toString());
+      FirebaseAuthExceptionHandler.handleString(e.response?.data.toString());
       InvalidPasswordFormatHandler.handle(e.response?.data.toString());
       rethrow;
     }
@@ -282,7 +278,7 @@ class _AppRepositoryImp implements AppRepository {
     } on DioError catch (e) {
       // Handle errors from server
       if (kDebugMode) print(e.toString());
-      FirebaseAuthExceptionHandler.handle(e.response?.data.toString());
+      FirebaseAuthExceptionHandler.handleString(e.response?.data.toString());
       rethrow;
     }
   }
@@ -294,7 +290,7 @@ class _AppRepositoryImp implements AppRepository {
     } on DioError catch (e) {
       // Handle errors from server
       if (kDebugMode) print(e.toString());
-      FirebaseAuthExceptionHandler.handle(e.response?.data.toString());
+      FirebaseAuthExceptionHandler.handleString(e.response?.data.toString());
       rethrow;
     }
   }

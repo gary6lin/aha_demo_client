@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:get_it/get_it.dart';
 
 import '../../repositories/app_repository.dart';
@@ -17,7 +16,6 @@ class VerificationViewModel {
       await _repo.reloadUser();
       onEmailVerified?.call();
     } on AppError catch (e) {
-      if (kDebugMode) print(e);
       onError?.call(e.errorMessage);
     }
   }
@@ -27,7 +25,6 @@ class VerificationViewModel {
       await _repo.sendEmailVerification();
       onEmailVerificationResent?.call();
     } on AppError catch (e) {
-      if (kDebugMode) print(e);
       onError?.call(e.errorMessage);
     }
   }

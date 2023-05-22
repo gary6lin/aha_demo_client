@@ -1,5 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
+
 import 'errors/email_already_exists_error.dart';
 import 'errors/expired_action_code_error.dart';
+import 'errors/firebase_auth_error.dart';
 import 'errors/invalid_action_code_error.dart';
 import 'errors/invalid_page_token_error.dart';
 import 'errors/user_disabled_error.dart';
@@ -18,29 +22,40 @@ class FirebaseAuthExceptionHandler {
   static const _wrongPassword = 'wrong-password';
   static const _invalidPageToken = 'invalid-page-token';
 
-  static void handle(String? message) {
-    if (message?.contains(_accountExistsWithDifferentCredential) == true) {
+  static void handleException(FirebaseAuthException exception) {
+    _handle(exception.toString());
+    throw FirebaseAuthError(exception.message ?? exception.code);
+  }
+
+  static void handleString(String? error) {
+    _handle(error);
+    throw FirebaseAuthError(error);
+  }
+
+  static void _handle(String? error) {
+    if (kDebugMode) print(error);
+    if (error?.contains(_accountExistsWithDifferentCredential) == true) {
       throw EmailAlreadyExistsError();
     }
-    if (message?.contains(_emailAlreadyExists) == true) {
+    if (error?.contains(_emailAlreadyExists) == true) {
       throw EmailAlreadyExistsError();
     }
-    if (message?.contains(_expiredActionCode) == true) {
+    if (error?.contains(_expiredActionCode) == true) {
       throw ExpiredActionCodeError();
     }
-    if (message?.contains(_invalidActionCode) == true) {
+    if (error?.contains(_invalidActionCode) == true) {
       throw InvalidActionCodeError();
     }
-    if (message?.contains(_userDisabled) == true) {
+    if (error?.contains(_userDisabled) == true) {
       throw UserDisabledError();
     }
-    if (message?.contains(_userNotFound) == true) {
+    if (error?.contains(_userNotFound) == true) {
       throw UserNotFoundError();
     }
-    if (message?.contains(_wrongPassword) == true) {
+    if (error?.contains(_wrongPassword) == true) {
       throw WrongPasswordError();
     }
-    if (message?.contains(_invalidPageToken) == true) {
+    if (error?.contains(_invalidPageToken) == true) {
       throw InvalidPageTokenError();
     }
   }

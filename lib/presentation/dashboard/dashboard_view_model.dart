@@ -81,7 +81,6 @@ class DashboardViewModel {
       );
       pageToken = usersResult.pageToken;
     } on AppError catch (e) {
-      if (kDebugMode) print(e);
       onError?.call(e.errorMessage);
     }
   }
