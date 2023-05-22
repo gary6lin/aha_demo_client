@@ -1,7 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 import '../models/auth_state.dart';
@@ -83,7 +82,9 @@ class _AppRepositoryImp implements AppRepository {
       return AuthState.noAuth;
     }
 
-    if (currentUser.providerData.every((userInfo) => userInfo.providerId != emailAuthProviderId)) {
+    if (currentUser.providerData.every(
+      (userInfo) => userInfo.providerId != emailAuthProviderId,
+    )) {
       return AuthState.social;
     }
 
@@ -114,19 +115,23 @@ class _AppRepositoryImp implements AppRepository {
   Future<void> signInWithFacebook() async {
     try {
       // Trigger the sign-in flow
-      final loginResult = await FacebookAuth.instance.login();
+      // final loginResult = await FacebookAuth.instance.login();
+      //
+      // // Create a credential from the access token
+      // final facebookAuthCredential = FacebookAuthProvider.credential(loginResult.accessToken!.token);
+      //
+      // // Once signed in, return the UserCredential
+      // final userCred = await _firebaseAuth.signInWithCredential(facebookAuthCredential);
 
-      // Create a credential from the access token
-      final facebookAuthCredential = FacebookAuthProvider.credential(loginResult.accessToken!.token);
-
-      // Once signed in, return the UserCredential
-      final userCred = await _firebaseAuth.signInWithCredential(facebookAuthCredential);
+      final userCred = await _firebaseAuth.signInWithPopup(
+        FacebookAuthProvider(),
+      );
 
       // Updates the user copy on our server
       await _updateUserCopy(userCred.user);
     } on FirebaseAuthException catch (e) {
       // Sign out if we failed with Firebase Auth
-      await FacebookAuth.instance.logOut();
+      // await FacebookAuth.instance.logOut();
 
       // Handle errors from Firebase
       FirebaseAuthExceptionHandler.handleException(e);
@@ -137,26 +142,30 @@ class _AppRepositoryImp implements AppRepository {
   @override
   Future<void> signInWithGoogle() async {
     try {
-      // Trigger the authentication flow
-      final googleUser = await _googleSignIn.signIn();
+      // // Trigger the authentication flow
+      // final googleUser = await _googleSignIn.signIn();
+      //
+      // // Obtain the auth details from the request
+      // final googleAuth = await googleUser?.authentication;
+      //
+      // // Create a new credential
+      // final credential = GoogleAuthProvider.credential(
+      //   accessToken: googleAuth?.accessToken,
+      //   idToken: googleAuth?.idToken,
+      // );
+      //
+      // // Once signed in, return the UserCredential
+      // final userCred = await _firebaseAuth.signInWithCredential(credential);
 
-      // Obtain the auth details from the request
-      final googleAuth = await googleUser?.authentication;
-
-      // Create a new credential
-      final credential = GoogleAuthProvider.credential(
-        accessToken: googleAuth?.accessToken,
-        idToken: googleAuth?.idToken,
+      final userCred = await _firebaseAuth.signInWithPopup(
+        GoogleAuthProvider(),
       );
-
-      // Once signed in, return the UserCredential
-      final userCred = await _firebaseAuth.signInWithCredential(credential);
 
       // Updates the user copy on our server
       await _updateUserCopy(userCred.user);
     } on FirebaseAuthException catch (e) {
       // Sign out if we failed with Firebase Auth
-      await _googleSignIn.signOut();
+      // await _googleSignIn.signOut();
 
       // Handle errors from Firebase
       FirebaseAuthExceptionHandler.handleException(e);
@@ -294,6 +303,12 @@ class _AppRepositoryImp implements AppRepository {
     if (user == null) {
       throw UserNotFoundError();
     }
-    await _remote.updateUser(user.uid);
+    try {
+      await _remote.updateUser(user.uid);
+    } on DioError catch (e) {
+      // Handle errors from server
+      DioErrorHandler.handle(e);
+      rethrow;
+    }
   }
 }
