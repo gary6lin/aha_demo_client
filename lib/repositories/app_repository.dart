@@ -5,6 +5,7 @@ import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 import '../models/auth_state.dart';
+import '../values/constants.dart';
 import 'dto/request/create_user_dto.dart';
 import 'dto/request/update_user_info_dto.dart';
 import 'dto/request/update_user_password_dto.dart';
@@ -80,10 +81,16 @@ class _AppRepositoryImp implements AppRepository {
     if (currentUser == null) {
       return AuthState.noAuth;
     }
+
+    if (currentUser.providerData.every((userInfo) => userInfo.providerId != emailAuthProviderId)) {
+      return AuthState.social;
+    }
+
     final emailVerified = currentUser.emailVerified;
     if (emailVerified) {
       return AuthState.emailVerified;
     }
+
     return AuthState.emailNotVerified;
   }
 

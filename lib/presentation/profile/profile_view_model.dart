@@ -28,7 +28,6 @@ class ProfileViewModel {
       // Check if the user has authenticated with email and password
       onIsEmailAuth.value = !(user?.providerData.every((element) => element.providerId != emailAuthProviderId) ?? true);
     } on AppError catch (e) {
-      if (kDebugMode) print(e);
       onError?.call(e.errorMessage);
     }
   }
@@ -49,7 +48,6 @@ class ProfileViewModel {
       // Triggers the updated display name event
       onUpdatedDisplayName?.call();
     } on AppError catch (e) {
-      if (kDebugMode) print(e);
       onError?.call(e.errorMessage);
     }
   }
@@ -60,7 +58,6 @@ class ProfileViewModel {
       // Triggers the changed password event
       onChangedPassword?.call();
     } on AppError catch (e) {
-      if (kDebugMode) print(e);
       onError?.call(e.errorMessage);
     }
   }
@@ -69,9 +66,8 @@ class ProfileViewModel {
     try {
       await _repo.signOut();
       onSignedOut?.call();
-    } catch (e) {
-      if (kDebugMode) print(e);
-      onError?.call(e);
+    } on AppError catch (e) {
+      onError?.call(e.errorMessage);
     }
   }
 }

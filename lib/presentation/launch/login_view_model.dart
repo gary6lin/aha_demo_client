@@ -1,5 +1,4 @@
 import 'package:aha_demo/repositories/app_repository.dart';
-import 'package:flutter/foundation.dart';
 import 'package:get_it/get_it.dart';
 
 import '../../repositories/errors/app_error.dart';
@@ -15,10 +14,8 @@ class LoginViewModel {
       await _repo.signIn(email, password);
       onSignedIn?.call();
     } on AppError catch (e) {
-      if (kDebugMode) print(e);
       onError?.call(e.errorMessage);
     } catch (e) {
-      if (kDebugMode) print(e);
       onError?.call('$e');
     }
   }
@@ -28,10 +25,8 @@ class LoginViewModel {
       await _repo.signInWithFacebook();
       onSignedIn?.call();
     } on AppError catch (e) {
-      if (kDebugMode) print(e);
       onError?.call(e.errorMessage);
     } catch (e) {
-      if (kDebugMode) print(e);
       onError?.call('$e');
     }
   }
@@ -41,10 +36,8 @@ class LoginViewModel {
       await _repo.signInWithGoogle();
       onSignedIn?.call();
     } on AppError catch (e) {
-      if (kDebugMode) print(e);
       onError?.call(e.errorMessage);
     } catch (e) {
-      if (kDebugMode) print(e);
       onError?.call('$e');
     }
   }

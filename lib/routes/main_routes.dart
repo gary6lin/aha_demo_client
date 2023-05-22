@@ -61,6 +61,7 @@ class ProfileRoute {
 Future<String?> _guard(BuildContext context, GoRouterState state) async {
   final authState = await GetIt.I<AppRepository>().getAuthState();
   switch (authState) {
+    case AuthState.social:
     case AuthState.emailVerified:
       // No redirection
       return null;

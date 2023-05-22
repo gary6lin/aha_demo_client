@@ -53,6 +53,7 @@ class VerificationRoute {
     redirect: (BuildContext context, GoRouterState state) async {
       final authState = await GetIt.I<AppRepository>().getAuthState();
       switch (authState) {
+        case AuthState.social:
         case AuthState.emailVerified:
           // Redirects to the dashboard if signed in and email verified
           return AppRoute.main.dashboard.path;
@@ -72,6 +73,7 @@ class VerificationRoute {
 Future<String?> _guard(BuildContext context, GoRouterState state) async {
   final authState = await GetIt.I<AppRepository>().getAuthState();
   switch (authState) {
+    case AuthState.social:
     case AuthState.emailVerified:
       // Redirects to the dashboard if signed in and email verified
       return AppRoute.main.dashboard.path;
