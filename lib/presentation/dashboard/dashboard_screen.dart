@@ -135,11 +135,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
             tr('dashboard_table_column_created'),
           ),
         ),
-        // DataColumn(
-        //   label: Text(
-        //     tr('dashboard_table_column_count'),
-        //   ),
-        // ),
+        DataColumn(
+          label: Text(
+            tr('dashboard_table_column_count'),
+          ),
+        ),
         DataColumn(
           label: Text(
             tr('dashboard_table_column_session'),
@@ -160,18 +160,15 @@ class _DashboardScreenState extends State<DashboardScreen> {
               ),
             ),
           ),
-          // DataCell(
-          //   Text(
-          //     AppDateTime.parseDateTime(
-          //       userRecord.lastRefreshTime,
-          //       context.locale.toString(),
-          //     ),
-          //   ),
-          // ),
+          DataCell(
+            Text(
+              '${userRecord.signInCount}',
+            ),
+          ),
           DataCell(
             Text(
               AppDateTime.parseDateTime(
-                userRecord.lastSignInTime,
+                userRecord.lastRefreshTime,
                 context.locale.toString(),
               ),
             ),

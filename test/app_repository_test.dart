@@ -26,8 +26,6 @@ void main() {
           emailVerified: true,
           displayName: 'Gary',
           photoURL: '',
-          passwordHash: null,
-          passwordSalt: null,
           tokensValidAfterTime: DateTime.now(),
           creationTime: DateTime.now(),
           lastSignInTime: DateTime.now(),

@@ -27,8 +27,7 @@ class UserRecord {
   final bool emailVerified;
   final String? displayName;
   final String? photoURL;
-  final String? passwordHash;
-  final String? passwordSalt;
+  final int signInCount;
   final DateTime? tokensValidAfterTime;
 
   final DateTime creationTime;
@@ -41,8 +40,7 @@ class UserRecord {
     required this.emailVerified,
     this.displayName,
     this.photoURL,
-    this.passwordHash,
-    this.passwordSalt,
+    this.signInCount = 0,
     this.tokensValidAfterTime,
     required this.creationTime,
     this.lastSignInTime,
@@ -55,8 +53,7 @@ class UserRecord {
         emailVerified = json['emailVerified'],
         displayName = json['displayName'],
         photoURL = json['photoURL'],
-        passwordHash = json['passwordHash'],
-        passwordSalt = json['passwordSalt'],
+        signInCount = json['signInCount'],
         tokensValidAfterTime = DateTime.tryParse(json['tokensValidAfterTime'] ?? ''),
         creationTime = DateTime.parse(json['creationTime']),
         lastSignInTime = DateTime.tryParse(json['lastSignInTime'] ?? ''),
@@ -68,8 +65,7 @@ class UserRecord {
         'emailVerified': emailVerified,
         'displayName': displayName,
         'photoURL': photoURL,
-        'passwordHash': passwordHash,
-        'passwordSalt': passwordSalt,
+        'signInCount': signInCount,
         'tokensValidAfterTime': tokensValidAfterTime?.toIso8601String(),
         'creationTime': creationTime.toIso8601String(),
         'lastSignInTime': lastSignInTime?.toIso8601String(),
